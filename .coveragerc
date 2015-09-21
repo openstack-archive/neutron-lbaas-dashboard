@@ -4,4 +4,4 @@ source = neutron_lbaas_dashboard
 omit = neutron_lbaas_dashboard/openstack/*
 
 [report]
-ignore-errors = True
+ignore_errors = True
