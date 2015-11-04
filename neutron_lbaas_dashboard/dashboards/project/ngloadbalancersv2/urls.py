@@ -1,3 +1,5 @@
+#    (c) Copyright 2015 Hewlett-Packard Development Company, L.P.
+#
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
 # a copy of the License at
@@ -10,11 +12,13 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import pbr.version
+from django.conf.urls import patterns
+from django.conf.urls import url
 
-# Register the REST API URLs so they can be called from the JavaScript files
-import neutron_lbaas_dashboard.api.rest  # noqa
+from neutron_lbaas_dashboard.dashboards.project.ngloadbalancersv2 import views
 
 
-__version__ = pbr.version.VersionInfo(
-    'neutron_lbaas_dashboard').version_string()
+urlpatterns = patterns(
+    'neutron_lbaas_dashboard.dashboards.project.ngloadbalancersv2.views',
+    url(r'^$', views.IndexView.as_view(), name='index'),
+)
