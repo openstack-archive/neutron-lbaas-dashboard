@@ -35,6 +35,7 @@ ADD_JS_FILES = [
     'dashboard/project/lbaasv2/lbaasv2.module.js',
     'dashboard/project/lbaasv2/loadbalancers/loadbalancers.module.js',
     'dashboard/project/lbaasv2/loadbalancers/table.controller.js',
+    'dashboard/project/lbaasv2/loadbalancers/detail.controller.js',
     'dashboard/project/lbaasv2/loadbalancers/filters.js',
 ]
 
@@ -43,9 +44,10 @@ ADD_JS_SPEC_FILES = [
     'dashboard/project/lbaasv2/lbaasv2.module.spec.js',
     'dashboard/project/lbaasv2/loadbalancers/loadbalancers.module.spec.js',
     'dashboard/project/lbaasv2/loadbalancers/table.controller.spec.js',
+    'dashboard/project/lbaasv2/loadbalancers/detail.controller.spec.js',
     'dashboard/project/lbaasv2/loadbalancers/filters.spec.js',
 ]
-#
-# ADD_SCSS_FILES = [
-#
-# ]
+
+ADD_SCSS_FILES = [
+    'dashboard/project/lbaasv2/lbaasv2.scss',
+]

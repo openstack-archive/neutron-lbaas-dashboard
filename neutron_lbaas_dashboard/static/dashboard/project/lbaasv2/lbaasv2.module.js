@@ -27,6 +27,31 @@
    */
   angular
     .module('horizon.dashboard.project.lbaasv2', [
+      'ngRoute',
       'horizon.dashboard.project.lbaasv2.loadbalancers'
-    ]);
+    ])
+    .config(config);
+
+  config.$inject = [
+    '$windowProvider',
+    '$routeProvider',
+    '$locationProvider'
+  ];
+
+  function config($windowProvider, $routeProvider, $locationProvider) {
+    $locationProvider.html5Mode({
+      enabled: true
+    }).hashPrefix('!');
+
+    var base = '/project/ngloadbalancersv2/';
+    var path = $windowProvider.$get().STATIC_URL + 'dashboard/project/lbaasv2/';
+
+    $routeProvider
+      .when(base, {
+        templateUrl: path + 'loadbalancers/table.html'
+      })
+      .when(base + 'detail/:loadbalancerId', {
+        templateUrl: path + 'loadbalancers/detail.html'
+      })
+  }
 }());

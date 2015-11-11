@@ -41,6 +41,15 @@
         "method": "get",
         "path": "/api/lbaas/loadbalancers/",
         "error": "Unable to retrieve load balancers."
+      },
+      {
+        "func": "getLoadBalancer",
+        "method": "get",
+        "path": "/api/lbaas/loadbalancers/1234",
+        "error": "Unable to retrieve load balancer.",
+        "testInput": [
+          '1234'
+        ]
       }
     ];
 

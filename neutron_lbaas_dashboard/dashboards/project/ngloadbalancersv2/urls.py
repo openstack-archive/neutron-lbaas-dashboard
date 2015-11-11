@@ -20,5 +20,5 @@ from neutron_lbaas_dashboard.dashboards.project.ngloadbalancersv2 import views
 
 urlpatterns = patterns(
     'neutron_lbaas_dashboard.dashboards.project.ngloadbalancersv2.views',
-    url(r'^$', views.IndexView.as_view(), name='index'),
+    url('', views.IndexView.as_view(), name='index'),
 )

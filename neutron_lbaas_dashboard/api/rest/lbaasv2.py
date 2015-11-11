@@ -39,3 +39,20 @@ class LoadBalancers(generic.View):
         tenant_id = request.user.project_id
         result = neutronclient(request).list_loadbalancers(tenant_id=tenant_id)
         return {'items': result.get('loadbalancers')}
+
+
+@urls.register
+class LoadBalancer(generic.View):
+    """API for retrieving a single load balancer.
+
+    """
+    url_regex = r'lbaas/loadbalancers/(?P<loadbalancer_id>[^/]+)/$'
+
+    @rest_utils.ajax()
+    def get(self, request, loadbalancer_id):
+        """Get a specific load balancer.
+
+        http://localhost/api/lbaas/loadbalancers/cc758c90-3d98-4ea1-af44-aab405c9c915
+        """
+        lb = neutronclient(request).show_loadbalancer(loadbalancer_id)
+        return lb.get('loadbalancer')

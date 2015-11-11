@@ -1,3 +1,5 @@
+<hz-page-header header="{$ 'Load Balancers' | translate $}"></hz-page-header>
+
 <table ng-controller="loadBalancersTableController as table"
        hz-table ng-cloak
        st-table="table.items"
@@ -63,12 +65,12 @@
                hz-select="item">
       </td>
       <td class="expander">
-        <i class="fa fa-chevron-right"
+        <span class="fa fa-chevron-right"
            hz-expand-detail
            duration="200">
-        </i>
+        </span>
       </td>
-      <td class="rsp-p1">{$ item.name $}</td>
+      <td class="rsp-p1"><a ng-href="/project/ngloadbalancersv2/detail/{$ item.id $}">{$ item.name $}</a></td>
       <td class="rsp-p1">{$ item.description | noValue $}</td>
       <td class="rsp-p1">{$ item.operating_status | operatingStatus $}</td>
       <td class="rsp-p1">{$ item.provisioning_status | provisioningStatus $}</td>

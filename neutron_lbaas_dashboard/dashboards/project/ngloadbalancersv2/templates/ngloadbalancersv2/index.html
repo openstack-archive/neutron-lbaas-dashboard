@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block title %}{% trans "Load Balancers" %}{% endblock %}
+{% block page_header %}{% endblock %}
 
-{% block page_header %}
-  <hz-page-header header="'{% trans "Load Balancers" %}'"></hz-page-header>
-{% endblock page_header %}
+{% block ng_route_base %}
+  <base href="/"></base>
+{% endblock %}
 
 {% block main %}
-  <ng-include src="'{{ STATIC_URL }}dashboard/project/lbaasv2/loadbalancers/table.html'"></ng-include>
+  <div ng-view></div>
 {% endblock %}

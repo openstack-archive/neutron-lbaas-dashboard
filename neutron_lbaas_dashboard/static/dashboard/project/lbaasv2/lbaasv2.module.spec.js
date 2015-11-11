@@ -22,4 +22,52 @@
     });
   });
 
+  describe('LBaaS v2 Module Config', function () {
+    var $routeProvider, $locationProvider, path;
+
+    beforeEach(function() {
+      // Create a dummy module so that we can test $routeProvider and $locationProvider calls
+      // in our actual config block.
+      angular.module('configTest', [])
+        .config(function(_$routeProvider_, _$locationProvider_, $windowProvider) {
+          $routeProvider = _$routeProvider_;
+          $locationProvider = _$locationProvider_;
+          path = $windowProvider.$get().STATIC_URL + 'dashboard/project/lbaasv2/';
+          spyOn($routeProvider, 'when').and.callThrough();
+          spyOn($locationProvider, 'html5Mode').and.callThrough();
+        });
+      module('ngRoute')
+      module('configTest');
+      module('horizon.dashboard.project.lbaasv2')
+      inject();
+    });
+
+    it('should use html5 mode', function () {
+      expect($locationProvider.html5Mode).toHaveBeenCalledWith({enabled: true});
+    });
+
+    it('should route URLs', function () {
+      var base = '/ngloadbalancersv2/';
+      var routes = [
+        [
+          base,
+          {
+            templateUrl: path + 'loadbalancers/table.html'
+          }
+        ],
+        [
+          base + 'detail/:loadbalancerId',
+          {
+            templateUrl: path + 'loadbalancers/detail.html'
+          }
+        ]
+      ];
+
+      expect($routeProvider.when.calls.count()).toBe(2);
+      angular.forEach($routeProvider.when.calls.all(), function(call, i) {
+        expect(call.args).toEqual(routes[i]);
+      });
+    });
+  });
+
 })();

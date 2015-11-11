@@ -25,8 +25,6 @@
   describe('LBaaS v2 Load Balancers Module Base Path', function () {
     var basePath, staticUrl;
 
-    beforeEach(module('horizon.dashboard.project'));
-    beforeEach(module('horizon.dashboard.project.lbaasv2'));
     beforeEach(module('horizon.dashboard.project.lbaasv2.loadbalancers'));
     beforeEach(inject(function ($injector) {
       basePath = $injector.get('horizon.dashboard.project.lbaasv2.loadbalancers.basePath');

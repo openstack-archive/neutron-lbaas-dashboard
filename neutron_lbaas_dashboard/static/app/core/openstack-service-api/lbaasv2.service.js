@@ -32,7 +32,8 @@
    */
   function lbaasv2API(apiService, toastService) {
     var service = {
-      getLoadBalancers: getLoadBalancers
+      getLoadBalancers: getLoadBalancers,
+      getLoadBalancer: getLoadBalancer
     };
 
     return service;
@@ -53,6 +54,20 @@
       return apiService.get('/api/lbaas/loadbalancers/')
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve load balancers.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.getLoadBalancer
+     * @description
+     * Get a single load balancer by ID
+     * @param {string} id
+     * Specifies the id of the load balancer to request.
+     */
+    function getLoadBalancer(id) {
+      return apiService.get('/api/lbaas/loadbalancers/' + id)
+        .error(function () {
+          toastService.add('error', gettext('Unable to retrieve load balancer.'));
         });
     }
 
