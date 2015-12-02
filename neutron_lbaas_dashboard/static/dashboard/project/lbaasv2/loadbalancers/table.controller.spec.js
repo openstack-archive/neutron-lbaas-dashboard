@@ -17,7 +17,8 @@
   'use strict';
 
   describe('LBaaS v2 Load Balancers Table Controller', function() {
-    var controller, lbaasv2API, staticUrl, items = [];
+    var controller, lbaasv2API, staticUrl, scope, batchActionsService;
+    var items = [];
 
     function fakeAPI() {
       return {
@@ -29,22 +30,29 @@
 
     ///////////////////////
 
-    beforeEach(module('horizon.framework.util.http'));
     beforeEach(module('horizon.framework.widgets.toast'));
+    beforeEach(module('horizon.framework.conf'));
+    beforeEach(module('horizon.framework.util'));
     beforeEach(module('horizon.app.core.openstack-service-api'));
-    beforeEach(module('horizon.dashboard.project.lbaasv2.loadbalancers'));
+    beforeEach(module('horizon.dashboard.project.lbaasv2'));
+
+    beforeEach(module(function($provide) {
+      $provide.value('$modal', {});
+    }));
 
     beforeEach(inject(function($injector) {
       lbaasv2API = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
+      batchActionsService = $injector.get(
+        'horizon.dashboard.project.lbaasv2.loadbalancers.actions.batchActions');
       controller = $injector.get('$controller');
       staticUrl = $injector.get('$window').STATIC_URL;
+      scope = $injector.get('$rootScope').$new();
+      scope.lbaasv2API = lbaasv2API;
       spyOn(lbaasv2API, 'getLoadBalancers').and.callFake(fakeAPI);
     }));
 
     function createController() {
-      return controller('loadBalancersTableController', {
-        lbaasv2API: lbaasv2API
-      });
+      return controller('LoadBalancersTableController', { $scope: scope });
     }
 
     it('should initialize correctly', function() {
@@ -52,11 +60,7 @@
       expect(ctrl.items).toEqual([]);
       expect(ctrl.src).toEqual(items);
       expect(ctrl.checked).toEqual({});
-    });
-
-    it('should set path properly', function() {
-      var path = staticUrl + 'dashboard/project/lbaasv2/loadbalancers/';
-      expect(createController().path).toEqual(path);
+      expect(ctrl.batchActions).toBeDefined();
     });
 
     it('should invoke lbaasv2 apis', function() {

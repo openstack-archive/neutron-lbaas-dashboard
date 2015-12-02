@@ -37,6 +37,15 @@ ADD_JS_FILES = [
     'dashboard/project/lbaasv2/loadbalancers/table.controller.js',
     'dashboard/project/lbaasv2/loadbalancers/detail.controller.js',
     'dashboard/project/lbaasv2/loadbalancers/filters.js',
+    'dashboard/project/lbaasv2/loadbalancers/actions/batch-actions.service.js',
+    'dashboard/project/lbaasv2/loadbalancers/actions/create/modal.service.js',
+    'dashboard/project/lbaasv2/loadbalancers/actions/create/model.service.js',
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
+        'wizard.controller.js'),
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
+        'workflow.service.js'),
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/details/'
+        'details.controller.js'),
 ]
 
 ADD_JS_SPEC_FILES = [
@@ -46,6 +55,18 @@ ADD_JS_SPEC_FILES = [
     'dashboard/project/lbaasv2/loadbalancers/table.controller.spec.js',
     'dashboard/project/lbaasv2/loadbalancers/detail.controller.spec.js',
     'dashboard/project/lbaasv2/loadbalancers/filters.spec.js',
+    ('dashboard/project/lbaasv2/loadbalancers/actions/'
+        'batch-actions.service.spec.js'),
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
+        'modal.service.spec.js'),
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
+        'model.service.spec.js'),
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
+        'wizard.controller.spec.js'),
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
+        'workflow.service.spec.js'),
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/details/'
+        'details.controller.spec.js'),
 ]
 
 ADD_SCSS_FILES = [

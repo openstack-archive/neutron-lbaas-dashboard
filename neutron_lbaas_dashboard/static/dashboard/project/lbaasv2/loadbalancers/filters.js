@@ -34,7 +34,10 @@
    * @name operatingStatusFilter
    * @description
    * Takes raw load balancer operating status from the API and returns the user friendly status.
+   * @param gettext The horizon gettext function for translation.
+   * @returns The function for filtering the load balancer operating status.
    */
+
   function operatingStatusFilter(gettext) {
     var statuses = {
       'ONLINE': gettext('Online'),
@@ -54,7 +57,10 @@
    * @name provisioningStatusFilter
    * @description
    * Takes raw load balancer provisioning status from the API and returns the user friendly status.
+   * @param gettext The horizon gettext function for translation.
+   * @returns The function for filtering the load balancer provisioning status.
    */
+
   function provisioningStatusFilter(gettext) {
     var statuses = {
       'ACTIVE': gettext('Active'),

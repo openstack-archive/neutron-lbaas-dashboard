@@ -36,22 +36,19 @@
           <div>
             <dt translate>Subnet ID</dt>
             <dd>
-              <a ng-href="/project/networks/subnets/{$ ::ctrl.loadbalancer.vip_subnet_id $}/detail">{$ ::ctrl.loadbalancer.vip_subnet_id $}</a>
+              <a target="_self" ng-href="{$ ::ctrl.webroot $}project/networks/subnets/{$ ::ctrl.loadbalancer.vip_subnet_id $}/detail">{$ ::ctrl.loadbalancer.vip_subnet_id $}</a>
             </dd>
           </div>
           <div>
             <dt translate>Port ID</dt>
             <dd>
-              <a ng-href="/project/networks/ports/{$ ::ctrl.loadbalancer.vip_port_id $}/detail">{$ ::ctrl.loadbalancer.vip_port_id $}</a>
+              <a target="_self" ng-href="{$ ::ctrl.webroot $}project/networks/ports/{$ ::ctrl.loadbalancer.vip_port_id $}/detail">{$ ::ctrl.loadbalancer.vip_port_id $}</a>
             </dd>
           </div>
         </dl>
       </tab>
-      <tab heading="{$ 'Pools' | translate $}">
-        <!-- TODO(jpomero) ng-include the table of pools for this load balancer -->
-      </tab>
-      <tab heading="{$ 'Members' | translate $}">
-        <!-- TODO(jpomero) ng-include the table of members for this load balancer -->
+      <tab heading="{$ 'Listeners' | translate $}">
+        <!-- TODO(jpomero) ng-include the table of listeners for this load balancer -->
       </tab>
     </tabset>
   </div>

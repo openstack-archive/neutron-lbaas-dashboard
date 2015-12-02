@@ -50,6 +50,16 @@
         "testInput": [
           '1234'
         ]
+      },
+      {
+        "func": "createLoadBalancer",
+        "method": "post",
+        "path": "/api/lbaas/loadbalancers/",
+        "error": "Unable to create load balancer.",
+        "data": { name: 'loadbalancer-1' },
+        "testInput": [
+          { name: 'loadbalancer-1' }
+        ]
       }
     ];
 

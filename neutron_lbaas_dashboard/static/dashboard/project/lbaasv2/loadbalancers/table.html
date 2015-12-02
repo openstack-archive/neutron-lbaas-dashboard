@@ -1,6 +1,6 @@
 <hz-page-header header="{$ 'Load Balancers' | translate $}"></hz-page-header>
 
-<table ng-controller="loadBalancersTableController as table"
+<table ng-controller="LoadBalancersTableController as table"
        hz-table ng-cloak
        st-table="table.items"
        st-safe-src="table.src"
@@ -20,6 +20,7 @@
       -->
       <th colspan="100" class="search-header">
         <hz-search-bar group-classes="input-group-sm" icon-classes="fa-search">
+          <actions allowed="table.batchActions.actions" type="batch"></actions>
         </hz-search-bar>
       </th>
     </tr>
@@ -70,7 +71,7 @@
            duration="200">
         </span>
       </td>
-      <td class="rsp-p1"><a ng-href="/project/ngloadbalancersv2/detail/{$ item.id $}">{$ item.name $}</a></td>
+      <td class="rsp-p1"><a ng-href="{$ ::ctrl.webroot $}project/ngloadbalancersv2/detail/{$ ::item.id $}">{$ item.name $}</a></td>
       <td class="rsp-p1">{$ item.description | noValue $}</td>
       <td class="rsp-p1">{$ item.operating_status | operatingStatus $}</td>
       <td class="rsp-p1">{$ item.provisioning_status | provisioningStatus $}</td>

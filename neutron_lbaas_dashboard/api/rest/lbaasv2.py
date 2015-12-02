@@ -40,6 +40,27 @@ class LoadBalancers(generic.View):
         result = neutronclient(request).list_loadbalancers(tenant_id=tenant_id)
         return {'items': result.get('loadbalancers')}
 
+    @rest_utils.ajax()
+    def post(self, request):
+        """Create a new load balancer.
+
+        Creates a new load balancer as well as other optional resources such as
+        a listener, pool, monitor, etc.
+        """
+        data = request.DATA
+        spec = {
+            'vip_subnet_id': data['loadbalancer']['subnet']
+        }
+        if data['loadbalancer'].get('name'):
+            spec['name'] = data['loadbalancer']['name']
+        if data['loadbalancer'].get('description'):
+            spec['description'] = data['loadbalancer']['description']
+        if data['loadbalancer'].get('ip'):
+            spec['vip_address'] = data['loadbalancer']['ip']
+        loadbalancer = neutronclient(request).create_loadbalancer(
+            {'loadbalancer': spec}).get('loadbalancer')
+        return loadbalancer
+
 
 @urls.register
 class LoadBalancer(generic.View):

@@ -1,0 +1,61 @@
+<div ng-controller="CreateLoadBalancerDetailsController as ctrl">
+  <h1 translate>Load Balancer Details</h1>
+
+  <!--content-->
+  <div class="content">
+    <div translate class="subtitle">Provide the details for the new load balancer.</div>
+
+        <div class="row form-group">
+          <div class="col-sm-12 col-md-6">
+            <div class="form-field loadbalancer-name"
+              ng-class="{ 'has-error': createLoadBalancerDetailsForm['loadbalancer-name'].$invalid && createLoadBalancerDetailsForm['loadbalancer-name'].$dirty }">
+              <label translate class="on-top" for="loadbalancer-name">Name</label>
+              <input name="loadbalancer-name" id="loadbalancer-name"
+                     type="text" class="form-control input-sm"
+                     ng-model="model.spec.loadbalancer.name">
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-6">
+            <div class="form-field loadbalancer-description">
+              <label translate class="on-top" for="loadbalancer-description">Description</label>
+              <input name="loadbalancer-description" id="loadbalancer-description"
+                     type="text" class="form-control input-sm"
+                     ng-model="model.spec.loadbalancer.description">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row form-group">
+          <div class="col-sm-6 col-md-3">
+            <div class="form-field loadbalancer-ip"
+              ng-class="{ 'has-error': createLoadBalancerDetailsForm['loadbalancer-ip'].$invalid && createLoadBalancerDetailsForm['loadbalancer-ip'].$dirty }">
+              <label translate class="on-top" for="loadbalancer-ip">IP Address</label>
+              <span class="fa fa-exclamation-triangle invalid"
+                  ng-show="createLoadBalancerDetailsForm['loadbalancer-ip'].$invalid && createLoadBalancerDetailsForm.$dirty"
+                  popover="{$ ::ctrl.loadbalancerIPError $}"
+                  popover-placement="top" popover-append-to-body="true"
+                  popover-trigger="hover"></span>
+              <input name="loadbalancer-ip" id="loadbalancer-ip"
+                     type="text" class="form-control input-sm"
+                     ng-model="model.spec.loadbalancer.ip" ng-pattern="::ctrl.ipPattern">
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-3">
+            <div class="form-field required loadbalancer-subnet">
+              <label translate class="on-top" for="loadbalancer-subnet">Subnet</label>
+              <select class="form-control input-sm" name="loadbalancer-subnet"
+                      id="loadbalancer-subnet"
+                      ng-options="subnet.name for subnet in model.subnets"
+                      ng-model="model.spec.loadbalancer.subnet" ng-required="true">
+              </select>
+            </div>
+          </div>
+
+        </div>
+
+  </div>
+  <!-- end content -->
+</div>

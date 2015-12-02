@@ -16,10 +16,25 @@
 (function() {
   'use strict';
 
-  describe('LBaaS v2 Load Balancers Module', function() {
-    it('should exist', function() {
-      expect(angular.module('horizon.dashboard.project.lbaasv2.loadbalancers')).toBeDefined();
+  describe('Create Load Balancer Details Step', function() {
+
+    beforeEach(module('horizon.dashboard.project.lbaasv2'));
+
+    describe('CreateLoadBalancerDetailsController', function() {
+      var ctrl;
+
+      beforeEach(inject(function($controller) {
+        ctrl = $controller('CreateLoadBalancerDetailsController');
+      }));
+
+      it('should define error messages for invalid fields', function() {
+        expect(ctrl.loadbalancerIPError).toBeDefined();
+      });
+
+      it('should define patterns for field validation', function() {
+        expect(ctrl.ipPattern).toBeDefined();
+      });
+
     });
   });
-
 })();

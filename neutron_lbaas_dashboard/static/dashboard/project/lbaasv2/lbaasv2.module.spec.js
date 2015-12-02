@@ -22,8 +22,27 @@
     });
   });
 
+  describe('LBaaS v2 Module Base Path', function () {
+    var basePath, staticUrl;
+
+    beforeEach(module('horizon.dashboard.project.lbaasv2'));
+
+    beforeEach(inject(function ($injector) {
+      basePath = $injector.get('horizon.dashboard.project.lbaasv2.basePath');
+      staticUrl = $injector.get('$window').STATIC_URL;
+    }));
+
+    it('should be defined', function () {
+      expect(basePath).toBeDefined();
+    });
+
+    it('should be correct', function () {
+      expect(basePath).toEqual(staticUrl + 'dashboard/project/lbaasv2/');
+    });
+  });
+
   describe('LBaaS v2 Module Config', function () {
-    var $routeProvider, $locationProvider, path;
+    var $routeProvider, $locationProvider, basePath;
 
     beforeEach(function() {
       // Create a dummy module so that we can test $routeProvider and $locationProvider calls
@@ -32,33 +51,33 @@
         .config(function(_$routeProvider_, _$locationProvider_, $windowProvider) {
           $routeProvider = _$routeProvider_;
           $locationProvider = _$locationProvider_;
-          path = $windowProvider.$get().STATIC_URL + 'dashboard/project/lbaasv2/';
+          basePath = $windowProvider.$get().STATIC_URL + 'dashboard/project/lbaasv2/';
           spyOn($routeProvider, 'when').and.callThrough();
           spyOn($locationProvider, 'html5Mode').and.callThrough();
         });
-      module('ngRoute')
+      module('ngRoute');
       module('configTest');
-      module('horizon.dashboard.project.lbaasv2')
+      module('horizon.dashboard.project.lbaasv2');
       inject();
     });
 
     it('should use html5 mode', function () {
-      expect($locationProvider.html5Mode).toHaveBeenCalledWith({enabled: true});
+      expect($locationProvider.html5Mode).toHaveBeenCalledWith(true);
     });
 
     it('should route URLs', function () {
-      var base = '/ngloadbalancersv2/';
+      var href = '/project/ngloadbalancersv2/';
       var routes = [
         [
-          base,
+          href,
           {
-            templateUrl: path + 'loadbalancers/table.html'
+            templateUrl: basePath + 'loadbalancers/table.html'
           }
         ],
         [
-          base + 'detail/:loadbalancerId',
+          href + 'detail/:loadbalancerId',
           {
-            templateUrl: path + 'loadbalancers/detail.html'
+            templateUrl: basePath + 'loadbalancers/detail.html'
           }
         ]
       ];

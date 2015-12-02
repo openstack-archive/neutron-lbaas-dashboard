@@ -20,38 +20,43 @@
    * @ngdoc overview
    * @name horizon.dashboard.project.lbaasv2
    * @description
-   *
-   * # horizon.dashboard.project.lbaasv2
-   *
    * The LBaaS v2 dashboard's top level module.
    */
+
   angular
     .module('horizon.dashboard.project.lbaasv2', [
       'ngRoute',
       'horizon.dashboard.project.lbaasv2.loadbalancers'
     ])
-    .config(config);
+    .config(config)
+    /* eslint-disable max-len */
+    .constant('horizon.dashboard.project.lbaasv2.patterns', {
+      ipv4: '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$',
+      ipv6: '^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$'
+    });
+    /* eslint-enable max-len */
 
   config.$inject = [
+    '$provide',
     '$windowProvider',
     '$routeProvider',
     '$locationProvider'
   ];
 
-  function config($windowProvider, $routeProvider, $locationProvider) {
-    $locationProvider.html5Mode({
-      enabled: true
-    }).hashPrefix('!');
+  function config($provide, $windowProvider, $routeProvider, $locationProvider) {
+    $locationProvider.html5Mode(true).hashPrefix('!');
 
-    var base = '/project/ngloadbalancersv2/';
-    var path = $windowProvider.$get().STATIC_URL + 'dashboard/project/lbaasv2/';
+    var href = '/project/ngloadbalancersv2/';
+    var basePath = $windowProvider.$get().STATIC_URL + 'dashboard/project/lbaasv2/';
+    $provide.constant('horizon.dashboard.project.lbaasv2.basePath', basePath);
 
     $routeProvider
-      .when(base, {
-        templateUrl: path + 'loadbalancers/table.html'
+      .when(href, {
+        templateUrl: basePath + 'loadbalancers/table.html'
       })
-      .when(base + 'detail/:loadbalancerId', {
-        templateUrl: path + 'loadbalancers/detail.html'
-      })
+      .when(href + 'detail/:loadbalancerId', {
+        templateUrl: basePath + 'loadbalancers/detail.html'
+      });
   }
+
 }());

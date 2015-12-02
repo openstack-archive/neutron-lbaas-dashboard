@@ -29,11 +29,16 @@
    * @ngdoc service
    * @name horizon.app.core.openstack-service-api.loadbalancers
    * @description Provides direct pass through to neutron LBaaS v2 with NO abstraction.
+   * @param apiService The horizon core API service.
+   * @param toastService The horizon toast service.
+   * @returns The LBaaS V2 service API.
    */
+
   function lbaasv2API(apiService, toastService) {
     var service = {
       getLoadBalancers: getLoadBalancers,
-      getLoadBalancer: getLoadBalancer
+      getLoadBalancer: getLoadBalancer,
+      createLoadBalancer: createLoadBalancer
     };
 
     return service;
@@ -50,6 +55,7 @@
      * The listing result is an object with property "items". Each item is
      * a load balancer.
      */
+
     function getLoadBalancers() {
       return apiService.get('/api/lbaas/loadbalancers/')
         .error(function () {
@@ -64,10 +70,26 @@
      * @param {string} id
      * Specifies the id of the load balancer to request.
      */
+
     function getLoadBalancer(id) {
       return apiService.get('/api/lbaas/loadbalancers/' + id)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve load balancer.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.createLoadBalancer
+     * @description
+     * Create a new load balancer
+     * @param {object} spec
+     * Specifies the data used to create the new load balancer.
+     */
+
+    function createLoadBalancer(spec) {
+      return apiService.post('/api/lbaas/loadbalancers/', spec)
+        .error(function () {
+          toastService.add('error', gettext('Unable to create load balancer.'));
         });
     }
 

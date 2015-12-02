@@ -24,18 +24,8 @@
    * Provides the services and widgets required to support and display the project load
    * balancers v2 panel.
    */
+
   angular
-    .module('horizon.dashboard.project.lbaasv2.loadbalancers', [])
-    .config(config);
-
-  config.$inject = [
-    '$provide',
-    '$windowProvider'
-  ];
-
-  function config($provide, $windowProvider) {
-    var path = $windowProvider.$get().STATIC_URL + 'dashboard/project/lbaasv2/loadbalancers/';
-    $provide.constant('horizon.dashboard.project.lbaasv2.loadbalancers.basePath', path);
-  }
+    .module('horizon.dashboard.project.lbaasv2.loadbalancers', []);
 
 })();
