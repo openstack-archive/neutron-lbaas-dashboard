@@ -46,6 +46,8 @@ ADD_JS_FILES = [
         'workflow.service.js'),
     ('dashboard/project/lbaasv2/loadbalancers/actions/create/details/'
         'details.controller.js'),
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/listener/'
+        'listener.controller.js')
 ]
 
 ADD_JS_SPEC_FILES = [
@@ -67,6 +69,8 @@ ADD_JS_SPEC_FILES = [
         'workflow.service.spec.js'),
     ('dashboard/project/lbaasv2/loadbalancers/actions/create/details/'
         'details.controller.spec.js'),
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/listener/'
+        'listener.controller.spec.js')
 ]
 
 ADD_SCSS_FILES = [

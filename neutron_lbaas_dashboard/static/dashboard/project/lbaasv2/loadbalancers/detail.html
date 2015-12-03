@@ -1,6 +1,9 @@
 <div class="content" ng-controller="LoadBalancerDetailController as ctrl">
   <div class='page-header'>
-    <h1>{$ ::ctrl.loadbalancer.name $}</h1>
+    <ol class="breadcrumb">
+      <li><a href="project/ngloadbalancersv2/"><translate>Load Balancers</translate></a></li>
+      <li class="active">{$ ::ctrl.loadbalancer.name $}</li>
+    </ol>
     <p ng-if="::ctrl.loadbalancer.description">{$ ::ctrl.loadbalancer.description $}</p>
   </div>
   <div class="detail-page">

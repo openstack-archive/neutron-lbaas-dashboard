@@ -16,24 +16,20 @@
 (function() {
   'use strict';
 
-  describe('Create Load Balancer Details Step', function() {
+  describe('Create Listener Details Step', function() {
 
     beforeEach(module('horizon.framework.util.i18n'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
-    describe('CreateLoadBalancerDetailsController', function() {
+    describe('CreateListenerDetailsController', function() {
       var ctrl;
 
       beforeEach(inject(function($controller) {
-        ctrl = $controller('CreateLoadBalancerDetailsController');
+        ctrl = $controller('CreateListenerDetailsController');
       }));
 
       it('should define error messages for invalid fields', function() {
-        expect(ctrl.loadbalancerIPError).toBeDefined();
-      });
-
-      it('should define patterns for field validation', function() {
-        expect(ctrl.ipPattern).toBeDefined();
+        expect(ctrl.listenerPortError).toBeDefined();
       });
 
     });

@@ -18,32 +18,27 @@
 
   angular
     .module('horizon.dashboard.project.lbaasv2.loadbalancers')
-    .controller('CreateLoadBalancerDetailsController', CreateLoadBalancerDetailsController);
+    .controller('CreateListenerDetailsController', CreateListenerDetailsController);
 
-  CreateLoadBalancerDetailsController.$inject = [
-    'horizon.dashboard.project.lbaasv2.patterns',
+  CreateListenerDetailsController.$inject = [
     'horizon.framework.util.i18n.gettext'
   ];
 
   /**
    * @ngdoc controller
-   * @name CreateLoadBalancerDetailsController
+   * @name CreateListenerDetailsController
    * @description
-   * The `CreateLoadBalancerDetailsController` controller provides functions for
-   * configuring the details step of the Create Load Balancer Wizard.
-   * @param patterns The LBaaS v2 patterns constant.
+   * The `CreateListenerDetailsController` controller provides functions for
+   * configuring the listener details step when creating a new listener.
    * @param gettext The horizon gettext function for translation.
    * @returns undefined
    */
 
-  function CreateLoadBalancerDetailsController(patterns, gettext) {
+  function CreateListenerDetailsController(gettext) {
 
     var ctrl = this;
 
     // Error text for invalid fields
-    ctrl.loadbalancerIPError = gettext('The IP address is not valid.');
-
-    // IP address validation pattern
-    ctrl.ipPattern = [patterns.ipv4, patterns.ipv6].join('|');
+    ctrl.listenerPortError = gettext('The port must be a number between 1 and 65535.');
   }
 })();

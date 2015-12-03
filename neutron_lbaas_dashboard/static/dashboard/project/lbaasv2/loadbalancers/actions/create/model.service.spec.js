@@ -76,6 +76,18 @@
         expect(model.subnets).toEqual([]);
       });
 
+      it('has array of pool protocols', function() {
+        expect(model.poolProtocols).toEqual(['TCP', 'HTTP', 'HTTPS']);
+      });
+
+      it('has array of listener protocols', function() {
+        expect(model.listenerProtocols).toEqual(['TCP', 'HTTP', 'HTTPS']);
+      });
+
+      it('has array of methods', function() {
+        expect(model.methods).toEqual(['ROUND_ROBIN', 'LEAST_CONNECTIONS', 'SOURCE_IP']);
+      });
+
       it('has an "initialize" function', function() {
         expect(model.initialize).toBeDefined();
       });
@@ -98,10 +110,14 @@
         expect(model.subnets.length).toBe(2);
         expect(model.spec).toBeDefined();
         expect(model.spec.loadbalancer).toBeDefined();
+        expect(model.spec.listener).toBeDefined();
+        expect(model.spec.pool).toBeDefined();
       });
 
       it('should initialize names', function() {
         expect(model.spec.loadbalancer.name).toBe('Load Balancer 3');
+        expect(model.spec.listener.name).toBe('Listener 1');
+        expect(model.spec.pool.name).toBe('Pool 1');
       });
     });
 
@@ -140,8 +156,10 @@
       // This is here to ensure that as people add/change spec properties, they don't forget
       // to implement tests for them.
       it('has the right number of properties', function() {
-        expect(Object.keys(model.spec).length).toBe(1);
+        expect(Object.keys(model.spec).length).toBe(3);
         expect(Object.keys(model.spec.loadbalancer).length).toBe(4);
+        expect(Object.keys(model.spec.listener).length).toBe(4);
+        expect(Object.keys(model.spec.pool).length).toBe(4);
       });
 
       it('sets load balancer name to null', function() {
@@ -159,6 +177,38 @@
       it('sets load balancer subnet to null', function() {
         expect(model.spec.loadbalancer.subnet).toBeNull();
       });
+
+      it('sets listener name to reasonable default', function() {
+        expect(model.spec.listener.name).toBe('Listener 1');
+      });
+
+      it('sets listener description to null', function() {
+        expect(model.spec.listener.description).toBeNull();
+      });
+
+      it('sets listener protocol to null', function() {
+        expect(model.spec.listener.protocol).toBeNull();
+      });
+
+      it('sets listener port to null', function() {
+        expect(model.spec.listener.port).toBeNull();
+      });
+
+      it('sets pool name to reasonable default', function() {
+        expect(model.spec.pool.name).toBe('Pool 1');
+      });
+
+      it('sets pool description to null', function() {
+        expect(model.spec.pool.description).toBeNull();
+      });
+
+      it('sets pool protocol to null', function() {
+        expect(model.spec.pool.protocol).toBeNull();
+      });
+
+      it('sets pool method to null', function() {
+        expect(model.spec.pool.method).toBeNull();
+      });
     });
 
     describe('Create Load Balancer', function() {
@@ -171,12 +221,52 @@
       it('should set final spec properties', function() {
         model.spec.loadbalancer.ip = '1.2.3.4';
         model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTPS';
+        model.spec.listener.port = 80;
+        model.spec.pool.name = 'pool name';
+        model.spec.pool.description = 'pool description';
+        model.spec.pool.protocol = 'HTTP';
+        model.spec.pool.method = 'LEAST_CONNECTIONS';
+
         var finalSpec = model.createLoadBalancer();
 
         expect(finalSpec.loadbalancer.name).toBe('Load Balancer 3');
         expect(finalSpec.loadbalancer.description).toBeUndefined();
         expect(finalSpec.loadbalancer.ip).toBe('1.2.3.4');
         expect(finalSpec.loadbalancer.subnet).toBe(model.subnets[0].id);
+        expect(finalSpec.listener.name).toBe('Listener 1');
+        expect(finalSpec.listener.description).toBeUndefined();
+        expect(finalSpec.listener.protocol).toBe('HTTPS');
+        expect(finalSpec.listener.port).toBe(80);
+        expect(finalSpec.pool.name).toBe('pool name');
+        expect(finalSpec.pool.description).toBe('pool description');
+        expect(finalSpec.pool.protocol).toBe('HTTP');
+        expect(finalSpec.pool.method).toBe('LEAST_CONNECTIONS');
+      });
+
+      it('should delete listener if any required property is not set', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTPS';
+
+        var finalSpec = model.createLoadBalancer();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeUndefined();
+        expect(finalSpec.pool).toBeUndefined();
+      });
+
+      it('should delete pool if any required property is not set', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTPS';
+        model.spec.listener.port = 80;
+
+        var finalSpec = model.createLoadBalancer();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeDefined();
+        expect(finalSpec.pool).toBeUndefined();
       });
     });
 

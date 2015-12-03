@@ -24,7 +24,8 @@
   createLoadBalancerModel.$inject = [
     '$q',
     'horizon.app.core.openstack-service-api.neutron',
-    'horizon.app.core.openstack-service-api.lbaasv2'
+    'horizon.app.core.openstack-service-api.lbaasv2',
+    'horizon.framework.util.i18n.gettext'
   ];
 
   /**
@@ -40,10 +41,11 @@
    * @param $q The angular service for promises.
    * @param neutronAPI The neutron service API.
    * @param lbaasv2API The LBaaS V2 service API.
+   * @param gettext The horizon gettext function for translation.
    * @returns The model service for the create load balancer workflow.
    */
 
-  function createLoadBalancerModel($q, neutronAPI, lbaasv2API) {
+  function createLoadBalancerModel($q, neutronAPI, lbaasv2API, gettext) {
     var initPromise;
 
     /**
@@ -69,6 +71,9 @@
       spec: null,
 
       subnets: [],
+      listenerProtocols: ['TCP', 'HTTP', 'HTTPS'],
+      poolProtocols: ['TCP', 'HTTP', 'HTTPS'],
+      methods: ['ROUND_ROBIN', 'LEAST_CONNECTIONS', 'SOURCE_IP'],
 
       /**
        * api methods for UI controllers
@@ -96,6 +101,18 @@
           description: null,
           ip: null,
           subnet: null
+        },
+        listener: {
+          name: gettext('Listener 1'),
+          description: null,
+          protocol: null,
+          port: null
+        },
+        pool: {
+          name: gettext('Pool 1'),
+          description: null,
+          protocol: null,
+          method: null
         }
       };
 
@@ -139,6 +156,16 @@
     function createLoadBalancer() {
       var finalSpec = angular.copy(model.spec);
 
+      // Listener requires protocol and port
+      if (!finalSpec.listener.protocol || !finalSpec.listener.port) {
+        delete finalSpec.listener;
+      }
+
+      // Pool requires protocol and method, and also the listener
+      if (!finalSpec.listener || !finalSpec.pool.protocol || !finalSpec.pool.method) {
+        delete finalSpec.pool;
+      }
+
       // Delete null properties
       angular.forEach(finalSpec, function(group, groupName) {
         angular.forEach(group, function(value, key) {
@@ -160,10 +187,9 @@
       });
       var name;
       var index = 0;
-      var prefix = 'Load Balancer ';
       do {
         index += 1;
-        name = prefix + index;
+        name = interpolate(gettext('Load Balancer %(index)s'), { index: index }, true);
       } while (name in existingNames);
       model.spec.loadbalancer.name = name;
     }

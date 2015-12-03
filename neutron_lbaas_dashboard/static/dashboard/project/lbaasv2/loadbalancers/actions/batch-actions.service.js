@@ -54,7 +54,7 @@
       return [{
         service: createModal,
         template: {
-          url: basePath + 'loadbalancers/actions/create/action.template.html',
+          type: 'create',
           text: gettext('Create Load Balancer')
         }
       }];

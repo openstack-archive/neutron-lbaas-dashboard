@@ -23,10 +23,11 @@
 
   createLoadBalancerWorkflow.$inject = [
     'horizon.dashboard.project.lbaasv2.basePath',
-    'horizon.app.core.workflow.factory'
+    'horizon.app.core.workflow.factory',
+    'horizon.framework.util.i18n.gettext'
   ];
 
-  function createLoadBalancerWorkflow(basePath, dashboardWorkflow) {
+  function createLoadBalancerWorkflow(basePath, dashboardWorkflow, gettext) {
     return dashboardWorkflow({
       title: gettext('Create Load Balancer'),
 
@@ -37,6 +38,20 @@
           templateUrl: basePath + 'loadbalancers/actions/create/details/details.html',
           helpUrl: basePath + 'loadbalancers/actions/create/details/details.help.html',
           formName: 'createLoadBalancerDetailsForm'
+        },
+        {
+          id: 'listener',
+          title: gettext('Listener Details'),
+          templateUrl: basePath + 'loadbalancers/actions/create/listener/listener.html',
+          helpUrl: basePath + 'loadbalancers/actions/create/listener/listener.help.html',
+          formName: 'createLoadBalancerListenerForm'
+        },
+        {
+          id: 'pool',
+          title: gettext('Pool Details'),
+          templateUrl: basePath + 'loadbalancers/actions/create/pool/pool.html',
+          helpUrl: basePath + 'loadbalancers/actions/create/pool/pool.help.html',
+          formName: 'createLoadBalancerPoolForm'
         }
       ],
 

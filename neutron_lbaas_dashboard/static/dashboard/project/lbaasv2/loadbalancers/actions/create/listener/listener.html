@@ -1,0 +1,62 @@
+<div ng-controller="CreateListenerDetailsController as ctrl">
+  <h1 translate>Listener Details</h1>
+
+  <!--content-->
+  <div class="content">
+    <div translate class="subtitle">Provide the details for the new load balancer listener. The listener will only be created if values are provided for all fields marked as required.</div>
+
+        <div class="row form-group">
+
+          <div class="col-sm-12 col-md-6">
+            <div class="form-field listener-name">
+              <label translate class="on-top" for="listener-name">Name</label>
+              <input name="listener-name" id="listener-name"
+                     type="text" class="form-control input-sm"
+                     ng-model="model.spec.listener.name">
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-6">
+            <div class="form-field listener-description">
+              <label translate class="on-top" for="listener-description">Description</label>
+              <input name="listener-description" id="listener-description"
+                     type="text" class="form-control input-sm"
+                     ng-model="model.spec.listener.description">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row form-group">
+
+          <div class="col-sm-6 col-md-3">
+            <div class="form-field required listener-protocol">
+              <label translate class="on-top" for="listener-protocol">Protocol</label>
+              <select class="form-control input-sm" name="listener-protocol"
+                      id="listener-protocol"
+                      ng-options="protocol for protocol in model.listenerProtocols"
+                      ng-model="model.spec.listener.protocol">
+              </select>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-3">
+            <div class="form-field required listener-port"
+              ng-class="{ 'has-error': createLoadBalancerListenerForm['listener-port'].$invalid && createLoadBalancerListenerForm['listener-port'].$dirty }">
+              <label translate class="on-top" for="listener-port">Port</label>
+              <span class="fa fa-exclamation-triangle invalid"
+                  ng-show="createLoadBalancerListenerForm['listener-port'].$invalid && createLoadBalancerListenerForm.$dirty"
+                  popover="{$ ::ctrl.listenerPortError $}"
+                  popover-placement="top" popover-append-to-body="true"
+                  popover-trigger="hover"></span>
+              <input name="listener-port" id="listener-port"
+                     type="number" class="form-control input-sm"
+                     ng-model="model.spec.listener.port" ng-pattern="/^\d+$/" min="1" max="65535">
+            </div>
+          </div>
+
+        </div>
+
+  </div>
+  <!-- end content -->
+</div>
