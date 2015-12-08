@@ -1,0 +1,3 @@
+NEUTRON_LBAAS_DASHBOARD_DIR=$DEST/neutron-lbaas-dashboard
+
+NEUTRON_LBAAS_DASHBOARD_ENABLE_FILE=$NEUTRON_LBAAS_DASHBOARD_DIR/neutron_lbaas_dashboard/enabled/_1481_project_ng_loadbalancersv2_panel.py
