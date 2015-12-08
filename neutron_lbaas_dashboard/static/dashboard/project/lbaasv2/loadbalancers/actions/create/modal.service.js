@@ -24,7 +24,6 @@
   modalService.$inject = [
     '$modal',
     '$location',
-    '$window',
     'horizon.framework.widgets.toast.service',
     'horizon.framework.util.i18n.gettext',
     'horizon.app.core.openstack-service-api.policy'
@@ -39,14 +38,13 @@
    *
    * @param $modal The angular bootstrap $modal service.
    * @param $location The angular $location service.
-   * @param $window The angular reference to the browser window object.
    * @param toastService The horizon toast service.
    * @param gettext The horizon gettext function for translation.
    * @param policy The horizon policy service.
    * @returns The modal service for the create load balancer workflow.
    */
 
-  function modalService($modal, $location, $window, toastService, gettext, policy) {
+  function modalService($modal, $location, toastService, gettext, policy) {
 
     var service = {
       allowed: allowed,
@@ -77,7 +75,7 @@
       var modal = $modal.open(spec);
       modal.result.then(function(response) {
         toastService.add('success', gettext('A new load balancer is being created.'));
-        $location.path($window.WEBROOT + 'project/ngloadbalancersv2/detail/' + response.data.id);
+        $location.path('project/ngloadbalancersv2/detail/' + response.data.id);
       });
     }
 

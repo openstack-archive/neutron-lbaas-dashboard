@@ -97,8 +97,44 @@ def create_pool(request, **kwargs):
         poolSpec['name'] = data['pool']['name']
     if data['pool'].get('description'):
         poolSpec['description'] = data['pool']['description']
-    return neutronclient(request).create_lbaas_pool(
+    pool = neutronclient(request).create_lbaas_pool(
         {'pool': poolSpec}).get('pool')
+
+    if data.get('members'):
+        args = (request, kwargs['loadbalancer_id'], add_member)
+        kwargs = {'callback_kwargs': {'pool_id': pool['id'],
+                                      'index': 0}}
+        thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
+
+    return pool
+
+
+def add_member(request, **kwargs):
+    """Add a member to a pool.
+
+    """
+    data = request.DATA
+    members = data['members']
+    index = kwargs['index']
+    member = members[index]
+    memberSpec = {
+        'address': member['address'],
+        'protocol_port': member['port'],
+        'subnet_id': member['subnet']
+    }
+    if member.get('weight'):
+        memberSpec['weight'] = member['weight']
+    member = neutronclient(request).create_lbaas_member(
+        kwargs['pool_id'], {'member': memberSpec}).get('member')
+
+    index += 1
+    if len(members) > index:
+        args = (request, kwargs['loadbalancer_id'], add_member)
+        kwargs = {'callback_kwargs': {'pool_id': kwargs['pool_id'],
+                                      'index': index}}
+        thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
+
+    return member
 
 
 @urls.register

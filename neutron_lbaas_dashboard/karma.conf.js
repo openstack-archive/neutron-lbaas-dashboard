@@ -50,7 +50,7 @@ module.exports = function (config) {
 
     // Sets up module to process templates.
     ngHtml2JsPreprocessor: {
-      prependPrefix: '/static/',
+      prependPrefix: '/',
       moduleName: 'templates'
     },
 

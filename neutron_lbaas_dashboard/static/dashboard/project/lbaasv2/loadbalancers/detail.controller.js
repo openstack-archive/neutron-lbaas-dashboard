@@ -22,8 +22,7 @@
 
   LoadBalancerDetailController.$inject = [
     'horizon.app.core.openstack-service-api.lbaasv2',
-    '$routeParams',
-    '$window'
+    '$routeParams'
   ];
 
   /**
@@ -35,15 +34,13 @@
    *
    * @param api The LBaaS v2 API service.
    * @param $routeParams The angular $routeParams service.
-   * @param $window The angular reference to the browser window object.
    * @returns undefined
    */
 
-  function LoadBalancerDetailController(api, $routeParams, $window) {
+  function LoadBalancerDetailController(api, $routeParams) {
 
     var ctrl = this;
     ctrl.loadbalancer = {};
-    ctrl.webroot = $window.webroot;
 
     var loadbalancerId = $routeParams.loadbalancerId;
 

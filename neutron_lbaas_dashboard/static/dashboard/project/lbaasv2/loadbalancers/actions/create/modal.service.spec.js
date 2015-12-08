@@ -98,7 +98,7 @@
         modalService.perform();
 
         expect(toastService.add).toHaveBeenCalledWith('success', jasmine.any(String));
-        expect($location.path).toHaveBeenCalledWith('/project/ngloadbalancersv2/detail/1');
+        expect($location.path).toHaveBeenCalledWith('project/ngloadbalancersv2/detail/1');
       });
 
     });

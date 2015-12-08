@@ -18,7 +18,7 @@
         Table-batch-actions:
         This is where batch actions like searching, creating, and deleting.
       -->
-      <th colspan="100" class="search-header">
+      <th colspan="0" class="search-header">
         <hz-search-bar group-classes="input-group-sm" icon-classes="fa-search">
           <actions allowed="table.batchActions.actions" type="batch"></actions>
         </hz-search-bar>
@@ -71,7 +71,7 @@
            duration="200">
         </span>
       </td>
-      <td class="rsp-p1"><a ng-href="{$ ::ctrl.webroot $}project/ngloadbalancersv2/detail/{$ ::item.id $}">{$ item.name $}</a></td>
+      <td class="rsp-p1"><a ng-href="project/ngloadbalancersv2/detail/{$ ::item.id $}">{$ item.name $}</a></td>
       <td class="rsp-p1">{$ item.description | noValue $}</td>
       <td class="rsp-p1">{$ item.operating_status | operatingStatus $}</td>
       <td class="rsp-p1">{$ item.provisioning_status | provisioningStatus $}</td>
@@ -86,7 +86,7 @@
         Can be toggled using the chevron button.
         Ensure colspan is greater or equal to number of column-headers.
       -->
-      <td class="detail" colspan="100">
+      <td class="detail" colspan="0">
         <!--
           The responsive columns that disappear typically should reappear here
           with the same responsive priority that they disappear.

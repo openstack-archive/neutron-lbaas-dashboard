@@ -1,4 +1,4 @@
-<div>
+<div ng-controller="CreatePoolDetailsController as ctrl">
   <h1 translate>Pool Details</h1>
 
   <!--content-->
@@ -35,7 +35,8 @@
               <select class="form-control input-sm" name="pool-protocol"
                       id="pool-protocol"
                       ng-options="protocol for protocol in model.poolProtocols"
-                      ng-model="model.spec.pool.protocol">
+                      ng-model="model.spec.pool.protocol"
+                      ng-change="ctrl.protocolChange(model.spec.pool.protocol)">
               </select>
             </div>
           </div>

@@ -16,6 +16,8 @@
 (function () {
   'use strict';
 
+  var push = Array.prototype.push;
+
   angular
     .module('horizon.dashboard.project.lbaasv2.loadbalancers')
     .factory('horizon.dashboard.project.lbaasv2.loadbalancers.actions.create.model',
@@ -24,6 +26,7 @@
   createLoadBalancerModel.$inject = [
     '$q',
     'horizon.app.core.openstack-service-api.neutron',
+    'horizon.app.core.openstack-service-api.nova',
     'horizon.app.core.openstack-service-api.lbaasv2',
     'horizon.framework.util.i18n.gettext'
   ];
@@ -40,13 +43,14 @@
    *
    * @param $q The angular service for promises.
    * @param neutronAPI The neutron service API.
+   * @param novaAPI The nova service API.
    * @param lbaasv2API The LBaaS V2 service API.
    * @param gettext The horizon gettext function for translation.
    * @returns The model service for the create load balancer workflow.
    */
 
-  function createLoadBalancerModel($q, neutronAPI, lbaasv2API, gettext) {
-    var initPromise;
+  function createLoadBalancerModel($q, neutronAPI, novaAPI, lbaasv2API, gettext) {
+    var initPromise, ports;
 
     /**
      * @ngdoc model api object
@@ -71,6 +75,7 @@
       spec: null,
 
       subnets: [],
+      members: [],
       listenerProtocols: ['TCP', 'HTTP', 'HTTPS'],
       poolProtocols: ['TCP', 'HTTP', 'HTTPS'],
       methods: ['ROUND_ROBIN', 'LEAST_CONNECTIONS', 'SOURCE_IP'],
@@ -113,7 +118,8 @@
           description: null,
           protocol: null,
           method: null
-        }
+        },
+        members: []
       };
 
       if (model.initializing) {
@@ -123,7 +129,9 @@
 
         promise = $q.all([
           lbaasv2API.getLoadBalancers().then(onGetLoadBalancers),
-          neutronAPI.getSubnets().then(onGetSubnets)
+          neutronAPI.getSubnets().then(onGetSubnets),
+          neutronAPI.getPorts().then(onGetPorts),
+          novaAPI.getServers().then(onGetServers)
         ]);
 
         promise.then(onInitSuccess, onInitFail);
@@ -133,6 +141,7 @@
     }
 
     function onInitSuccess() {
+      initMemberAddresses();
       model.initializing = false;
       model.initialized = true;
     }
@@ -166,9 +175,24 @@
         delete finalSpec.pool;
       }
 
+      // Members require a pool, address, subnet, and port but the wizard requires the address,
+      // subnet, and port so we can assume those exist here.
+      if (!finalSpec.pool || finalSpec.members.length === 0) {
+        delete finalSpec.members;
+      }
+
+      angular.forEach(finalSpec.members, function cleanMember(member) {
+        delete member.id;
+        delete member.addresses;
+        delete member.name;
+        delete member.description;
+        member.subnet = member.address.subnet;
+        member.address = member.address.ip;
+      });
+
       // Delete null properties
-      angular.forEach(finalSpec, function(group, groupName) {
-        angular.forEach(group, function(value, key) {
+      angular.forEach(finalSpec, function deleteNullsForGroup(group, groupName) {
+        angular.forEach(group, function deleteNullValue(value, key) {
           if (value === null) {
             delete finalSpec[groupName][key];
           }
@@ -195,9 +219,43 @@
     }
 
     function onGetSubnets(response) {
-      model.subnets = [];
-      angular.forEach(response.data.items, function(subnet) {
-        model.subnets.push(subnet);
+      model.subnets.length = 0;
+      push.apply(model.subnets, response.data.items);
+    }
+
+    function onGetServers(response) {
+      model.members.length = 0;
+      var members = [];
+      angular.forEach(response.data.items, function(server) {
+        members.push({
+          id: server.id,
+          name: server.name,
+          description: server.description,
+          weight: 1
+        });
+      });
+      push.apply(model.members, members);
+    }
+
+    function onGetPorts(response) {
+      ports = response.data.items;
+    }
+
+    function initMemberAddresses() {
+      angular.forEach(model.members, function(member) {
+        var memberPorts = ports.filter(function(port) {
+          return port.device_id === member.id;
+        });
+        member.addresses = [];
+        angular.forEach(memberPorts, function(port) {
+          angular.forEach(port.fixed_ips, function(ip) {
+            member.addresses.push({
+              ip: ip.ip_address,
+              subnet: ip.subnet_id
+            });
+          });
+        });
+        member.address = member.addresses[0];
       });
     }
 

@@ -19,6 +19,7 @@
   describe('LBaaS v2 Create Load Balancer Workflow Model Service', function() {
     var model, $q, scope;
 
+    beforeEach(module('horizon.framework.util.i18n'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(module(function($provide) {
@@ -43,6 +44,31 @@
 
           var deferred = $q.defer();
           deferred.resolve({ data: { items: subnets } });
+
+          return deferred.promise;
+        },
+        getPorts: function() {
+          var ports = [ { device_id: '1',
+                          fixed_ips: [{ ip_address: '1.2.3.4', subnet_id: '1' },
+                                      { ip_address: '2.3.4.5', subnet_id: '2' }] },
+                        { device_id: '2',
+                          fixed_ips: [{ ip_address: '3.4.5.6', subnet_id: '1' },
+                                      { ip_address: '4.5.6.7', subnet_id: '2' }] } ];
+
+          var deferred = $q.defer();
+          deferred.resolve({ data: { items: ports } });
+
+          return deferred.promise;
+        }
+      });
+
+      $provide.value('horizon.app.core.openstack-service-api.nova', {
+        getServers: function() {
+          var servers = [ { id: '1', name: 'server-1' },
+                          { id: '2', name: 'server-2' } ];
+
+          var deferred = $q.defer();
+          deferred.resolve({ data: { items: servers } });
 
           return deferred.promise;
         }
@@ -74,6 +100,10 @@
 
       it('has empty subnets array', function() {
         expect(model.subnets).toEqual([]);
+      });
+
+      it('has empty members array', function() {
+        expect(model.members).toEqual([]);
       });
 
       it('has array of pool protocols', function() {
@@ -108,10 +138,12 @@
         expect(model.initializing).toBe(false);
         expect(model.initialized).toBe(true);
         expect(model.subnets.length).toBe(2);
+        expect(model.members.length).toBe(2);
         expect(model.spec).toBeDefined();
         expect(model.spec.loadbalancer).toBeDefined();
         expect(model.spec.listener).toBeDefined();
         expect(model.spec.pool).toBeDefined();
+        expect(model.spec.members).toEqual([]);
       });
 
       it('should initialize names', function() {
@@ -156,7 +188,7 @@
       // This is here to ensure that as people add/change spec properties, they don't forget
       // to implement tests for them.
       it('has the right number of properties', function() {
-        expect(Object.keys(model.spec).length).toBe(3);
+        expect(Object.keys(model.spec).length).toBe(4);
         expect(Object.keys(model.spec.loadbalancer).length).toBe(4);
         expect(Object.keys(model.spec.listener).length).toBe(4);
         expect(Object.keys(model.spec.pool).length).toBe(4);
@@ -227,6 +259,16 @@
         model.spec.pool.description = 'pool description';
         model.spec.pool.protocol = 'HTTP';
         model.spec.pool.method = 'LEAST_CONNECTIONS';
+        model.spec.members = [{
+          address: { ip: '1.2.3.4', subnet: '1' },
+          addresses: [{ ip: '1.2.3.4', subnet: '1' },
+                      { ip: '2.3.4.5', subnet: '2' }],
+          id: '1',
+          name: 'foo',
+          description: 'bar',
+          port: 80,
+          weight: 1
+        }];
 
         var finalSpec = model.createLoadBalancer();
 
@@ -242,6 +284,15 @@
         expect(finalSpec.pool.description).toBe('pool description');
         expect(finalSpec.pool.protocol).toBe('HTTP');
         expect(finalSpec.pool.method).toBe('LEAST_CONNECTIONS');
+        expect(finalSpec.members.length).toBe(1);
+        expect(finalSpec.members[0].address).toBe('1.2.3.4');
+        expect(finalSpec.members[0].subnet).toBe('1');
+        expect(finalSpec.members[0].port).toBe(80);
+        expect(finalSpec.members[0].weight).toBe(1);
+        expect(finalSpec.members[0].addresses).toBeUndefined();
+        expect(finalSpec.members[0].id).toBeUndefined();
+        expect(finalSpec.members[0].name).toBeUndefined();
+        expect(finalSpec.members[0].description).toBeUndefined();
       });
 
       it('should delete listener if any required property is not set', function() {
@@ -267,6 +318,22 @@
         expect(finalSpec.loadbalancer).toBeDefined();
         expect(finalSpec.listener).toBeDefined();
         expect(finalSpec.pool).toBeUndefined();
+      });
+
+      it('should delete members if none selected', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTPS';
+        model.spec.listener.port = 80;
+        model.spec.pool.protocol = 'HTTP';
+        model.spec.pool.method = 'LEAST_CONNECTIONS';
+
+        var finalSpec = model.createLoadBalancer();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeDefined();
+        expect(finalSpec.pool).toBeDefined();
+        expect(finalSpec.members).toBeUndefined();
       });
     });
 

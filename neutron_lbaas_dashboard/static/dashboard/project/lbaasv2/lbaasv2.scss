@@ -45,3 +45,25 @@
     margin-top: 12px;
   }
 }
+
+transfer-table {
+  .member-weight,
+  .member-port {
+    display: inline-block;
+    width: 6em;
+  }
+  .member-address {
+    width: 20em;
+  }
+  span.invalid {
+    vertical-align: top;
+    margin: 8px 0px 0px 5px;
+  }
+}
+
+.addresses-popover + .popover {
+  ul {
+    list-style-type: disc;
+    padding-left: 10px;
+  }
+}

@@ -52,6 +52,13 @@
           templateUrl: basePath + 'loadbalancers/actions/create/pool/pool.html',
           helpUrl: basePath + 'loadbalancers/actions/create/pool/pool.help.html',
           formName: 'createLoadBalancerPoolForm'
+        },
+        {
+          id: 'members',
+          title: gettext('Pool Members'),
+          templateUrl: basePath + 'loadbalancers/actions/create/members/members.html',
+          helpUrl: basePath + 'loadbalancers/actions/create/members/members.help.html',
+          formName: 'createLoadBalancerMembersForm'
         }
       ],
 

@@ -1,0 +1,191 @@
+<div ng-controller="AddMembersController as ctrl">
+  <h1 translate>Pool Members</h1>
+
+  <!--content-->
+  <div class="content">
+    <div translate class="subtitle">Add members to the load balancer pool. All required listener and pool details must also be provided.</div>
+
+    <transfer-table tr-model="ctrl.tableData"
+                    limits="::ctrl.tableLimits"
+                    help-text="::ctrl.tableHelp">
+
+      <!-- Allocated-->
+      <allocated>
+        <table st-table="ctrl.tableData.displayedAllocated"
+               st-safe-src="ctrl.tableData.allocated" hz-table
+               class="table-striped table-rsp table-detail modern form-group">
+          <thead>
+            <tr>
+              <th class="expander"></th>
+              <th class="rsp-p2" translate>Name</th>
+              <th class="rsp-p3" translate>Description</th>
+              <th class="rsp-p1"
+                  ng-class="{ 'required': ctrl.tableData.displayedAllocated.length > 0 }">
+                <label translate>IP Address</label>
+              </th>
+              <th class="rsp-p1" translate>Weight</th>
+              <th class="rsp-p1"
+                  ng-class="{ 'required': ctrl.tableData.displayedAllocated.length > 0 }">
+                <label translate>Port</label>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="ctrl.tableData.allocated.length === 0">
+              <td colspan="0">
+                <div class="no-rows-help">
+                  {$ ::trCtrl.helpText.noneAllocText $}
+                </div>
+              </td>
+            </tr>
+            <tr ng-repeat-start="row in ctrl.tableData.displayedAllocated track by row.id">
+              <td class="expander">
+                <i class="fa fa-chevron-right"
+                   hz-expand-detail
+                   duration="200">
+                </i>
+              </td>
+              <td class="rsp-p2">{$ ::row.name $}</td>
+              <td class="rsp-p3">{$ ::row.description | noValue $}</td>
+              <td class="rsp-p1">
+                <span ng-if="row.addresses.length === 1">{$ row.address.ip $}</span>
+                <div ng-if="row.addresses.length > 1"
+                     class="form-field member-address">
+                  <select class="form-control input-sm"
+                          ng-options="addr.ip for addr in row.addresses"
+                          ng-model="row.address" ng-required="true">
+                  </select>
+                </div>
+              </td>
+              <td class="rsp-p1">
+                <div class="form-field member-weight"
+                     ng-class="{ 'has-error': createLoadBalancerMembersForm['{$ ::row.id $}-weight'].$invalid && createLoadBalancerMembersForm['{$ ::row.id $}-weight'].$dirty }">
+                  <input name="{$ ::row.id $}-weight" type="number" class="form-control input-sm"
+                         ng-model="row.weight" ng-pattern="/^\d+$/" min="1" max="256">
+                </div>
+                <span class="fa fa-exclamation-triangle invalid"
+                      ng-show="createLoadBalancerMembersForm['{$ ::row.id $}-weight'].$invalid && createLoadBalancerMembersForm.$dirty"
+                      popover="{$ ::ctrl.weightError $}"
+                      popover-placement="top" popover-append-to-body="true"
+                      popover-trigger="hover"></span>
+              </td>
+              <td class="rsp-p1">
+                <div class="form-field member-port"
+                     ng-class="{ 'has-error': createLoadBalancerMembersForm['{$ ::row.id $}-port'].$invalid && createLoadBalancerMembersForm['{$ ::row.id $}-port'].$dirty }">
+                  <input name="{$ ::row.id $}-port" type="number" class="form-control input-sm"
+                         ng-model="row.port" ng-pattern="/^\d+$/" min="1" max="65535"
+                         ng-required="true">
+                </div>
+                <span class="fa fa-exclamation-triangle invalid"
+                      ng-show="createLoadBalancerMembersForm['{$ ::row.id $}-port'].$invalid && createLoadBalancerMembersForm.$dirty"
+                      popover="{$ ::ctrl.portError $}"
+                      popover-placement="top" popover-append-to-body="true"
+                      popover-trigger="hover"></span>
+              </td>
+              <td class="action-col">
+                <action-list>
+                  <action action-classes="'btn btn-sm btn-default'"
+                          callback="trCtrl.deallocate" item="row">
+                    <span class="fa fa-minus"></span>
+                  </action>
+                </action-list>
+              </td>
+            </tr>
+            <tr ng-repeat-end class="detail-row">
+              <td class="detail" colspan="0">
+                <div class="row">
+                   <dl class="rsp-alt-p2 col-sm-2">
+                     <dt translate>Name</dt>
+                     <dd>{$ ::row.name $}</dd>
+                   </dl>
+                   <dl class="rsp-alt-p3 col-sm-2">
+                     <dt translate>Description</dt>
+                     <dd>{$ ::row.description | noValue $}</dd>
+                   </dl>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </allocated>
+
+      <!-- Available -->
+      <available>
+        <table st-table="ctrl.tableData.displayedAvailable"
+               st-safe-src="ctrl.tableData.available"
+               hz-table class="table-striped table-rsp table-detail modern">
+          <thead>
+            <tr>
+              <th class="search-header" colspan="0">
+                <hz-search-bar group-classes="input-group-sm" icon-classes="fa-search">
+                </hz-search-bar>
+              </th>
+            </tr>
+            <tr>
+              <th class="expander"></th>
+              <th st-sort="name" st-sort-default class="rsp-p2" translate>Name</th>
+              <th class="rsp-p3" translate>Description</th>
+              <th class="rsp-p1" translate>IP Address</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="trCtrl.numAvailable() === 0">
+              <td colspan="0">
+                <div class="no-rows-help">
+                  {$ ::trCtrl.helpText.noneAvailText $}
+                </div>
+              </td>
+            </tr>
+            <tr ng-repeat-start="row in ctrl.tableData.displayedAvailable track by row.id"
+                ng-if="!trCtrl.allocatedIds[row.id]">
+              <td class="expander">
+                <i class="fa fa-chevron-right"
+                   hz-expand-detail
+                   duration="200">
+                </i>
+              </td>
+              <td class="rsp-p2">{$ ::row.name $}</td>
+              <td class="rsp-p3">{$ ::row.description | noValue $}</td>
+              <td class="rsp-p1">
+                <span ng-if="row.addresses.length === 1">{$ row.address.ip $}</span>
+                <!-- The current version of the popover directive doesn't seem to allow HTML content (0.11.0) -->
+                <span ng-if="row.addresses.length > 1"
+                      class="addresses-popover"
+                      ng-mouseover="ctrl.showAddressPopover($event, row)"
+                      ng-mouseleave="ctrl.hideAddressPopover($event)">
+                  {$ ctrl.addressPopoverTarget(row) $}
+                </span>
+              </td>
+              <td class="action-col">
+                <action-list>
+                  <action action-classes="'btn btn-sm btn-default'"
+                          callback="trCtrl.allocate" item="row">
+                    <span class="fa fa-plus"></span>
+                  </action>
+                </action-list>
+              </td>
+            </tr>
+            <tr ng-repeat-end class="detail-row">
+              <td class="detail" colspan="0">
+                <div class="row">
+                   <dl class="rsp-alt-p2 col-sm-2">
+                     <dt translate>Name</dt>
+                     <dd>{$ ::row.name $}</dd>
+                   </dl>
+                   <dl class="rsp-alt-p3 col-sm-2">
+                     <dt translate>Description</dt>
+                     <dd>{$ ::row.description | noValue $}</dd>
+                   </dl>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </available>
+
+    </transfer-table> <!-- End Transfer Table -->
+
+  </div> <!-- end content -->
+</div>
