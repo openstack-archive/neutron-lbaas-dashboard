@@ -1,0 +1,49 @@
+<div class="content" ng-controller="ListenerDetailController as ctrl">
+  <div class='page-header'>
+    <ol class="breadcrumb">
+      <li><a href="project/ngloadbalancersv2/"><translate>Load Balancers</translate></a></li>
+      <li><a href="project/ngloadbalancersv2/detail/{$ ::ctrl.loadbalancer.id $}">{$ ::(ctrl.loadbalancer.name || ctrl.loadbalancer.id) $}</a></li>
+      <li class="active">{$ ::(ctrl.listener.name || ctrl.listener.id) $}</li>
+    </ol>
+    <p ng-if="::ctrl.listener.description">{$ ::ctrl.listener.description $}</p>
+  </div>
+  <div class="detail-page">
+    <dl class="dl-horizontal">
+      <div>
+        <dt translate>Listener ID</dt>
+        <dd>{$ ::ctrl.listener.id $}</dd>
+      </div>
+      <div>
+        <dt translate>Tenant ID</dt>
+        <dd>{$ ::ctrl.listener.tenant_id $}</dd>
+      </div>
+      <div>
+        <dt translate>Protocol</dt>
+        <dd>{$ ::ctrl.listener.protocol $}</dd>
+      </div>
+      <div>
+        <dt translate>Protocol Port</dt>
+        <dd>{$ ::ctrl.listener.protocol_port $}</dd>
+      </div>
+      <div>
+        <dt translate>Connection Limit</dt>
+        <dd>{$ ::ctrl.listener.connection_limit | connectionLimit $}</dd>
+      </div>
+      <div>
+        <dt translate>Admin State Up</dt>
+        <dd>{$ ::ctrl.listener.admin_state_up | yesno $}</dd>
+      </div>
+      <div>
+        <dt translate>Default Pool ID</dt>
+        <dd>
+          <div ng-if="ctrl.listener.default_pool_id !== null">
+            <a ng-href="project/ngloadbalancersv2/pools/detail/{$ ::ctrl.listener.default_pool_id $}">{$ ::ctrl.listener.default_pool_id $}</a>
+          </div>
+          <div ng-if="ctrl.listener.default_pool_id === null">
+            {$ 'None' | translate $}
+          </div>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</div>

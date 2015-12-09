@@ -52,13 +52,43 @@
         ]
       },
       {
+        "func": "getListeners",
+        "method": "get",
+        "path": "/api/lbaas/listeners/",
+        "data": {
+          "params": {
+            "loadbalancerId": "1234"
+          }
+        },
+        "error": "Unable to retrieve listeners.",
+        "testInput": [
+          "1234"
+        ]
+      },
+      {
+        "func": "getListeners",
+        "method": "get",
+        "path": "/api/lbaas/listeners/",
+        "data": {},
+        "error": "Unable to retrieve listeners."
+      },
+      {
+        "func": "getListener",
+        "method": "get",
+        "path": "/api/lbaas/listeners/1234",
+        "error": "Unable to retrieve listener.",
+        "testInput": [
+          '1234'
+        ]
+      },
+      {
         "func": "createLoadBalancer",
         "method": "post",
         "path": "/api/lbaas/loadbalancers/",
         "error": "Unable to create load balancer.",
-        "data": { name: 'loadbalancer-1' },
+        "data": { "name": "loadbalancer-1" },
         "testInput": [
-          { name: 'loadbalancer-1' }
+          { "name": "loadbalancer-1" }
         ]
       },
       {
@@ -66,9 +96,10 @@
         "method": "put",
         "path": "/api/lbaas/loadbalancers/1234/",
         "error": "Unable to update load balancer.",
-        "data": { name: 'loadbalancer-1' },
+        "data": { "name": "loadbalancer-1" },
         "testInput": [
-          '1234', { name: 'loadbalancer-1' }
+          "1234",
+          { "name": "loadbalancer-1" }
         ]
       }
     ];

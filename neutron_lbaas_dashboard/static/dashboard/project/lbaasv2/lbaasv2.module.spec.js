@@ -108,10 +108,16 @@
           {
             templateUrl: basePath + 'loadbalancers/detail.html'
           }
+        ],
+        [
+          href + 'listeners/detail/:listenerId',
+          {
+            templateUrl: basePath + 'listeners/detail.html'
+          }
         ]
       ];
 
-      expect($routeProvider.when.calls.count()).toBe(2);
+      expect($routeProvider.when.calls.count()).toBe(3);
       angular.forEach($routeProvider.when.calls.all(), function(call, i) {
         expect(call.args).toEqual(routes[i]);
       });

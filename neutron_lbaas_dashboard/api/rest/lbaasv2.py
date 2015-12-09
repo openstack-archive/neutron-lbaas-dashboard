@@ -244,3 +244,52 @@ class LoadBalancer(generic.View):
             spec['description'] = data['loadbalancer']['description']
         return neutronclient(request).update_loadbalancer(
             loadbalancer_id, {'loadbalancer': spec}).get('loadbalancer')
+
+
+@urls.register
+class Listeners(generic.View):
+    """API for load balancer listeners.
+
+    """
+    url_regex = r'lbaas/listeners/$'
+
+    @rest_utils.ajax()
+    def get(self, request):
+        """List of listeners for the current project.
+
+        The listing result is an object with property "items".
+        """
+        loadbalancer_id = request.GET.get('loadbalancerId')
+        tenant_id = request.user.project_id
+        result = neutronclient(request).list_listeners(tenant_id=tenant_id)
+        listener_list = result.get('listeners')
+        if loadbalancer_id:
+            listener_list = self._filter_listeners(listener_list,
+                                                   loadbalancer_id)
+        return {'items': listener_list}
+
+    def _filter_listeners(self, listener_list, loadbalancer_id):
+        filtered_listeners = []
+
+        for listener in listener_list:
+            if listener['loadbalancers'][0]['id'] == loadbalancer_id:
+                filtered_listeners.append(listener)
+
+        return filtered_listeners
+
+
+@urls.register
+class Listener(generic.View):
+    """API for retrieving a single listener.
+
+    """
+    url_regex = r'lbaas/listeners/(?P<listener_id>[^/]+)/$'
+
+    @rest_utils.ajax()
+    def get(self, request, listener_id):
+        """Get a specific listener.
+
+        http://localhost/api/lbaas/listeners/cc758c90-3d98-4ea1-af44-aab405c9c915
+        """
+        lb = neutronclient(request).show_listener(listener_id)
+        return lb.get('listener')

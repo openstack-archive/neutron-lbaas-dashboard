@@ -2,7 +2,7 @@
   <div class='page-header'>
     <ol class="breadcrumb">
       <li><a href="project/ngloadbalancersv2/"><translate>Load Balancers</translate></a></li>
-      <li class="active">{$ ::ctrl.loadbalancer.name $}</li>
+      <li class="active">{$ (ctrl.loadbalancer.name || ctrl.loadbalancer.id) $}</li>
     </ol>
     <p ng-if="::ctrl.loadbalancer.description">{$ ::ctrl.loadbalancer.description $}</p>
   </div>
@@ -53,7 +53,7 @@
         </dl>
       </tab>
       <tab heading="{$ 'Listeners' | translate $}">
-        <!-- TODO(jpomero) ng-include the table of listeners for this load balancer -->
+        <ng-include src="'static/dashboard/project/lbaasv2/listeners/table.html'"></ng-include>
       </tab>
     </tabset>
   </div>

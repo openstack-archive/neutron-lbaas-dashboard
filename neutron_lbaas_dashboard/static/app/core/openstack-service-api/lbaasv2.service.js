@@ -39,7 +39,9 @@
       getLoadBalancers: getLoadBalancers,
       getLoadBalancer: getLoadBalancer,
       createLoadBalancer: createLoadBalancer,
-      editLoadBalancer: editLoadBalancer
+      editLoadBalancer: editLoadBalancer,
+      getListeners: getListeners,
+      getListener: getListener
     };
 
     return service;
@@ -107,6 +109,45 @@
       return apiService.put('/api/lbaas/loadbalancers/' + id + '/', spec)
         .error(function () {
           toastService.add('error', gettext('Unable to update load balancer.'));
+        });
+    }
+
+    // Listeners
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.getListeners
+     * @description
+     * Get the list of listeners.
+     * If a loadbalancer ID is passed as a parameter, the returning list of
+     * listeners will be filtered to include only those listeners under the
+     * specified loadbalancer.
+     * @param {string} id
+     * Specifies the id of the loadbalancer to request listeners for.
+     *
+     * The listing result is an object with property "items". Each item is
+     * a listener.
+     */
+
+    function getListeners(id) {
+      var params = id ? {'params': {'loadbalancerId': id}} : {};
+      return apiService.get('/api/lbaas/listeners/', params)
+        .error(function () {
+          toastService.add('error', gettext('Unable to retrieve listeners.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.getListener
+     * @description
+     * Get a single listener by ID.
+     * @param {string} id
+     * Specifies the id of the listener to request.
+     */
+
+    function getListener(id) {
+      return apiService.get('/api/lbaas/listeners/' + id)
+        .error(function () {
+          toastService.add('error', gettext('Unable to retrieve listener.'));
         });
     }
 

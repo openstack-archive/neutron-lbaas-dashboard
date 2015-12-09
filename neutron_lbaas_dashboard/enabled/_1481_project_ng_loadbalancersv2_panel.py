@@ -51,7 +51,11 @@ ADD_JS_FILES = [
     'dashboard/project/lbaasv2/workflow/listener/listener.controller.js',
     'dashboard/project/lbaasv2/workflow/pool/pool.controller.js',
     'dashboard/project/lbaasv2/workflow/members/members.controller.js',
-    'dashboard/project/lbaasv2/workflow/monitor/monitor.controller.js'
+    'dashboard/project/lbaasv2/workflow/monitor/monitor.controller.js',
+    'dashboard/project/lbaasv2/listeners/listeners.module.js',
+    'dashboard/project/lbaasv2/listeners/table.controller.js',
+    'dashboard/project/lbaasv2/listeners/detail.controller.js',
+    'dashboard/project/lbaasv2/listeners/filters.js'
 ]
 
 ADD_JS_SPEC_FILES = [
@@ -77,7 +81,11 @@ ADD_JS_SPEC_FILES = [
     'dashboard/project/lbaasv2/workflow/listener/listener.controller.spec.js',
     'dashboard/project/lbaasv2/workflow/pool/pool.controller.spec.js',
     'dashboard/project/lbaasv2/workflow/members/members.controller.spec.js',
-    'dashboard/project/lbaasv2/workflow/monitor/monitor.controller.spec.js'
+    'dashboard/project/lbaasv2/workflow/monitor/monitor.controller.spec.js',
+    'dashboard/project/lbaasv2/listeners/listeners.module.spec.js',
+    'dashboard/project/lbaasv2/listeners/table.controller.spec.js',
+    'dashboard/project/lbaasv2/listeners/detail.controller.spec.js',
+    'dashboard/project/lbassv2/listeners/filters.spec.js'
 ]
 
 ADD_SCSS_FILES = [

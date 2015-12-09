@@ -26,7 +26,8 @@
   angular
     .module('horizon.dashboard.project.lbaasv2', [
       'ngRoute',
-      'horizon.dashboard.project.lbaasv2.loadbalancers'
+      'horizon.dashboard.project.lbaasv2.loadbalancers',
+      'horizon.dashboard.project.lbaasv2.listeners'
     ])
     .config(config)
     .constant('horizon.dashboard.project.lbaasv2.patterns', {
@@ -60,6 +61,9 @@
       })
       .when(href + 'detail/:loadbalancerId', {
         templateUrl: basePath + 'loadbalancers/detail.html'
+      })
+      .when(href + 'listeners/detail/:listenerId', {
+        templateUrl: basePath + 'listeners/detail.html'
       });
   }
 
