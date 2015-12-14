@@ -114,10 +114,16 @@
           {
             templateUrl: basePath + 'listeners/detail.html'
           }
+        ],
+        [
+          href + 'pools/detail/:poolId',
+          {
+            templateUrl: basePath + 'pools/detail.html'
+          }
         ]
       ];
 
-      expect($routeProvider.when.calls.count()).toBe(3);
+      expect($routeProvider.when.calls.count()).toBe(4);
       angular.forEach($routeProvider.when.calls.all(), function(call, i) {
         expect(call.args).toEqual(routes[i]);
       });

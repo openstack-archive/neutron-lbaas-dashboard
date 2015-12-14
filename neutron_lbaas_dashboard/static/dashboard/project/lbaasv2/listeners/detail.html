@@ -36,10 +36,10 @@
       <div>
         <dt translate>Default Pool ID</dt>
         <dd>
-          <div ng-if="ctrl.listener.default_pool_id !== null">
+          <div ng-if="ctrl.listener.default_pool_id">
             <a ng-href="project/ngloadbalancersv2/pools/detail/{$ ::ctrl.listener.default_pool_id $}">{$ ::ctrl.listener.default_pool_id $}</a>
           </div>
-          <div ng-if="ctrl.listener.default_pool_id === null">
+          <div ng-if="!ctrl.listener.default_pool_id">
             {$ 'None' | translate $}
           </div>
         </dd>

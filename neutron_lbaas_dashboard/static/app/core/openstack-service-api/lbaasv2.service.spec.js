@@ -82,6 +82,15 @@
         ]
       },
       {
+        "func": "getPool",
+        "method": "get",
+        "path": "/api/lbaas/pools/1234",
+        "error": "Unable to retrieve pool.",
+        "testInput": [
+          '1234'
+        ]
+      },
+      {
         "func": "createLoadBalancer",
         "method": "post",
         "path": "/api/lbaas/loadbalancers/",

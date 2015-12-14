@@ -293,3 +293,20 @@ class Listener(generic.View):
         """
         lb = neutronclient(request).show_listener(listener_id)
         return lb.get('listener')
+
+
+@urls.register
+class Pool(generic.View):
+    """API for retrieving a single pool.
+
+    """
+    url_regex = r'lbaas/pools/(?P<pool_id>[^/]+)/$'
+
+    @rest_utils.ajax()
+    def get(self, request, pool_id):
+        """Get a specific pool.
+
+        http://localhost/api/lbaas/pools/cc758c90-3d98-4ea1-af44-aab405c9c915
+        """
+        lb = neutronclient(request).show_lbaas_pool(pool_id)
+        return lb.get('pool')

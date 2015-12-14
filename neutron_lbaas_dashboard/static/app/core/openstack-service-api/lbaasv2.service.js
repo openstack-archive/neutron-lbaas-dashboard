@@ -41,7 +41,8 @@
       createLoadBalancer: createLoadBalancer,
       editLoadBalancer: editLoadBalancer,
       getListeners: getListeners,
-      getListener: getListener
+      getListener: getListener,
+      getPool: getPool
     };
 
     return service;
@@ -148,6 +149,21 @@
       return apiService.get('/api/lbaas/listeners/' + id)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve listener.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.getPool
+     * @description
+     * Get a single Pool by ID.
+     * @param {string} id
+     * Specifies the id of the pool to request.
+     */
+
+    function getPool(id) {
+      return apiService.get('/api/lbaas/pools/' + id)
+        .error(function () {
+          toastService.add('error', gettext('Unable to retrieve pool.'));
         });
     }
 
