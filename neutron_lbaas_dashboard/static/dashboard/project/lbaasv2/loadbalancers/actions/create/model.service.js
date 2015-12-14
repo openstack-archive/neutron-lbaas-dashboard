@@ -79,6 +79,8 @@
       listenerProtocols: ['TCP', 'HTTP', 'HTTPS'],
       poolProtocols: ['TCP', 'HTTP', 'HTTPS'],
       methods: ['ROUND_ROBIN', 'LEAST_CONNECTIONS', 'SOURCE_IP'],
+      monitorTypes: ['HTTP', 'HTTPS', 'PING', 'TCP'],
+      monitorMethods: ['GET', 'HEAD'],
 
       /**
        * api methods for UI controllers
@@ -118,6 +120,15 @@
           description: null,
           protocol: null,
           method: null
+        },
+        monitor: {
+          type: null,
+          interval: null,
+          retry: null,
+          timeout: null,
+          method: 'GET',
+          status: '200',
+          path: '/'
         },
         members: []
       };
@@ -175,6 +186,17 @@
         delete finalSpec.pool;
       }
 
+      cleanFinalSpecMembers(finalSpec);
+      cleanFinalSpecMonitor(finalSpec);
+      removeNulls(finalSpec);
+
+      finalSpec.loadbalancer.subnet = finalSpec.loadbalancer.subnet.id;
+
+      return lbaasv2API.createLoadBalancer(finalSpec);
+    }
+
+    function cleanFinalSpecMembers(finalSpec) {
+
       // Members require a pool, address, subnet, and port but the wizard requires the address,
       // subnet, and port so we can assume those exist here.
       if (!finalSpec.pool || finalSpec.members.length === 0) {
@@ -189,8 +211,27 @@
         member.subnet = member.address.subnet;
         member.address = member.address.ip;
       });
+    }
 
-      // Delete null properties
+    function cleanFinalSpecMonitor(finalSpec) {
+
+      // Monitor requires a pool, interval, retry count, and timeout
+      if (!finalSpec.pool ||
+          !angular.isNumber(finalSpec.monitor.interval) ||
+          !angular.isNumber(finalSpec.monitor.retry) ||
+          !angular.isNumber(finalSpec.monitor.timeout)) {
+        delete finalSpec.monitor;
+      }
+
+      // Only include necessary monitor properties
+      if (finalSpec.monitor && finalSpec.monitor.type !== 'HTTP') {
+        delete finalSpec.monitor.method;
+        delete finalSpec.monitor.status;
+        delete finalSpec.monitor.path;
+      }
+    }
+
+    function removeNulls(finalSpec) {
       angular.forEach(finalSpec, function deleteNullsForGroup(group, groupName) {
         angular.forEach(group, function deleteNullValue(value, key) {
           if (value === null) {
@@ -198,10 +239,6 @@
           }
         });
       });
-
-      finalSpec.loadbalancer.subnet = finalSpec.loadbalancer.subnet.id;
-
-      return lbaasv2API.createLoadBalancer(finalSpec);
     }
 
     function onGetLoadBalancers(response) {

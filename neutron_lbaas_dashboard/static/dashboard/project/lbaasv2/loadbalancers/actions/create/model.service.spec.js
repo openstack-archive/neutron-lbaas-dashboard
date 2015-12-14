@@ -114,8 +114,16 @@
         expect(model.listenerProtocols).toEqual(['TCP', 'HTTP', 'HTTPS']);
       });
 
-      it('has array of methods', function() {
+      it('has array of pool methods', function() {
         expect(model.methods).toEqual(['ROUND_ROBIN', 'LEAST_CONNECTIONS', 'SOURCE_IP']);
+      });
+
+      it('has array of monitor types', function() {
+        expect(model.monitorTypes).toEqual(['HTTP', 'HTTPS', 'PING', 'TCP']);
+      });
+
+      it('has array of monitor methods', function() {
+        expect(model.monitorMethods).toEqual(['GET', 'HEAD']);
       });
 
       it('has an "initialize" function', function() {
@@ -144,12 +152,19 @@
         expect(model.spec.listener).toBeDefined();
         expect(model.spec.pool).toBeDefined();
         expect(model.spec.members).toEqual([]);
+        expect(model.spec.monitor).toBeDefined();
       });
 
       it('should initialize names', function() {
         expect(model.spec.loadbalancer.name).toBe('Load Balancer 3');
         expect(model.spec.listener.name).toBe('Listener 1');
         expect(model.spec.pool.name).toBe('Pool 1');
+      });
+
+      it('should initialize monitor fields', function() {
+        expect(model.spec.monitor.method).toBe('GET');
+        expect(model.spec.monitor.status).toBe('200');
+        expect(model.spec.monitor.path).toBe('/');
       });
     });
 
@@ -188,10 +203,11 @@
       // This is here to ensure that as people add/change spec properties, they don't forget
       // to implement tests for them.
       it('has the right number of properties', function() {
-        expect(Object.keys(model.spec).length).toBe(4);
+        expect(Object.keys(model.spec).length).toBe(5);
         expect(Object.keys(model.spec.loadbalancer).length).toBe(4);
         expect(Object.keys(model.spec.listener).length).toBe(4);
         expect(Object.keys(model.spec.pool).length).toBe(4);
+        expect(Object.keys(model.spec.monitor).length).toBe(7);
       });
 
       it('sets load balancer name to null', function() {
@@ -241,6 +257,34 @@
       it('sets pool method to null', function() {
         expect(model.spec.pool.method).toBeNull();
       });
+
+      it('sets monitor type to null', function() {
+        expect(model.spec.monitor.type).toBeNull();
+      });
+
+      it('sets monitor interval to null', function() {
+        expect(model.spec.monitor.interval).toBeNull();
+      });
+
+      it('sets monitor retry count to null', function() {
+        expect(model.spec.monitor.retry).toBeNull();
+      });
+
+      it('sets monitor timeout to null', function() {
+        expect(model.spec.monitor.timeout).toBeNull();
+      });
+
+      it('sets monitor method to default', function() {
+        expect(model.spec.monitor.method).toBe('GET');
+      });
+
+      it('sets monitor status code to default', function() {
+        expect(model.spec.monitor.status).toBe('200');
+      });
+
+      it('sets monitor URL path to default', function() {
+        expect(model.spec.monitor.path).toBe('/');
+      });
     });
 
     describe('Create Load Balancer', function() {
@@ -269,6 +313,10 @@
           port: 80,
           weight: 1
         }];
+        model.spec.monitor.type = 'PING';
+        model.spec.monitor.interval = 1;
+        model.spec.monitor.retry = 1;
+        model.spec.monitor.timeout = 1;
 
         var finalSpec = model.createLoadBalancer();
 
@@ -293,6 +341,10 @@
         expect(finalSpec.members[0].id).toBeUndefined();
         expect(finalSpec.members[0].name).toBeUndefined();
         expect(finalSpec.members[0].description).toBeUndefined();
+        expect(finalSpec.monitor.type).toBe('PING');
+        expect(finalSpec.monitor.interval).toBe(1);
+        expect(finalSpec.monitor.retry).toBe(1);
+        expect(finalSpec.monitor.timeout).toBe(1);
       });
 
       it('should delete listener if any required property is not set', function() {
@@ -334,6 +386,26 @@
         expect(finalSpec.listener).toBeDefined();
         expect(finalSpec.pool).toBeDefined();
         expect(finalSpec.members).toBeUndefined();
+      });
+
+      it('should delete monitor if any required property not set', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTPS';
+        model.spec.listener.port = 80;
+        model.spec.pool.protocol = 'HTTP';
+        model.spec.pool.method = 'LEAST_CONNECTIONS';
+        model.spec.monitor.type = 'PING';
+        model.spec.monitor.interval = 1;
+        model.spec.monitor.retry = 1;
+
+        var finalSpec = model.createLoadBalancer();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeDefined();
+        expect(finalSpec.pool).toBeDefined();
+        expect(finalSpec.members).toBeUndefined();
+        expect(finalSpec.monitor).toBeUndefined();
       });
     });
 

@@ -41,28 +41,57 @@
     });
   });
 
+  describe('LBaaS v2 Module Constants', function () {
+    var patterns, popovers;
+
+    beforeEach(module('horizon.dashboard.project.lbaasv2'));
+
+    beforeEach(inject(function ($injector) {
+      patterns = $injector.get('horizon.dashboard.project.lbaasv2.patterns');
+      popovers = $injector.get('horizon.dashboard.project.lbaasv2.popovers');
+    }));
+
+    it('should define patterns', function () {
+      expect(patterns).toBeDefined();
+    });
+
+    it('should define expected patterns', function () {
+      expect(Object.keys(patterns).length).toBe(4);
+      var keys = ['ipv4', 'ipv6', 'httpStatusCodes', 'urlPath'];
+      angular.forEach(keys, function(key) {
+        expect(patterns[key]).toBeDefined();
+      });
+    });
+
+    it('should define popovers', function () {
+      expect(popovers).toBeDefined();
+    });
+
+    it('should define expected popover templates', function () {
+      expect(Object.keys(popovers).length).toBe(1);
+      var keys = ['ipAddresses'];
+      angular.forEach(keys, function(key) {
+        expect(popovers[key]).toBeDefined();
+      });
+    });
+  });
+
   describe('LBaaS v2 Module Config', function () {
-    var $routeProvider, $locationProvider, basePath;
+    var $routeProvider, basePath;
 
     beforeEach(function() {
-      // Create a dummy module so that we can test $routeProvider and $locationProvider calls
-      // in our actual config block.
+      // Create a dummy module so that we can test $routeProvider calls in our actual
+      // config block.
       angular.module('configTest', [])
-        .config(function(_$routeProvider_, _$locationProvider_, $windowProvider) {
+        .config(function(_$routeProvider_, $windowProvider) {
           $routeProvider = _$routeProvider_;
-          $locationProvider = _$locationProvider_;
           basePath = $windowProvider.$get().STATIC_URL + 'dashboard/project/lbaasv2/';
           spyOn($routeProvider, 'when').and.callThrough();
-          spyOn($locationProvider, 'html5Mode').and.callThrough();
         });
       module('ngRoute');
       module('configTest');
       module('horizon.dashboard.project.lbaasv2');
       inject();
-    });
-
-    it('should use html5 mode', function () {
-      expect($locationProvider.html5Mode).toHaveBeenCalledWith(true);
     });
 
     it('should route URLs', function () {

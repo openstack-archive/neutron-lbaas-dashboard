@@ -105,6 +105,10 @@ def create_pool(request, **kwargs):
         kwargs = {'callback_kwargs': {'pool_id': pool['id'],
                                       'index': 0}}
         thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
+    elif data.get('monitor'):
+        args = (request, kwargs['loadbalancer_id'], add_monitor)
+        kwargs = {'callback_kwargs': {'pool_id': pool['id']}}
+        thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
 
     return pool
 
@@ -133,8 +137,34 @@ def add_member(request, **kwargs):
         kwargs = {'callback_kwargs': {'pool_id': kwargs['pool_id'],
                                       'index': index}}
         thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
+    elif data.get('monitor'):
+        args = (request, kwargs['loadbalancer_id'], add_monitor)
+        kwargs = {'callback_kwargs': {'pool_id': kwargs['pool_id']}}
+        thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
 
     return member
+
+
+def add_monitor(request, **kwargs):
+    """Create a new health monitor for a pool.
+
+    """
+    data = request.DATA
+    monitorSpec = {
+        'type': data['monitor']['type'],
+        'delay': data['monitor']['interval'],
+        'timeout': data['monitor']['timeout'],
+        'max_retries': data['monitor']['retry'],
+        'pool_id': kwargs['pool_id']
+    }
+    if data['monitor'].get('method'):
+        monitorSpec['http_method'] = data['monitor']['method']
+    if data['monitor'].get('path'):
+        monitorSpec['url_path'] = data['monitor']['path']
+    if data['monitor'].get('status'):
+        monitorSpec['expected_codes'] = data['monitor']['status']
+    return neutronclient(request).create_lbaas_healthmonitor(
+        {'healthmonitor': monitorSpec}).get('healthmonitor')
 
 
 @urls.register

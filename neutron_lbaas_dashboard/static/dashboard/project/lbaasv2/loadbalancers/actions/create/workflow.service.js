@@ -59,6 +59,13 @@
           templateUrl: basePath + 'loadbalancers/actions/create/members/members.html',
           helpUrl: basePath + 'loadbalancers/actions/create/members/members.help.html',
           formName: 'createLoadBalancerMembersForm'
+        },
+        {
+          id: 'monitor',
+          title: gettext('Monitor'),
+          templateUrl: basePath + 'loadbalancers/actions/create/monitor/monitor.html',
+          helpUrl: basePath + 'loadbalancers/actions/create/monitor/monitor.help.html',
+          formName: 'createLoadBalancerMonitorForm'
         }
       ],
 

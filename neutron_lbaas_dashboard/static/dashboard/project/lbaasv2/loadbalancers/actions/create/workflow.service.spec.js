@@ -41,13 +41,14 @@
 
     it('should have steps defined', function () {
       expect(createLoadBalancerWorkflow.steps).toBeDefined();
-      expect(createLoadBalancerWorkflow.steps.length).toBe(4);
+      expect(createLoadBalancerWorkflow.steps.length).toBe(5);
 
       var forms = [
         'createLoadBalancerDetailsForm',
         'createLoadBalancerListenerForm',
         'createLoadBalancerPoolForm',
-        'createLoadBalancerMembersForm'
+        'createLoadBalancerMembersForm',
+        'createLoadBalancerMonitorForm'
       ];
 
       forms.forEach(function(expectedForm, idx) {

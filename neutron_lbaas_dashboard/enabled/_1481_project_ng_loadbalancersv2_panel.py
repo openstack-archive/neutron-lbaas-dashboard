@@ -51,7 +51,9 @@ ADD_JS_FILES = [
     ('dashboard/project/lbaasv2/loadbalancers/actions/create/pool/'
         'pool.controller.js'),
     ('dashboard/project/lbaasv2/loadbalancers/actions/create/members/'
-        'members.controller.js')
+        'members.controller.js'),
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/monitor/'
+        'monitor.controller.js')
 ]
 
 ADD_JS_SPEC_FILES = [
@@ -78,7 +80,9 @@ ADD_JS_SPEC_FILES = [
     ('dashboard/project/lbaasv2/loadbalancers/actions/create/pool/'
         'pool.controller.spec.js'),
     ('dashboard/project/lbaasv2/loadbalancers/actions/create/members/'
-        'members.controller.spec.js')
+        'members.controller.spec.js'),
+    ('dashboard/project/lbaasv2/loadbalancers/actions/create/monitor/'
+        'monitor.controller.spec.js')
 ]
 
 ADD_SCSS_FILES = [
