@@ -16,7 +16,7 @@
 (function() {
   'use strict';
 
-  describe('Create Load Balancer Add Members Step', function() {
+  describe('Member Details Step', function() {
     var members = [{
       id: '1',
       name: 'foo',
@@ -31,7 +31,7 @@
     beforeEach(module('horizon.framework.util.i18n'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
-    describe('AddMembersController', function() {
+    describe('MemberDetailsController', function() {
       var ctrl, scope;
 
       beforeEach(inject(function($controller) {
@@ -43,7 +43,7 @@
             members: members
           }
         };
-        ctrl = $controller('AddMembersController', { $scope: scope });
+        ctrl = $controller('MemberDetailsController', { $scope: scope });
       }));
 
       it('should define error messages for invalid fields', function() {
@@ -77,7 +77,7 @@
       });
     });
 
-    describe('Add Members Template', function() {
+    describe('Member Details Step Template', function() {
       var $scope, $element, popoverContent;
 
       beforeEach(module('templates'));
@@ -88,8 +88,7 @@
         var $templateCache = $injector.get('$templateCache');
         var basePath = $injector.get('horizon.dashboard.project.lbaasv2.basePath');
         var popoverTemplates = $injector.get('horizon.dashboard.project.lbaasv2.popovers');
-        var markup = $templateCache.get(
-          basePath + 'loadbalancers/actions/create/members/members.html');
+        var markup = $templateCache.get(basePath + 'workflow/members/members.html');
         $scope = $injector.get('$rootScope').$new();
         $scope.model = {
           spec: {

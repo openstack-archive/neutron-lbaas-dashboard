@@ -17,31 +17,31 @@
   'use strict';
 
   angular
-    .module('horizon.dashboard.project.lbaasv2.loadbalancers')
-    .controller('CreateLoadBalancerDetailsController', CreateLoadBalancerDetailsController);
+    .module('horizon.dashboard.project.lbaasv2')
+    .controller('LoadBalancerDetailsController', LoadBalancerDetailsController);
 
-  CreateLoadBalancerDetailsController.$inject = [
+  LoadBalancerDetailsController.$inject = [
     'horizon.dashboard.project.lbaasv2.patterns',
     'horizon.framework.util.i18n.gettext'
   ];
 
   /**
    * @ngdoc controller
-   * @name CreateLoadBalancerDetailsController
+   * @name LoadBalancerDetailsController
    * @description
-   * The `CreateLoadBalancerDetailsController` controller provides functions for
-   * configuring the details step of the Create Load Balancer Wizard.
+   * The `LoadBalancerDetailsController` controller provides functions for
+   * configuring the load balancers step of the LBaaS wizard.
    * @param patterns The LBaaS v2 patterns constant.
    * @param gettext The horizon gettext function for translation.
    * @returns undefined
    */
 
-  function CreateLoadBalancerDetailsController(patterns, gettext) {
+  function LoadBalancerDetailsController(patterns, gettext) {
 
     var ctrl = this;
 
     // Error text for invalid fields
-    ctrl.loadbalancerIPError = gettext('The IP address is not valid.');
+    ctrl.ipError = gettext('The IP address is not valid.');
 
     // IP address validation pattern
     ctrl.ipPattern = [patterns.ipv4, patterns.ipv6].join('|');

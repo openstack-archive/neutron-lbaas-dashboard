@@ -1,14 +1,14 @@
-<div ng-controller="CreateLoadBalancerDetailsController as ctrl">
+<div ng-controller="LoadBalancerDetailsController as ctrl">
   <h1 translate>Load Balancer Details</h1>
 
   <!--content-->
   <div class="content">
-    <div translate class="subtitle">Provide the details for the new load balancer.</div>
+    <div translate class="subtitle">Provide the details for the load balancer.</div>
 
         <div class="row form-group">
           <div class="col-sm-12 col-md-6">
             <div class="form-field loadbalancer-name"
-              ng-class="{ 'has-error': createLoadBalancerDetailsForm['loadbalancer-name'].$invalid && createLoadBalancerDetailsForm['loadbalancer-name'].$dirty }">
+              ng-class="{ 'has-error': loadBalancerDetailsForm['loadbalancer-name'].$invalid && loadBalancerDetailsForm['loadbalancer-name'].$dirty }">
               <label translate class="on-top" for="loadbalancer-name">Name</label>
               <input name="loadbalancer-name" id="loadbalancer-name"
                      type="text" class="form-control input-sm"
@@ -30,11 +30,11 @@
         <div class="row form-group">
           <div class="col-sm-6 col-md-3">
             <div class="form-field loadbalancer-ip"
-              ng-class="{ 'has-error': createLoadBalancerDetailsForm['loadbalancer-ip'].$invalid && createLoadBalancerDetailsForm['loadbalancer-ip'].$dirty }">
+              ng-class="{ 'has-error': loadBalancerDetailsForm['loadbalancer-ip'].$invalid && loadBalancerDetailsForm['loadbalancer-ip'].$dirty }">
               <label translate class="on-top" for="loadbalancer-ip">IP Address</label>
               <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="createLoadBalancerDetailsForm['loadbalancer-ip'].$invalid && createLoadBalancerDetailsForm.$dirty"
-                  popover="{$ ::ctrl.loadbalancerIPError $}"
+                  ng-show="loadBalancerDetailsForm['loadbalancer-ip'].$invalid && loadBalancerDetailsForm.$dirty"
+                  popover="{$ ::ctrl.ipError $}"
                   popover-placement="top" popover-append-to-body="true"
                   popover-trigger="hover"></span>
               <input name="loadbalancer-ip" id="loadbalancer-ip"

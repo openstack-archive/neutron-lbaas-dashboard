@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Load Balancers Table Batch Actions Service', function() {
-    var batchActionsService;
+    var $location, actions, policy;
 
     beforeEach(module('horizon.framework.util'));
     beforeEach(module('horizon.framework.conf'));
@@ -26,18 +26,56 @@
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(module(function($provide) {
-      $provide.value('$modal', {});
+      var response = {
+        data: {
+          id: '1'
+        }
+      };
+      var modal = {
+        open: function() {
+          return {
+            result: {
+              then: function(func) {
+                func(response);
+              }
+            }
+          };
+        }
+      };
+      $provide.value('$modal', modal);
     }));
 
     beforeEach(inject(function ($injector) {
-      batchActionsService = $injector.get(
+      $location = $injector.get('$location');
+      policy = $injector.get('horizon.app.core.openstack-service-api.policy');
+      var batchActionsService = $injector.get(
         'horizon.dashboard.project.lbaasv2.loadbalancers.actions.batchActions');
+      actions = batchActionsService.actions();
     }));
 
     it('should define correct table batch actions', function() {
-      var actions = batchActionsService.actions();
       expect(actions.length).toBe(1);
       expect(actions[0].template.text).toBe('Create Load Balancer');
+    });
+
+    it('should have the "allowed" and "perform" functions', function() {
+      actions.forEach(function(action) {
+        expect(action.service.allowed).toBeDefined();
+        expect(action.service.perform).toBeDefined();
+      });
+    });
+
+    it('should check policy to allow creating a load balancer', function() {
+      spyOn(policy, 'ifAllowed').and.returnValue(true);
+      var allowed = actions[0].service.allowed();
+      expect(allowed).toBe(true);
+      expect(policy.ifAllowed).toHaveBeenCalledWith({rules: [['neutron', 'create_loadbalancer']]});
+    });
+
+    it('should redirect after create', function() {
+      spyOn($location, 'path').and.callThrough();
+      actions[0].service.perform();
+      expect($location.path).toHaveBeenCalledWith('project/ngloadbalancersv2/detail/1');
     });
 
   });

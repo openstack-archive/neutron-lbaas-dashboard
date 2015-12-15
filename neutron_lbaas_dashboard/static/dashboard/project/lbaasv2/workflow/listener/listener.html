@@ -1,9 +1,9 @@
-<div ng-controller="CreateListenerDetailsController as ctrl">
+<div ng-controller="ListenerDetailsController as ctrl">
   <h1 translate>Listener Details</h1>
 
   <!--content-->
   <div class="content">
-    <div translate class="subtitle">Provide the details for the new load balancer listener. The listener will only be created if values are provided for all fields marked as required.</div>
+    <div translate class="subtitle">Provide the details for the listener.</div>
 
         <div class="row form-group">
 
@@ -35,23 +35,24 @@
               <select class="form-control input-sm" name="listener-protocol"
                       id="listener-protocol"
                       ng-options="protocol for protocol in model.listenerProtocols"
-                      ng-model="model.spec.listener.protocol">
+                      ng-model="model.spec.listener.protocol" ng-required="model.context.type === 'listener'">
               </select>
             </div>
           </div>
 
           <div class="col-sm-6 col-md-3">
             <div class="form-field required listener-port"
-              ng-class="{ 'has-error': createLoadBalancerListenerForm['listener-port'].$invalid && createLoadBalancerListenerForm['listener-port'].$dirty }">
+              ng-class="{ 'has-error': listenerDetailForm['listener-port'].$invalid && listenerDetailForm['listener-port'].$dirty }">
               <label translate class="on-top" for="listener-port">Port</label>
               <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="createLoadBalancerListenerForm['listener-port'].$invalid && createLoadBalancerListenerForm.$dirty"
-                  popover="{$ ::ctrl.listenerPortError $}"
+                  ng-show="listenerDetailForm['listener-port'].$invalid && listenerDetailForm.$dirty"
+                  popover="{$ ::ctrl.portError $}"
                   popover-placement="top" popover-append-to-body="true"
                   popover-trigger="hover"></span>
               <input name="listener-port" id="listener-port"
                      type="number" class="form-control input-sm"
-                     ng-model="model.spec.listener.port" ng-pattern="/^\d+$/" min="1" max="65535">
+                     ng-model="model.spec.listener.port" ng-pattern="/^\d+$/" min="1" max="65535"
+                     ng-required="model.context.type === 'listener'">
             </div>
           </div>
 

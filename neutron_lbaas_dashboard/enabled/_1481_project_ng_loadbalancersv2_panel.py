@@ -38,22 +38,17 @@ ADD_JS_FILES = [
     'dashboard/project/lbaasv2/loadbalancers/detail.controller.js',
     'dashboard/project/lbaasv2/loadbalancers/filters.js',
     'dashboard/project/lbaasv2/loadbalancers/actions/batch-actions.service.js',
-    'dashboard/project/lbaasv2/loadbalancers/actions/create/modal.service.js',
-    'dashboard/project/lbaasv2/loadbalancers/actions/create/model.service.js',
     ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
         'wizard.controller.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
-        'workflow.service.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/details/'
-        'details.controller.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/listener/'
-        'listener.controller.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/pool/'
-        'pool.controller.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/members/'
-        'members.controller.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/monitor/'
-        'monitor.controller.js')
+    'dashboard/project/lbaasv2/workflow/modal.service.js',
+    'dashboard/project/lbaasv2/workflow/model.service.js',
+    'dashboard/project/lbaasv2/workflow/workflow.service.js',
+    ('dashboard/project/lbaasv2/workflow/loadbalancer/'
+        'loadbalancer.controller.js'),
+    'dashboard/project/lbaasv2/workflow/listener/listener.controller.js',
+    'dashboard/project/lbaasv2/workflow/pool/pool.controller.js',
+    'dashboard/project/lbaasv2/workflow/members/members.controller.js',
+    'dashboard/project/lbaasv2/workflow/monitor/monitor.controller.js'
 ]
 
 ADD_JS_SPEC_FILES = [
@@ -66,23 +61,16 @@ ADD_JS_SPEC_FILES = [
     ('dashboard/project/lbaasv2/loadbalancers/actions/'
         'batch-actions.service.spec.js'),
     ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
-        'modal.service.spec.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
-        'model.service.spec.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
         'wizard.controller.spec.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/'
-        'workflow.service.spec.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/details/'
-        'details.controller.spec.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/listener/'
-        'listener.controller.spec.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/pool/'
-        'pool.controller.spec.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/members/'
-        'members.controller.spec.js'),
-    ('dashboard/project/lbaasv2/loadbalancers/actions/create/monitor/'
-        'monitor.controller.spec.js')
+    'dashboard/project/lbaasv2/workflow/modal.service.spec.js',
+    'dashboard/project/lbaasv2/workflow/model.service.spec.js',
+    'dashboard/project/lbaasv2/workflow/workflow.service.spec.js',
+    ('dashboard/project/lbaasv2/workflow/loadbalancer/'
+        'loadbalancer.controller.spec.js'),
+    'dashboard/project/lbaasv2/workflow/listener/listener.controller.spec.js',
+    'dashboard/project/lbaasv2/workflow/pool/pool.controller.spec.js',
+    'dashboard/project/lbaasv2/workflow/members/members.controller.spec.js',
+    'dashboard/project/lbaasv2/workflow/monitor/monitor.controller.spec.js'
 ]
 
 ADD_SCSS_FILES = [

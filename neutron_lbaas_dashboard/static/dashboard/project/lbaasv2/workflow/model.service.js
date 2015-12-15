@@ -19,11 +19,10 @@
   var push = Array.prototype.push;
 
   angular
-    .module('horizon.dashboard.project.lbaasv2.loadbalancers')
-    .factory('horizon.dashboard.project.lbaasv2.loadbalancers.actions.create.model',
-      createLoadBalancerModel);
+    .module('horizon.dashboard.project.lbaasv2')
+    .factory('horizon.dashboard.project.lbaasv2.workflow.model', workflowModel);
 
-  createLoadBalancerModel.$inject = [
+  workflowModel.$inject = [
     '$q',
     'horizon.app.core.openstack-service-api.neutron',
     'horizon.app.core.openstack-service-api.nova',
@@ -33,13 +32,12 @@
 
   /**
    * @ngdoc service
-   * @name horizon.dashboard.project.lbaasv2.loadbalancers.actions.create.model
+   * @name horizon.dashboard.project.lbaasv2.workflow.model
    *
    * @description
-   * This is the M part of the MVC design pattern for the create load balancer wizard workflow. It
-   * is responsible for providing data to the view of each step in the workflow and collecting the
-   * user's input from the view for creation of the new load balancer. It is also the center point
-   * of communication between the UI and services API.
+   * This is the M part of the MVC design pattern for the LBaaS wizard workflow. It is responsible
+   * for providing data to the view of each step in the workflow and collecting the user's input
+   * from the view. It is also the center point of communication between the UI and services API.
    *
    * @param $q The angular service for promises.
    * @param neutronAPI The neutron service API.
@@ -49,7 +47,7 @@
    * @returns The model service for the create load balancer workflow.
    */
 
-  function createLoadBalancerModel($q, neutronAPI, novaAPI, lbaasv2API, gettext) {
+  function workflowModel($q, neutronAPI, novaAPI, lbaasv2API, gettext) {
     var initPromise, ports;
 
     /**
@@ -60,16 +58,14 @@
 
       initializing: false,
       initialized: false,
+      context: null,
 
       /**
        * @name spec
        *
        * @description
        * A dictionary like object containing specification collected from user
-       * input. Required properties include:
-       *
-       * @property {String} name: The new load balancer name.
-       * @property {String} subnet: The subnet for the load balancer.
+       * input.
        */
 
       spec: null,
@@ -87,20 +83,30 @@
        */
 
       initialize: initialize,
-      createLoadBalancer: createLoadBalancer
+      submit: submit
     };
 
     /**
      * @ngdoc method
-     * @name createLoadBalancerModel.initialize
+     * @name workflowModel.initialize
      * @returns {promise}
      *
      * @description
      * Send request to get all data to initialize the model.
+     *
+     * @param resource Resource type being created / edited, one of 'loadbalancer', 'listener',
+     * 'pool', 'monitor', or 'members'.
+     * @param id ID of the resource being edited.
      */
 
-    function initialize() {
+    function initialize(resource, id) {
       var promise;
+
+      model.context = {
+        resource: resource,
+        id: id,
+        submit: null
+      };
 
       model.spec = {
         loadbalancer: {
@@ -138,13 +144,56 @@
       } else {
         model.initializing = true;
 
-        promise = $q.all([
-          lbaasv2API.getLoadBalancers().then(onGetLoadBalancers),
-          neutronAPI.getSubnets().then(onGetSubnets),
-          neutronAPI.getPorts().then(onGetPorts),
-          novaAPI.getServers().then(onGetServers)
-        ]);
+        var promises = [];
 
+        promises.push(lbaasv2API.getLoadBalancers().then(onGetLoadBalancers));
+        promises.push(neutronAPI.getSubnets().then(onGetSubnets));
+        promises.push(neutronAPI.getPorts().then(onGetPorts));
+        promises.push(novaAPI.getServers().then(onGetServers));
+        model.context.submit = createLoadBalancer;
+
+//        // Create load balancer (default)
+//        if (resource === 'loadbalancer' && !id) {
+//          promises.push(lbaasv2API.getLoadBalancers().then(onGetLoadBalancers));
+//          promises.push(neutronAPI.getSubnets().then(onGetSubnets));
+//          promises.push(neutronAPI.getPorts().then(onGetPorts));
+//          promises.push(novaAPI.getServers().then(onGetServers));
+//          model.context.submit = createLoadBalancer;
+//        }
+//        // Edit load balancer
+//        else if (resource === 'loadbalancer' && id) {
+//          // Get load balancer
+//          model.context.submit = editLoadBalancer;
+//        }
+//        // Create listener
+//        else if (resource === 'listener' && !id) {
+//          promises.push(neutronAPI.getSubnets().then(onGetSubnets));
+//          promises.push(neutronAPI.getPorts().then(onGetPorts));
+//          promises.push(novaAPI.getServers().then(onGetServers));
+//          model.context.submit = createListener;
+//        }
+//        // Edit listener
+//        else if (resource === 'listener' && id) {
+//          // Get listener, pool, members, monitor
+//          model.context.submit = editListener;
+//        }
+//        // Edit pool
+//        else if (resource === 'pool' && id) {
+//          // Get pool, members, monitor
+//          model.context.submit = editPool;
+//        }
+//        // Edit monitor
+//        else if (resource === 'monitor' && id) {
+//          // Get monitor
+//          model.context.submit = editMonitor;
+//        }
+//        // Edit members
+//        else if (resource === 'members' && id) {
+//          // Get pool members by pool id
+//          model.context.submit = editMembers;
+//        }
+
+        promise = $q.all(promises);
         promise.then(onInitSuccess, onInitFail);
       }
 
@@ -164,17 +213,25 @@
 
     /**
      * @ngdoc method
-     * @name createLoadBalancerModel.createLoadBalancer
+     * @name workflowModel.submit
      * @returns {promise}
      *
      * @description
-     * Send request for creating the load balancer.
+     * Send request for completing the wizard.
      *
-     * @returns Response from the LBaaS V2 API for creating a load balancer.
+     * @returns Response from the LBaaS V2 API.
      */
 
-    function createLoadBalancer() {
+    function submit() {
       var finalSpec = angular.copy(model.spec);
+      var resource = model.context.resource;
+
+      // Load balancer requires subnet
+      if (!finalSpec.loadbalancer.subnet) {
+        delete finalSpec.loadbalancer;
+      } else {
+        finalSpec.loadbalancer.subnet = finalSpec.loadbalancer.subnet.id;
+      }
 
       // Listener requires protocol and port
       if (!finalSpec.listener.protocol || !finalSpec.listener.port) {
@@ -182,7 +239,9 @@
       }
 
       // Pool requires protocol and method, and also the listener
-      if (!finalSpec.listener || !finalSpec.pool.protocol || !finalSpec.pool.method) {
+      if (resource !== 'pool' && !finalSpec.listener ||
+          !finalSpec.pool.protocol ||
+          !finalSpec.pool.method) {
         delete finalSpec.pool;
       }
 
@@ -190,9 +249,11 @@
       cleanFinalSpecMonitor(finalSpec);
       removeNulls(finalSpec);
 
-      finalSpec.loadbalancer.subnet = finalSpec.loadbalancer.subnet.id;
+      return model.context.submit(finalSpec);
+    }
 
-      return lbaasv2API.createLoadBalancer(finalSpec);
+    function createLoadBalancer(spec) {
+      return lbaasv2API.createLoadBalancer(spec);
     }
 
     function cleanFinalSpecMembers(finalSpec) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 IBM Corp.
+ * Copyright 2015 IBM Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License.
@@ -16,35 +16,24 @@
 (function() {
   'use strict';
 
-  describe('Create Monitor Step', function() {
+  describe('Load Balancer Details Step', function() {
 
-    beforeEach(module('horizon.framework.util'));
+    beforeEach(module('horizon.framework.util.i18n'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
-    describe('CreateMonitorController', function() {
+    describe('LoadBalancerDetailsController', function() {
       var ctrl;
 
       beforeEach(inject(function($controller) {
-        ctrl = $controller('CreateMonitorController');
+        ctrl = $controller('LoadBalancerDetailsController');
       }));
 
       it('should define error messages for invalid fields', function() {
-        expect(ctrl.intervalError).toBeDefined();
-        expect(ctrl.retryError).toBeDefined();
-        expect(ctrl.timeoutError).toBeDefined();
-        expect(ctrl.statusError).toBeDefined();
-        expect(ctrl.pathError).toBeDefined();
-      });
-
-      it('should define field level help messages', function() {
-        expect(ctrl.statusHelp).toBeDefined();
-        expect(ctrl.intervalHelp).toBeDefined();
-        expect(ctrl.retryHelp).toBeDefined();
+        expect(ctrl.ipError).toBeDefined();
       });
 
       it('should define patterns for field validation', function() {
-        expect(ctrl.statusPattern).toBeDefined();
-        expect(ctrl.urlPathPattern).toBeDefined();
+        expect(ctrl.ipPattern).toBeDefined();
       });
 
     });

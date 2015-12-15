@@ -1,9 +1,9 @@
-<div ng-controller="CreateMonitorController as ctrl">
+<div ng-controller="MonitorDetailsController as ctrl">
   <h1 translate>Monitor</h1>
 
   <!--content-->
   <div class="content">
-    <div translate class="subtitle">Provide the details for the new health monitor. The monitor will only be created if values are provided for all fields marked as required. A listener and pool are also required.</div>
+    <div translate class="subtitle">Provide the details for the health monitor.</div>
 
         <div class="row form-group">
 
@@ -24,10 +24,10 @@
 
           <div class="col-sm-6 col-md-3">
             <div class="form-field required monitor-interval"
-              ng-class="{ 'has-error': createLoadBalancerMonitorForm['monitor-interval'].$invalid && createLoadBalancerMonitorForm['monitor-interval'].$dirty }">
+              ng-class="{ 'has-error': monitorDetailsForm['monitor-interval'].$invalid && monitorDetailsForm['monitor-interval'].$dirty }">
               <label translate class="on-top" for="monitor-interval">Health check interval (sec)</label>
               <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="createLoadBalancerMonitorForm['monitor-interval'].$invalid && createLoadBalancerMonitorForm.$dirty"
+                  ng-show="monitorDetailsForm['monitor-interval'].$invalid && monitorDetailsForm.$dirty"
                   popover="{$ ::ctrl.intervalError $}"
                   popover-placement="top" popover-append-to-body="true"
                   popover-trigger="hover"></span>
@@ -43,10 +43,10 @@
 
           <div class="col-sm-6 col-md-3">
             <div class="form-field required monitor-retry"
-              ng-class="{ 'has-error': createLoadBalancerMonitorForm['monitor-retry'].$invalid && createLoadBalancerMonitorForm['monitor-retry'].$dirty }">
+              ng-class="{ 'has-error': monitorDetailsForm['monitor-retry'].$invalid && monitorDetailsForm['monitor-retry'].$dirty }">
               <label translate class="on-top" for="monitor-retry">Retry count before markdown</label>
               <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="createLoadBalancerMonitorForm['monitor-retry'].$invalid && createLoadBalancerMonitorForm.$dirty"
+                  ng-show="monitorDetailsForm['monitor-retry'].$invalid && monitorDetailsForm.$dirty"
                   popover="{$ ::ctrl.retryError $}"
                   popover-placement="top" popover-append-to-body="true"
                   popover-trigger="hover"></span>
@@ -62,10 +62,10 @@
 
           <div class="col-sm-6 col-md-3">
             <div class="form-field required monitor-timeout"
-              ng-class="{ 'has-error': createLoadBalancerMonitorForm['monitor-timeout'].$invalid && createLoadBalancerMonitorForm['monitor-timeout'].$dirty }">
+              ng-class="{ 'has-error': monitorDetailsForm['monitor-timeout'].$invalid && monitorDetailsForm['monitor-timeout'].$dirty }">
               <label translate class="on-top" for="monitor-timeout">Timeout (sec)</label>
               <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="createLoadBalancerMonitorForm['monitor-timeout'].$invalid && createLoadBalancerMonitorForm.$dirty"
+                  ng-show="monitorDetailsForm['monitor-timeout'].$invalid && monitorDetailsForm.$dirty"
                   popover="{$ ::ctrl.timeoutError $}"
                   popover-placement="top" popover-append-to-body="true"
                   popover-trigger="hover"></span>
@@ -92,10 +92,10 @@
 
           <div class="col-sm-6 col-md-3">
             <div class="form-field monitor-status"
-              ng-class="{ 'has-error': createLoadBalancerMonitorForm['monitor-status'].$invalid && createLoadBalancerMonitorForm['monitor-status'].$dirty }">
+              ng-class="{ 'has-error': monitorDetailsForm['monitor-status'].$invalid && monitorDetailsForm['monitor-status'].$dirty }">
               <label translate class="on-top" for="monitor-status">Expected HTTP status code</label>
               <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="createLoadBalancerMonitorForm['monitor-status'].$invalid && createLoadBalancerMonitorForm.$dirty"
+                  ng-show="monitorDetailsForm['monitor-status'].$invalid && monitorDetailsForm.$dirty"
                   popover="{$ ::ctrl.statusError $}"
                   popover-placement="top" popover-append-to-body="true"
                   popover-trigger="hover"></span>
@@ -111,10 +111,10 @@
 
           <div class="col-sm-6 col-md-3">
             <div class="form-field monitor-path"
-              ng-class="{ 'has-error': createLoadBalancerMonitorForm['monitor-path'].$invalid && createLoadBalancerMonitorForm['monitor-path'].$dirty }">
+              ng-class="{ 'has-error': monitorDetailsForm['monitor-path'].$invalid && monitorDetailsForm['monitor-path'].$dirty }">
               <label translate class="on-top" for="monitor-path">URL path</label>
               <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="createLoadBalancerMonitorForm['monitor-path'].$invalid && createLoadBalancerMonitorForm.$dirty"
+                  ng-show="monitorDetailsForm['monitor-path'].$invalid && monitorDetailsForm.$dirty"
                   popover="{$ ::ctrl.pathError $}"
                   popover-placement="top" popover-append-to-body="true"
                   popover-trigger="hover"></span>

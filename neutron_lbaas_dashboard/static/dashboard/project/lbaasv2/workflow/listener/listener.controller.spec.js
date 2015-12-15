@@ -16,20 +16,20 @@
 (function() {
   'use strict';
 
-  describe('Create Listener Details Step', function() {
+  describe('Listener Details Step', function() {
 
     beforeEach(module('horizon.framework.util.i18n'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
-    describe('CreateListenerDetailsController', function() {
+    describe('ListenerDetailsController', function() {
       var ctrl;
 
       beforeEach(inject(function($controller) {
-        ctrl = $controller('CreateListenerDetailsController');
+        ctrl = $controller('ListenerDetailsController');
       }));
 
       it('should define error messages for invalid fields', function() {
-        expect(ctrl.listenerPortError).toBeDefined();
+        expect(ctrl.portError).toBeDefined();
       });
 
     });

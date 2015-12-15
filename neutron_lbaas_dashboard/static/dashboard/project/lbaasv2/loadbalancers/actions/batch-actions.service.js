@@ -22,8 +22,10 @@
       tableBatchActions);
 
   tableBatchActions.$inject = [
-    'horizon.dashboard.project.lbaasv2.loadbalancers.actions.create.modal',
+    '$location',
+    'horizon.dashboard.project.lbaasv2.workflow.modal',
     'horizon.dashboard.project.lbaasv2.basePath',
+    'horizon.app.core.openstack-service-api.policy',
     'horizon.framework.util.i18n.gettext'
   ];
 
@@ -34,13 +36,22 @@
    * @description
    * Provides the service for the Load Balancers table batch actions.
    *
-   * @param createModal The create action modal service.
+   * @param $location The angular $location service.
+   * @param workflowModal The LBaaS workflow modal service.
    * @param basePath The lbaasv2 module base path.
+   * @param policy The horizon policy service.
    * @param gettext The horizon gettext function for translation.
    * @returns Load balancers table batch actions service object.
    */
 
-  function tableBatchActions(createModal, basePath, gettext) {
+  function tableBatchActions($location, workflowModal, basePath, policy, gettext) {
+
+    var create = workflowModal.init({
+      controller: 'CreateLoadBalancerWizardController',
+      message: gettext('A new load balancer is being created.'),
+      handle: onCreate,
+      allowed: canCreate
+    });
 
     var service = {
       actions: actions
@@ -52,12 +63,22 @@
 
     function actions() {
       return [{
-        service: createModal,
+        service: create,
         template: {
           type: 'create',
           text: gettext('Create Load Balancer')
         }
       }];
+    }
+
+    function canCreate() {
+      // This rule is made up and should therefore always pass. I assume at some point there
+      // will be a valid rule similar to this that we will want to use.
+      return policy.ifAllowed({ rules: [['neutron', 'create_loadbalancer']] });
+    }
+
+    function onCreate(response) {
+      $location.path('project/ngloadbalancersv2/detail/' + response.data.id);
     }
   }
 

@@ -17,26 +17,26 @@
   'use strict';
 
   angular
-    .module('horizon.dashboard.project.lbaasv2.loadbalancers')
-    .controller('CreateMonitorController', CreateMonitorController);
+    .module('horizon.dashboard.project.lbaasv2')
+    .controller('MonitorDetailsController', MonitorDetailsController);
 
-  CreateMonitorController.$inject = [
+  MonitorDetailsController.$inject = [
     'horizon.dashboard.project.lbaasv2.patterns',
     'horizon.framework.util.i18n.gettext'
   ];
 
   /**
    * @ngdoc controller
-   * @name CreateMonitorController
+   * @name MonitorDetailsController
    * @description
-   * The `CreateMonitorController` controller provides functions for
-   * configuring the health monitor step when creating a new health monitor.
+   * The `MonitorDetailsController` controller provides functions for
+   * configuring the health monitor step of the LBaaS wizard.
    * @param patterns The LBaaS v2 patterns constant.
    * @param gettext The horizon gettext function for translation.
    * @returns undefined
    */
 
-  function CreateMonitorController(patterns, gettext) {
+  function MonitorDetailsController(patterns, gettext) {
 
     var ctrl = this;
 

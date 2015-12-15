@@ -17,28 +17,28 @@
   'use strict';
 
   angular
-    .module('horizon.dashboard.project.lbaasv2.loadbalancers')
-    .controller('CreateListenerDetailsController', CreateListenerDetailsController);
+    .module('horizon.dashboard.project.lbaasv2')
+    .controller('ListenerDetailsController', ListenerDetailsController);
 
-  CreateListenerDetailsController.$inject = [
+  ListenerDetailsController.$inject = [
     'horizon.framework.util.i18n.gettext'
   ];
 
   /**
    * @ngdoc controller
-   * @name CreateListenerDetailsController
+   * @name ListenerDetailsController
    * @description
-   * The `CreateListenerDetailsController` controller provides functions for
-   * configuring the listener details step when creating a new listener.
+   * The `ListenerDetailsController` controller provides functions for
+   * configuring the listener details step of the LBaaS wizard.
    * @param gettext The horizon gettext function for translation.
    * @returns undefined
    */
 
-  function CreateListenerDetailsController(gettext) {
+  function ListenerDetailsController(gettext) {
 
     var ctrl = this;
 
     // Error text for invalid fields
-    ctrl.listenerPortError = gettext('The port must be a number between 1 and 65535.');
+    ctrl.portError = gettext('The port must be a number between 1 and 65535.');
   }
 })();

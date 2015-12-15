@@ -17,7 +17,7 @@
   'use strict';
 
   angular
-    .module('horizon.dashboard.project.lbaasv2.loadbalancers')
+    .module('horizon.dashboard.project.lbaasv2')
     .controller('CreatePoolDetailsController', CreatePoolDetailsController);
 
   CreatePoolDetailsController.$inject = [

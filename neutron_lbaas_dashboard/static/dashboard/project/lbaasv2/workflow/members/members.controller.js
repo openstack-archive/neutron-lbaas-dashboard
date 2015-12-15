@@ -17,10 +17,10 @@
   'use strict';
 
   angular
-    .module('horizon.dashboard.project.lbaasv2.loadbalancers')
-    .controller('AddMembersController', AddMembersController);
+    .module('horizon.dashboard.project.lbaasv2')
+    .controller('MemberDetailsController', MemberDetailsController);
 
-  AddMembersController.$inject = [
+  MemberDetailsController.$inject = [
     '$scope',
     '$compile',
     'horizon.dashboard.project.lbaasv2.popovers',
@@ -29,18 +29,17 @@
 
   /**
    * @ngdoc controller
-   * @name AddMembersController
+   * @name MemberDetailsController
    * @description
-   * The `AddMembersController` controller provides functions for adding members to a pool.
+   * The `MemberDetailsController` controller provides functions for adding members to a pool.
    * @param $scope The angular scope object.
    * @param $compile The angular compile service.
-   * @param popovers LBaaS v2 popover templates constant.
+   * @param popoverTemplates LBaaS v2 popover templates constant.
    * @param gettext The horizon gettext function for translation.
    * @returns undefined
    */
 
-  function AddMembersController($scope, $compile, popoverTemplates, gettext) {
-
+  function MemberDetailsController($scope, $compile, popoverTemplates, gettext) {
     var ctrl = this;
 
     // Error text for invalid fields

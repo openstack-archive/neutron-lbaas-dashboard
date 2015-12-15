@@ -1,9 +1,9 @@
-<div ng-controller="AddMembersController as ctrl">
+<div ng-controller="MemberDetailsController as ctrl">
   <h1 translate>Pool Members</h1>
 
   <!--content-->
   <div class="content">
-    <div translate class="subtitle">Add members to the load balancer pool. All required listener and pool details must also be provided.</div>
+    <div translate class="subtitle">Add members to the load balancer pool.</div>
 
     <transfer-table tr-model="ctrl.tableData"
                     limits="::ctrl.tableLimits"
@@ -60,25 +60,25 @@
               </td>
               <td class="rsp-p1">
                 <div class="form-field member-weight"
-                     ng-class="{ 'has-error': createLoadBalancerMembersForm['{$ ::row.id $}-weight'].$invalid && createLoadBalancerMembersForm['{$ ::row.id $}-weight'].$dirty }">
+                     ng-class="{ 'has-error': memberDetailsForm['{$ ::row.id $}-weight'].$invalid && memberDetailsForm['{$ ::row.id $}-weight'].$dirty }">
                   <input name="{$ ::row.id $}-weight" type="number" class="form-control input-sm"
                          ng-model="row.weight" ng-pattern="/^\d+$/" min="1" max="256">
                 </div>
                 <span class="fa fa-exclamation-triangle invalid"
-                      ng-show="createLoadBalancerMembersForm['{$ ::row.id $}-weight'].$invalid && createLoadBalancerMembersForm.$dirty"
+                      ng-show="memberDetailsForm['{$ ::row.id $}-weight'].$invalid && memberDetailsForm.$dirty"
                       popover="{$ ::ctrl.weightError $}"
                       popover-placement="top" popover-append-to-body="true"
                       popover-trigger="hover"></span>
               </td>
               <td class="rsp-p1">
                 <div class="form-field member-port"
-                     ng-class="{ 'has-error': createLoadBalancerMembersForm['{$ ::row.id $}-port'].$invalid && createLoadBalancerMembersForm['{$ ::row.id $}-port'].$dirty }">
+                     ng-class="{ 'has-error': memberDetailsForm['{$ ::row.id $}-port'].$invalid && memberDetailsForm['{$ ::row.id $}-port'].$dirty }">
                   <input name="{$ ::row.id $}-port" type="number" class="form-control input-sm"
                          ng-model="row.port" ng-pattern="/^\d+$/" min="1" max="65535"
                          ng-required="true">
                 </div>
                 <span class="fa fa-exclamation-triangle invalid"
-                      ng-show="createLoadBalancerMembersForm['{$ ::row.id $}-port'].$invalid && createLoadBalancerMembersForm.$dirty"
+                      ng-show="memberDetailsForm['{$ ::row.id $}-port'].$invalid && memberDetailsForm.$dirty"
                       popover="{$ ::ctrl.portError $}"
                       popover-placement="top" popover-append-to-body="true"
                       popover-trigger="hover"></span>

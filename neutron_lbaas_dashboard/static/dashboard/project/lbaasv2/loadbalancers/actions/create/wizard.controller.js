@@ -22,21 +22,19 @@
 
   CreateLoadBalancerWizardController.$inject = [
     '$scope',
-    'horizon.dashboard.project.lbaasv2.loadbalancers.actions.create.model',
-    'horizon.dashboard.project.lbaasv2.loadbalancers.actions.create.workflow'
+    'horizon.dashboard.project.lbaasv2.workflow.model',
+    'horizon.dashboard.project.lbaasv2.workflow.workflow',
+    'horizon.framework.util.i18n.gettext'
   ];
 
-  function CreateLoadBalancerWizardController(
-    $scope,
-    createLoadBalancerModel,
-    createLoadBalancerWorkflow
-  ) {
-    // Note: we set these attributes on the $scope so that the scope inheritance used all
-    // through the wizard continues to work.
-    $scope.workflow = createLoadBalancerWorkflow;    // eslint-disable-line angular/controller-as
-    $scope.model = createLoadBalancerModel;          // eslint-disable-line angular/controller-as
-    $scope.model.initialize();
-    $scope.submit = $scope.model.createLoadBalancer; // eslint-disable-line angular/controller-as
+  function CreateLoadBalancerWizardController($scope, model, workflowService, gettext) {
+    var scope = $scope;
+    // Note: We set these attributes on the $scope so that the scope inheritance used all through
+    // the wizard continues to work. Using local var to appease eslint angular/ng_controller_as.
+    scope.model = model;
+    scope.submit = scope.model.submit;
+    scope.workflow = workflowService(gettext('Create Load Balancer'), 'fa fa-cloud-download');
+    scope.model.initialize('loadbalancer');
   }
 
 })();

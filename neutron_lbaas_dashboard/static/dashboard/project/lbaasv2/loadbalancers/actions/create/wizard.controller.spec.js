@@ -19,23 +19,21 @@
   describe('LBaaS v2 Create Load Balancer Wizard Controller', function() {
     var ctrl;
     var model = {
-      createLoadBalancer: function() {
+      submit: function() {
         return 'created';
       },
       initialize: angular.noop
     };
+    var workflow = function() {
+      return 'foo';
+    };
     var scope = {};
 
-    beforeEach(module('horizon.app.core'));
     beforeEach(module('horizon.framework.util'));
-    beforeEach(module('horizon.framework.conf'));
-    beforeEach(module('horizon.framework.widgets.toast'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
     beforeEach(module(function ($provide) {
-      $provide.value('horizon.dashboard.project.lbaasv2.loadbalancers.actions.create.model',
-        model);
-      $provide.value('horizon.dashboard.project.lbaasv2.loadbalancers.actions.create.workflow',
-        { thing: true });
+      $provide.value('horizon.dashboard.project.lbaasv2.workflow.model', model);
+      $provide.value('horizon.dashboard.project.lbaasv2.workflow.workflow', workflow);
     }));
     beforeEach(inject(function ($controller) {
       spyOn(model, 'initialize');
@@ -51,7 +49,7 @@
     });
 
     it('sets scope.workflow to the given workflow', function() {
-      expect(scope.workflow).toEqual({ thing: true });
+      expect(scope.workflow).toBe('foo');
     });
 
     it('defines scope.submit', function() {

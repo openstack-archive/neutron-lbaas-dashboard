@@ -16,17 +16,16 @@
 (function() {
   'use strict';
 
-  describe('LBaaS v2 Load Balancers Table Create Action Modal Service', function() {
-    var modalService, modal;
+  describe('LBaaS v2 Workflow Modal Service', function() {
+    var modalService, modal, response;
 
     beforeEach(module('horizon.framework.util'));
     beforeEach(module('horizon.framework.conf'));
     beforeEach(module('horizon.framework.widgets.toast'));
-    beforeEach(module('horizon.app.core.openstack-service-api'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(module(function($provide) {
-      var response = {
+      response = {
         data: {
           id: '1'
         }
@@ -43,62 +42,64 @@
         }
       };
 
-      var policyAPI = {
-        ifAllowed: function() {
-          return true;
-        }
-      };
-
       $provide.value('$modal', modal);
-      $provide.value('horizon.app.core.openstack-service-api.policy', policyAPI);
     }));
 
     beforeEach(inject(function ($injector) {
-      modalService = $injector.get(
-        'horizon.dashboard.project.lbaasv2.loadbalancers.actions.create.modal');
+      modalService = $injector.get('horizon.dashboard.project.lbaasv2.workflow.modal');
     }));
 
-    it('should define function for opening a modal', function() {
-      expect(modalService.perform).toBeDefined();
-    });
-
-    it('should be allowed based on policy', function() {
-      expect(modalService.allowed()).toBe(true);
+    it('should define an init function', function() {
+      expect(modalService.init).toBeDefined();
     });
 
     describe('modalService "perform" function tests', function() {
-      var toastService, $location;
+      var toastService;
 
       beforeEach(inject(function ($injector) {
         toastService = $injector.get('horizon.framework.widgets.toast.service');
-        $location = $injector.get('$location');
       }));
 
       it('calls modal.open', function() {
         spyOn(modal, 'open').and.callThrough();
-        modalService.perform();
+        modalService.init({}).perform();
 
         expect(modal.open).toHaveBeenCalled();
       });
 
       it('calls modal.open with expected values', function() {
         spyOn(modal, 'open').and.callThrough();
-        modalService.perform();
+        modalService.init({}).perform();
 
         var args = modal.open.calls.argsFor(0)[0];
         expect(args.backdrop).toBe('static');
         expect(args.controller).toBeDefined();
         expect(args.resolve).toBeDefined();
-        expect(args.resolve.launchContext).toBeNull();
+        expect(args.resolve.launchContext).toBeDefined();
       });
 
-      it('redirects upon success', function() {
-        spyOn(toastService, 'add').and.callThrough();
-        spyOn($location, 'path').and.callThrough();
-        modalService.perform();
+      it('launchContext function returns argument passed to open function', function() {
+        spyOn(modal, 'open').and.callThrough();
+        modalService.init({}).perform('foo');
 
-        expect(toastService.add).toHaveBeenCalledWith('success', jasmine.any(String));
-        expect($location.path).toHaveBeenCalledWith('project/ngloadbalancersv2/detail/1');
+        var args = modal.open.calls.argsFor(0)[0];
+        expect(args.resolve.launchContext()).toBe('foo');
+      });
+
+      it('shows message upon success', function() {
+        spyOn(toastService, 'add').and.callThrough();
+        modalService.init({ message: 'foo' }).perform();
+
+        expect(toastService.add).toHaveBeenCalledWith('success', 'foo');
+      });
+
+      it('handles response upon success', function() {
+        spyOn(toastService, 'add').and.callThrough();
+        var args = { handle: angular.noop };
+        spyOn(args, 'handle');
+        modalService.init(args).perform();
+
+        expect(args.handle).toHaveBeenCalledWith(response);
       });
 
     });

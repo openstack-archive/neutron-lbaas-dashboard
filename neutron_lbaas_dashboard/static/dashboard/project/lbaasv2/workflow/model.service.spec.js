@@ -16,7 +16,7 @@
 (function() {
   'use strict';
 
-  describe('LBaaS v2 Create Load Balancer Workflow Model Service', function() {
+  describe('LBaaS v2 Workflow Model Service', function() {
     var model, $q, scope;
 
     beforeEach(module('horizon.framework.util.i18n'));
@@ -77,7 +77,7 @@
 
     beforeEach(inject(function ($injector) {
       model = $injector.get(
-        'horizon.dashboard.project.lbaasv2.loadbalancers.actions.create.model'
+        'horizon.dashboard.project.lbaasv2.workflow.model'
       );
       $q = $injector.get('$q');
       scope = $injector.get('$rootScope').$new();
@@ -130,15 +130,19 @@
         expect(model.initialize).toBeDefined();
       });
 
-      it('has a "createLoadBalancer" function', function() {
-        expect(model.createLoadBalancer).toBeDefined();
+      it('has a "submit" function', function() {
+        expect(model.submit).toBeDefined();
+      });
+
+      it('has a "context" object', function() {
+        expect(model.context).toBeDefined();
       });
     });
 
     describe('Post initialize model', function() {
 
       beforeEach(function() {
-        model.initialize();
+        model.initialize('loadbalancer');
         scope.$apply();
       });
 
@@ -165,6 +169,12 @@
         expect(model.spec.monitor.method).toBe('GET');
         expect(model.spec.monitor.status).toBe('200');
         expect(model.spec.monitor.path).toBe('/');
+      });
+
+      it('should initialize context', function() {
+        expect(model.context.resource).toBe('loadbalancer');
+        expect(model.context.id).toBeUndefined();
+        expect(model.context.submit).toBeDefined();
       });
     });
 
@@ -287,7 +297,7 @@
       });
     });
 
-    describe('Create Load Balancer', function() {
+    describe('Model submit function', function() {
 
       beforeEach(function() {
         model.initialize();
@@ -318,7 +328,7 @@
         model.spec.monitor.retry = 1;
         model.spec.monitor.timeout = 1;
 
-        var finalSpec = model.createLoadBalancer();
+        var finalSpec = model.submit();
 
         expect(finalSpec.loadbalancer.name).toBe('Load Balancer 3');
         expect(finalSpec.loadbalancer.description).toBeUndefined();
@@ -347,12 +357,20 @@
         expect(finalSpec.monitor.timeout).toBe(1);
       });
 
+      it('should delete load balancer if any required property is not set', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer).toBeUndefined();
+      });
+
       it('should delete listener if any required property is not set', function() {
         model.spec.loadbalancer.ip = '1.2.3.4';
         model.spec.loadbalancer.subnet = model.subnets[0];
         model.spec.listener.protocol = 'HTTPS';
 
-        var finalSpec = model.createLoadBalancer();
+        var finalSpec = model.submit();
 
         expect(finalSpec.loadbalancer).toBeDefined();
         expect(finalSpec.listener).toBeUndefined();
@@ -365,7 +383,7 @@
         model.spec.listener.protocol = 'HTTPS';
         model.spec.listener.port = 80;
 
-        var finalSpec = model.createLoadBalancer();
+        var finalSpec = model.submit();
 
         expect(finalSpec.loadbalancer).toBeDefined();
         expect(finalSpec.listener).toBeDefined();
@@ -380,7 +398,7 @@
         model.spec.pool.protocol = 'HTTP';
         model.spec.pool.method = 'LEAST_CONNECTIONS';
 
-        var finalSpec = model.createLoadBalancer();
+        var finalSpec = model.submit();
 
         expect(finalSpec.loadbalancer).toBeDefined();
         expect(finalSpec.listener).toBeDefined();
@@ -399,7 +417,7 @@
         model.spec.monitor.interval = 1;
         model.spec.monitor.retry = 1;
 
-        var finalSpec = model.createLoadBalancer();
+        var finalSpec = model.submit();
 
         expect(finalSpec.loadbalancer).toBeDefined();
         expect(finalSpec.listener).toBeDefined();
