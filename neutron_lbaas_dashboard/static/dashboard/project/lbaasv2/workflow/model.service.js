@@ -144,56 +144,27 @@
       } else {
         model.initializing = true;
 
-        var promises = [];
+        switch ((id ? 'edit' : 'create') + resource) {
+          case 'createloadbalancer':
+            promise = $q.all([
+              lbaasv2API.getLoadBalancers().then(onGetLoadBalancers),
+              neutronAPI.getSubnets().then(onGetSubnets),
+              neutronAPI.getPorts().then(onGetPorts),
+              novaAPI.getServers().then(onGetServers)
+            ]).then(initMemberAddresses);
+            model.context.submit = createLoadBalancer;
+            break;
+          case 'editloadbalancer':
+            promise = $q.all([
+              lbaasv2API.getLoadBalancer(model.context.id).then(onGetLoadBalancer),
+              neutronAPI.getSubnets().then(onGetSubnets)
+            ]).then(initSubnet);
+            model.context.submit = editLoadBalancer;
+            break;
+          default:
+            throw Error('Invalid resource context: ' + (id ? 'edit' : 'create') + resource);
+        }
 
-        promises.push(lbaasv2API.getLoadBalancers().then(onGetLoadBalancers));
-        promises.push(neutronAPI.getSubnets().then(onGetSubnets));
-        promises.push(neutronAPI.getPorts().then(onGetPorts));
-        promises.push(novaAPI.getServers().then(onGetServers));
-        model.context.submit = createLoadBalancer;
-
-//        // Create load balancer (default)
-//        if (resource === 'loadbalancer' && !id) {
-//          promises.push(lbaasv2API.getLoadBalancers().then(onGetLoadBalancers));
-//          promises.push(neutronAPI.getSubnets().then(onGetSubnets));
-//          promises.push(neutronAPI.getPorts().then(onGetPorts));
-//          promises.push(novaAPI.getServers().then(onGetServers));
-//          model.context.submit = createLoadBalancer;
-//        }
-//        // Edit load balancer
-//        else if (resource === 'loadbalancer' && id) {
-//          // Get load balancer
-//          model.context.submit = editLoadBalancer;
-//        }
-//        // Create listener
-//        else if (resource === 'listener' && !id) {
-//          promises.push(neutronAPI.getSubnets().then(onGetSubnets));
-//          promises.push(neutronAPI.getPorts().then(onGetPorts));
-//          promises.push(novaAPI.getServers().then(onGetServers));
-//          model.context.submit = createListener;
-//        }
-//        // Edit listener
-//        else if (resource === 'listener' && id) {
-//          // Get listener, pool, members, monitor
-//          model.context.submit = editListener;
-//        }
-//        // Edit pool
-//        else if (resource === 'pool' && id) {
-//          // Get pool, members, monitor
-//          model.context.submit = editPool;
-//        }
-//        // Edit monitor
-//        else if (resource === 'monitor' && id) {
-//          // Get monitor
-//          model.context.submit = editMonitor;
-//        }
-//        // Edit members
-//        else if (resource === 'members' && id) {
-//          // Get pool members by pool id
-//          model.context.submit = editMembers;
-//        }
-
-        promise = $q.all(promises);
         promise.then(onInitSuccess, onInitFail);
       }
 
@@ -201,7 +172,6 @@
     }
 
     function onInitSuccess() {
-      initMemberAddresses();
       model.initializing = false;
       model.initialized = true;
     }
@@ -224,7 +194,25 @@
 
     function submit() {
       var finalSpec = angular.copy(model.spec);
-      var resource = model.context.resource;
+      cleanFinalSpecLoadBalancer(finalSpec);
+      cleanFinalSpecListener(finalSpec);
+      cleanFinalSpecPool(finalSpec);
+      cleanFinalSpecMembers(finalSpec);
+      cleanFinalSpecMonitor(finalSpec);
+      removeNulls(finalSpec);
+      return model.context.submit(finalSpec);
+    }
+
+    function createLoadBalancer(spec) {
+      return lbaasv2API.createLoadBalancer(spec);
+    }
+
+    function editLoadBalancer(spec) {
+      return lbaasv2API.editLoadBalancer(model.context.id, spec);
+    }
+
+    function cleanFinalSpecLoadBalancer(finalSpec) {
+      var context = model.context;
 
       // Load balancer requires subnet
       if (!finalSpec.loadbalancer.subnet) {
@@ -233,10 +221,23 @@
         finalSpec.loadbalancer.subnet = finalSpec.loadbalancer.subnet.id;
       }
 
+      // Cannot edit the subnet
+      if (context.resource === 'loadbalancer' && context.id) {
+        delete finalSpec.subnet;
+        delete finalSpec.ip;
+      }
+    }
+
+    function cleanFinalSpecListener(finalSpec) {
+
       // Listener requires protocol and port
       if (!finalSpec.listener.protocol || !finalSpec.listener.port) {
         delete finalSpec.listener;
       }
+    }
+
+    function cleanFinalSpecPool(finalSpec) {
+      var resource = model.context.resource;
 
       // Pool requires protocol and method, and also the listener
       if (resource !== 'pool' && !finalSpec.listener ||
@@ -244,16 +245,6 @@
           !finalSpec.pool.method) {
         delete finalSpec.pool;
       }
-
-      cleanFinalSpecMembers(finalSpec);
-      cleanFinalSpecMonitor(finalSpec);
-      removeNulls(finalSpec);
-
-      return model.context.submit(finalSpec);
-    }
-
-    function createLoadBalancer(spec) {
-      return lbaasv2API.createLoadBalancer(spec);
     }
 
     function cleanFinalSpecMembers(finalSpec) {
@@ -304,7 +295,7 @@
 
     function onGetLoadBalancers(response) {
       var existingNames = {};
-      angular.forEach(response.data.items, function(lb) {
+      angular.forEach(response.data.items, function nameExists(lb) {
         existingNames[lb.name] = 1;
       });
       var name;
@@ -324,7 +315,7 @@
     function onGetServers(response) {
       model.members.length = 0;
       var members = [];
-      angular.forEach(response.data.items, function(server) {
+      angular.forEach(response.data.items, function addMember(server) {
         members.push({
           id: server.id,
           name: server.name,
@@ -340,13 +331,13 @@
     }
 
     function initMemberAddresses() {
-      angular.forEach(model.members, function(member) {
-        var memberPorts = ports.filter(function(port) {
+      angular.forEach(model.members, function initAddresses(member) {
+        var memberPorts = ports.filter(function filterPortByDevice(port) {
           return port.device_id === member.id;
         });
         member.addresses = [];
-        angular.forEach(memberPorts, function(port) {
-          angular.forEach(port.fixed_ips, function(ip) {
+        angular.forEach(memberPorts, function addAddressesForPort(port) {
+          angular.forEach(port.fixed_ips, function addAddress(ip) {
             member.addresses.push({
               ip: ip.ip_address,
               subnet: ip.subnet_id
@@ -355,6 +346,22 @@
         });
         member.address = member.addresses[0];
       });
+    }
+
+    function onGetLoadBalancer(response) {
+      var loadbalancer = response.data;
+      var spec = model.spec.loadbalancer;
+      spec.name = loadbalancer.name || '';
+      spec.description = loadbalancer.description || '';
+      spec.ip = loadbalancer.vip_address || '';
+      spec.subnet = loadbalancer.vip_subnet_id;
+    }
+
+    function initSubnet() {
+      var subnet = model.subnets.filter(function filterSubnetsByLoadBalancer(s) {
+        return s.id === model.spec.loadbalancer.subnet;
+      })[0];
+      model.spec.loadbalancer.subnet = subnet;
     }
 
     return model;

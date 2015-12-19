@@ -230,3 +230,17 @@ class LoadBalancer(generic.View):
         """
         lb = neutronclient(request).show_loadbalancer(loadbalancer_id)
         return lb.get('loadbalancer')
+
+    @rest_utils.ajax()
+    def put(self, request, loadbalancer_id):
+        """Edit a load balancer.
+
+        """
+        data = request.DATA
+        spec = {}
+        if data['loadbalancer'].get('name'):
+            spec['name'] = data['loadbalancer']['name']
+        if data['loadbalancer'].get('description'):
+            spec['description'] = data['loadbalancer']['description']
+        return neutronclient(request).update_loadbalancer(
+            loadbalancer_id, {'loadbalancer': spec}).get('loadbalancer')

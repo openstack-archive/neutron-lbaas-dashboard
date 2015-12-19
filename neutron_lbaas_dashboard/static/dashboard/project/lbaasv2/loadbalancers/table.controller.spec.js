@@ -44,7 +44,6 @@
       lbaasv2API = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
       controller = $injector.get('$controller');
       scope = $injector.get('$rootScope').$new();
-      scope.lbaasv2API = lbaasv2API;
       spyOn(lbaasv2API, 'getLoadBalancers').and.callFake(fakeAPI);
     }));
 
@@ -58,6 +57,7 @@
       expect(ctrl.src).toEqual(items);
       expect(ctrl.checked).toEqual({});
       expect(ctrl.batchActions).toBeDefined();
+      expect(ctrl.rowActions).toBeDefined();
     });
 
     it('should invoke lbaasv2 apis', function() {

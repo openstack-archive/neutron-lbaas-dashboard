@@ -22,7 +22,8 @@
 
   LoadBalancersTableController.$inject = [
     'horizon.app.core.openstack-service-api.lbaasv2',
-    'horizon.dashboard.project.lbaasv2.loadbalancers.actions.batchActions'
+    'horizon.dashboard.project.lbaasv2.loadbalancers.actions.batchActions',
+    'horizon.dashboard.project.lbaasv2.loadbalancers.actions.rowActions'
   ];
 
   /**
@@ -34,16 +35,18 @@
    *
    * @param api The LBaaS V2 service API.
    * @param batchActions The load balancer batch actions service.
+   * @param rowActions The load balancer row actions service.
    * @returns undefined
    */
 
-  function LoadBalancersTableController(api, batchActions) {
+  function LoadBalancersTableController(api, batchActions, rowActions) {
 
     var ctrl = this;
     ctrl.items = [];
     ctrl.src = [];
     ctrl.checked = {};
     ctrl.batchActions = batchActions;
+    ctrl.rowActions = rowActions;
 
     init();
 

@@ -32,7 +32,18 @@
 
           return deferred.promise;
         },
+        getLoadBalancer: function() {
+          var loadbalancer = { vip_subnet_id: 'subnet-1' };
+
+          var deferred = $q.defer();
+          deferred.resolve({ data: loadbalancer });
+
+          return deferred.promise;
+        },
         createLoadBalancer: function(spec) {
+          return spec;
+        },
+        editLoadBalancer: function(id, spec) {
           return spec;
         }
       });
@@ -190,7 +201,7 @@
       }));
 
       beforeEach(function() {
-        model.initialize();
+        model.initialize('loadbalancer');
         scope.$apply();
       });
 
@@ -202,11 +213,29 @@
       });
     });
 
+    describe('Resource not provided', function() {
+      var initModelNoContext = function() {
+        model.initialize();
+      };
+
+      var initModelNoResource = function() {
+        model.initialize('', 'foo');
+      };
+
+      it('should fail to be initialized - create', function() {
+        expect(initModelNoContext).toThrow(Error('Invalid resource context: createundefined'));
+      });
+
+      it('should fail to be initialized - edit', function() {
+        expect(initModelNoResource).toThrow(Error('Invalid resource context: edit'));
+      });
+    });
+
     describe('Post initialize model - Initializing', function() {
 
       beforeEach(function() {
         model.initializing = true;
-        model.initialize();
+        model.initialize('loadbalancer');
         scope.$apply();
       });
 
@@ -297,10 +326,38 @@
       });
     });
 
-    describe('Model submit function', function() {
+    describe('context (create loadbalancer)', function() {
 
       beforeEach(function() {
-        model.initialize();
+        model.initialize('loadbalancer');
+        scope.$apply();
+      });
+
+      it('should initialize context', function() {
+        expect(model.context.resource).toBe('loadbalancer');
+        expect(model.context.id).toBeUndefined();
+        expect(model.context.submit.name).toBe('createLoadBalancer');
+      });
+    });
+
+    describe('context (edit loadbalancer)', function() {
+
+      beforeEach(function() {
+        model.initialize('loadbalancer', '1');
+        scope.$apply();
+      });
+
+      it('should initialize context', function() {
+        expect(model.context.resource).toBe('loadbalancer');
+        expect(model.context.id).toBe('1');
+        expect(model.context.submit.name).toBe('editLoadBalancer');
+      });
+    });
+
+    describe('Model submit function (create loadbalancer)', function() {
+
+      beforeEach(function() {
+        model.initialize('loadbalancer');
         scope.$apply();
       });
 
@@ -424,6 +481,25 @@
         expect(finalSpec.pool).toBeDefined();
         expect(finalSpec.members).toBeUndefined();
         expect(finalSpec.monitor).toBeUndefined();
+      });
+    });
+
+    describe('Model submit function (edit loadbalancer)', function() {
+
+      beforeEach(function() {
+        model.initialize('loadbalancer', '1');
+        scope.$apply();
+      });
+
+      it('should set final spec properties', function() {
+        model.spec.loadbalancer.description = 'new description';
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer.name).toBe('');
+        expect(finalSpec.loadbalancer.description).toBe('new description');
+        expect(finalSpec.loadbalancer.ip).toBe('');
+        expect(finalSpec.loadbalancer.subnet).toBe('subnet-1');
       });
     });
 

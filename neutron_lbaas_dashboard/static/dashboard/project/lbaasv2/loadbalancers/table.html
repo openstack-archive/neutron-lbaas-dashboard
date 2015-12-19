@@ -77,6 +77,13 @@
       <td class="rsp-p1">{$ item.provisioning_status | provisioningStatus $}</td>
       <td class="rsp-p2">{$ item.vip_address $}</td>
       <td class="rsp-p2">{$ item.listeners.length $}</td>
+      <td class="action-col">
+        <!--
+        Table-row-action-column:
+        Actions taken here apply to a single item/row.
+        -->
+        <actions allowed="table.rowActions.actions" type="row" item="item"></actions>
+      </td>
     </tr>
 
     <tr ng-repeat-end class="detail-row">

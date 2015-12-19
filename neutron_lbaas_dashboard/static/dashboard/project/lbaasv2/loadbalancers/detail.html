@@ -7,6 +7,8 @@
     <p ng-if="::ctrl.loadbalancer.description">{$ ::ctrl.loadbalancer.description $}</p>
   </div>
   <div class="detail-page">
+    <actions allowed="ctrl.actions" type="row" item="ctrl.loadbalancer"
+             ng-if="ctrl.loadbalancer" class="pull-right"></actions>
     <div class="detail-statuses">
       <div>
         <strong translate>IP Address</strong>

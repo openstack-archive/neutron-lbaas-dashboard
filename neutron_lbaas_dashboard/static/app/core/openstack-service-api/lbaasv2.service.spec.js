@@ -60,6 +60,16 @@
         "testInput": [
           { name: 'loadbalancer-1' }
         ]
+      },
+      {
+        "func": "editLoadBalancer",
+        "method": "put",
+        "path": "/api/lbaas/loadbalancers/1234/",
+        "error": "Unable to update load balancer.",
+        "data": { name: 'loadbalancer-1' },
+        "testInput": [
+          '1234', { name: 'loadbalancer-1' }
+        ]
       }
     ];
 

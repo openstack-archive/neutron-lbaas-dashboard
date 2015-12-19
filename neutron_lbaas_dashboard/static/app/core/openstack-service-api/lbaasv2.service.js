@@ -38,7 +38,8 @@
     var service = {
       getLoadBalancers: getLoadBalancers,
       getLoadBalancer: getLoadBalancer,
-      createLoadBalancer: createLoadBalancer
+      createLoadBalancer: createLoadBalancer,
+      editLoadBalancer: editLoadBalancer
     };
 
     return service;
@@ -90,6 +91,22 @@
       return apiService.post('/api/lbaas/loadbalancers/', spec)
         .error(function () {
           toastService.add('error', gettext('Unable to create load balancer.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.editLoadBalancer
+     * @description
+     * Edit a load balancer
+     * @param {string} id
+     * @param {object} spec
+     * Specifies the data used to update the load balancer.
+     */
+
+    function editLoadBalancer(id, spec) {
+      return apiService.put('/api/lbaas/loadbalancers/' + id + '/', spec)
+        .error(function () {
+          toastService.add('error', gettext('Unable to update load balancer.'));
         });
     }
 
