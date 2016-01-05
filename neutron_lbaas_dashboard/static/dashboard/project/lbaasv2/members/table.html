@@ -1,0 +1,76 @@
+<hz-page-header header="{$ 'Members' | translate $}"></hz-page-header>
+
+<table ng-controller="MembersTableController as table"
+       hz-table ng-cloak
+       st-table="table.items"
+       st-safe-src="table.src"
+       default-sort="id"
+       default-sort-reverse="false"
+       class="table-striped table-rsp table-detail modern">
+  <!--
+    TODO(jpomero): This table pattern does not allow for extensibility and should be revisited
+    once horizon implements a better one.
+   -->
+
+  <thead>
+    <tr>
+      <!--
+        Table-batch-actions:
+        This is where batch actions like searching, creating, and deleting.
+      -->
+      <th colspan="100" class="search-header">
+        <hz-search-bar group-classes="input-group-sm" icon-classes="fa-search">
+        </hz-search-bar>
+      </th>
+    </tr>
+
+    <tr>
+      <!--
+        Table-column-headers:
+        This is where we declaratively define the table column headers.
+        Include select-col if you want to select all.
+        Include expander if you want to inline details.
+        Include action-col if you want to perform actions.
+      -->
+      <th class="select-col">
+        <input type="checkbox" hz-select-all="table.items">
+      </th>
+
+      <th class="rsp-p1" st-sort="id" st-sort-default="id" translate>ID</th>
+      <th class="rsp-p1" st-sort="address" translate>IP Address</th>
+      <th class="rsp-p1" st-sort="protocol_port" translate>Protocol Port</th>
+      <th class="rsp-p1" st-sort="weight" translate>Weight</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <!--
+      Table-rows:
+      This is where we declaratively define the table columns.
+      Include select-col if you want to select all.
+      Include expander if you want to inline details.
+      Include action-col if you want to perform actions.
+      rsp-p1 rsp-p2 are responsive priority as user resizes window.
+    -->
+    <tr ng-repeat="item in table.items track by item.id"
+        ng-class="{'st-selected': checked[item.id]}">
+
+      <td class="select-col">
+        <input type="checkbox"
+               ng-model="selected[item.id].checked"
+               hz-select="item">
+      </td>
+      <td class="rsp-p1"><a ng-href="project/ngloadbalancersv2/pools/{$ ::table.pool_id $}/members/detail/{$ ::item.id $}">{$ ::item.id $}</a></td>
+      <td class="rsp-p1">{$ ::item.address $}</td>
+      <td class="rsp-p1">{$ ::item.protocol_port $}</td>
+      <td class="rsp-p1">{$ ::item.weight $}</td>
+    </tr>
+
+  </tbody>
+  <!--
+    Table-footer:
+    This is where we display number of items and pagination controls.
+  -->
+  <tfoot hz-table-footer items="table.items"></tfoot>
+
+</table>

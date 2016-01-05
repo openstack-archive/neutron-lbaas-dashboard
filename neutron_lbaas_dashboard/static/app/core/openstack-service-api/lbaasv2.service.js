@@ -42,7 +42,9 @@
       editLoadBalancer: editLoadBalancer,
       getListeners: getListeners,
       getListener: getListener,
-      getPool: getPool
+      getPool: getPool,
+      getMembers: getMembers,
+      getMember: getMember
     };
 
     return service;
@@ -152,6 +154,8 @@
         });
     }
 
+    // Pools
+
     /**
      * @name horizon.app.core.openstack-service-api.lbaasv2.getPool
      * @description
@@ -164,6 +168,43 @@
       return apiService.get('/api/lbaas/pools/' + id)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve pool.'));
+        });
+    }
+
+    // Members
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.getMembers
+     * @description
+     * Get a list of members.
+     * @param {string} poolId
+     * Specifies the id of the pool the members belong to.
+     *
+     * The listing result is an object with property "items". Each item is
+     * a member.
+     */
+
+    function getMembers(poolId) {
+      return apiService.get('/api/lbaas/pools/' + poolId + '/members/')
+        .error(function () {
+          toastService.add('error', gettext('Unable to retrieve members.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.getMember
+     * @description
+     * Get a single pool Member by ID.
+     * @param {string} poolId
+     * Specifies the id of the pool the member belongs to.
+     * @param {string} memberId
+     * Specifies the id of the member to request.
+     */
+
+    function getMember(poolId, memberId) {
+      return apiService.get('/api/lbaas/pools/' + poolId + '/members/' + memberId)
+        .error(function () {
+          toastService.add('error', gettext('Unable to retrieve member.'));
         });
     }
 

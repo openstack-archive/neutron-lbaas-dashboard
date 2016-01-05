@@ -57,7 +57,10 @@ ADD_JS_FILES = [
     'dashboard/project/lbaasv2/listeners/detail.controller.js',
     'dashboard/project/lbaasv2/listeners/filters.js',
     'dashboard/project/lbaasv2/pools/pools.module.js',
-    'dashboard/project/lbaasv2/pools/detail.controller.js'
+    'dashboard/project/lbaasv2/pools/detail.controller.js',
+    'dashboard/project/lbaasv2/members/members.module.js',
+    'dashboard/project/lbaasv2/members/detail.controller.js',
+    'dashboard/project/lbaasv2/members/table.controller.js'
 ]
 
 ADD_JS_SPEC_FILES = [
@@ -89,7 +92,10 @@ ADD_JS_SPEC_FILES = [
     'dashboard/project/lbaasv2/listeners/detail.controller.spec.js',
     'dashboard/project/lbassv2/listeners/filters.spec.js',
     'dashboard/project/lbaasv2/pools/pools.module.spec.js',
-    'dashboard/project/lbaasv2/pools/detail.controller.spec.js'
+    'dashboard/project/lbaasv2/pools/detail.controller.spec.js',
+    'dashboard/project/lbaasv2/members/members.module.spec.js',
+    'dashboard/project/lbaasv2/members/detail.controller.spec.js',
+    'dashboard/project/lbaasv2/members/table.controller.spec.js'
 ]
 
 ADD_SCSS_FILES = [

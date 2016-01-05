@@ -91,6 +91,25 @@
         ]
       },
       {
+        "func": "getMembers",
+        "method": "get",
+        "path": "/api/lbaas/pools/1234/members/",
+        "error": "Unable to retrieve members.",
+        "testInput": [
+          '1234'
+        ]
+      },
+      {
+        "func": "getMember",
+        "method": "get",
+        "path": "/api/lbaas/pools/1234/members/5678",
+        "error": "Unable to retrieve member.",
+        "testInput": [
+          '1234',
+          '5678'
+        ]
+      },
+      {
         "func": "createLoadBalancer",
         "method": "post",
         "path": "/api/lbaas/loadbalancers/",

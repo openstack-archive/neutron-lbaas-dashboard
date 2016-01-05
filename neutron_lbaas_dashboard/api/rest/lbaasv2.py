@@ -310,3 +310,39 @@ class Pool(generic.View):
         """
         lb = neutronclient(request).show_lbaas_pool(pool_id)
         return lb.get('pool')
+
+
+@urls.register
+class Members(generic.View):
+    """API for load balancer members.
+
+    """
+    url_regex = r'lbaas/pools/(?P<pool_id>[^/]+)/members/$'
+
+    @rest_utils.ajax()
+    def get(self, request, pool_id):
+        """List of members for the current project.
+
+        The listing result is an object with property "items".
+        """
+        tenant_id = request.user.project_id
+        result = neutronclient(request).list_lbaas_members(pool_id,
+                                                           tenant_id=tenant_id)
+        return {'items': result.get('members')}
+
+
+@urls.register
+class Member(generic.View):
+    """API for retrieving a single member.
+
+    """
+    url_regex = r'lbaas/pools/(?P<pool_id>[^/]+)' + \
+                '/members/(?P<member_id>[^/]+)/$'
+
+    @rest_utils.ajax()
+    def get(self, request, member_id, pool_id):
+        """Get a specific member belonging to a specific pool.
+
+        """
+        lb = neutronclient(request).show_lbaas_member(member_id, pool_id)
+        return lb.get('member')

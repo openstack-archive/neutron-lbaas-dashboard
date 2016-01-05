@@ -28,7 +28,8 @@
       'ngRoute',
       'horizon.dashboard.project.lbaasv2.loadbalancers',
       'horizon.dashboard.project.lbaasv2.listeners',
-      'horizon.dashboard.project.lbaasv2.pools'
+      'horizon.dashboard.project.lbaasv2.pools',
+      'horizon.dashboard.project.lbaasv2.members'
     ])
     .config(config)
     .constant('horizon.dashboard.project.lbaasv2.patterns', {
@@ -68,6 +69,9 @@
       })
       .when(href + 'pools/detail/:poolId', {
         templateUrl: basePath + 'pools/detail.html'
+      })
+      .when(href + 'pools/:poolId/members/detail/:memberId', {
+        templateUrl: basePath + 'members/detail.html'
       });
   }
 
