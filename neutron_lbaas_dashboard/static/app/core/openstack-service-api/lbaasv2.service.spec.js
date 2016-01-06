@@ -110,6 +110,15 @@
         ]
       },
       {
+        "func": "getHealthMonitor",
+        "method": "get",
+        "path": "/api/lbaas/healthmonitors/1234",
+        "error": "Unable to retrieve health monitor.",
+        "testInput": [
+          '1234'
+        ]
+      },
+      {
         "func": "createLoadBalancer",
         "method": "post",
         "path": "/api/lbaas/loadbalancers/",

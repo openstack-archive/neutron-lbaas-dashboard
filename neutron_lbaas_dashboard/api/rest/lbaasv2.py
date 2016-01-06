@@ -346,3 +346,19 @@ class Member(generic.View):
         """
         lb = neutronclient(request).show_lbaas_member(member_id, pool_id)
         return lb.get('member')
+
+
+@urls.register
+class HealthMonitor(generic.View):
+    """API for retrieving a single health monitor.
+
+    """
+    url_regex = r'lbaas/healthmonitors/(?P<healthmonitor_id>[^/]+)/$'
+
+    @rest_utils.ajax()
+    def get(self, request, healthmonitor_id):
+        """Get a specific health monitor.
+
+        """
+        lb = neutronclient(request).show_lbaas_healthmonitor(healthmonitor_id)
+        return lb.get('healthmonitor')

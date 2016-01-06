@@ -126,10 +126,16 @@
           {
             templateUrl: basePath + 'members/detail.html'
           }
+        ],
+        [
+          href + 'healthmonitors/detail/:healthmonitorId',
+          {
+            templateUrl: basePath + 'healthmonitors/detail.html'
+          }
         ]
       ];
 
-      expect($routeProvider.when.calls.count()).toBe(5);
+      expect($routeProvider.when.calls.count()).toBe(6);
       angular.forEach($routeProvider.when.calls.all(), function(call, i) {
         expect(call.args).toEqual(routes[i]);
       });

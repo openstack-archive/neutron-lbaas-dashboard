@@ -29,7 +29,8 @@
       'horizon.dashboard.project.lbaasv2.loadbalancers',
       'horizon.dashboard.project.lbaasv2.listeners',
       'horizon.dashboard.project.lbaasv2.pools',
-      'horizon.dashboard.project.lbaasv2.members'
+      'horizon.dashboard.project.lbaasv2.members',
+      'horizon.dashboard.project.lbaasv2.healthmonitors'
     ])
     .config(config)
     .constant('horizon.dashboard.project.lbaasv2.patterns', {
@@ -72,6 +73,9 @@
       })
       .when(href + 'pools/:poolId/members/detail/:memberId', {
         templateUrl: basePath + 'members/detail.html'
+      })
+      .when(href + 'healthmonitors/detail/:healthmonitorId', {
+        templateUrl: basePath + 'healthmonitors/detail.html'
       });
   }
 

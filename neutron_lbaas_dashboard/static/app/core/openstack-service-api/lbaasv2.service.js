@@ -44,7 +44,8 @@
       getListener: getListener,
       getPool: getPool,
       getMembers: getMembers,
-      getMember: getMember
+      getMember: getMember,
+      getHealthMonitor: getHealthMonitor
     };
 
     return service;
@@ -205,6 +206,21 @@
       return apiService.get('/api/lbaas/pools/' + poolId + '/members/' + memberId)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve member.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.getHealthMonitor
+     * @description
+     * Get a single pool health monitor by ID.
+     * @param {string} monitorId
+     * Specifies the id of the health monitor.
+     */
+
+    function getHealthMonitor(monitorId) {
+      return apiService.get('/api/lbaas/healthmonitors/' + monitorId)
+        .error(function () {
+          toastService.add('error', gettext('Unable to retrieve health monitor.'));
         });
     }
 
