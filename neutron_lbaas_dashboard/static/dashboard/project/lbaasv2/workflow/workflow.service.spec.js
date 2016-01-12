@@ -58,6 +58,12 @@
       });
     });
 
+    it('should have a step for ssl certificates', function () {
+      var workflow = workflowService('My Workflow');
+      expect(workflow.certificatesStep).toBeDefined();
+      expect(workflow.certificatesStep.title).toBe('SSL Certificates');
+    });
+
     it('can filter steps', function () {
       var workflow = workflowService('My Workflow', 'foo', ['listener', 'pool']);
       expect(workflow.steps).toBeDefined();

@@ -52,6 +52,7 @@
         gettext('Update Listener'),
         'fa fa-pencil', ['listener'],
         defer.promise);
+    var allSteps = scope.workflow.allSteps.concat([scope.workflow.certificatesStep]);
     scope.model.initialize('listener', scope.launchContext.id).then(addSteps).then(ready);
 
     function addSteps() {
@@ -64,7 +65,7 @@
     }
 
     function getStep(id) {
-      return scope.workflow.allSteps.filter(function findStep(step) {
+      return allSteps.filter(function findStep(step) {
         return step.id === id;
       })[0];
     }

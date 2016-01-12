@@ -22,14 +22,57 @@
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     describe('ListenerDetailsController', function() {
-      var ctrl;
+      var ctrl, workflow, listener;
 
       beforeEach(inject(function($controller) {
-        ctrl = $controller('ListenerDetailsController');
+        workflow = {
+          steps: [{ id: 'listener' }],
+          certificatesStep: { id: 'certificates' },
+          after: angular.noop,
+          remove: angular.noop
+        };
+        listener = {
+          protocol: null
+        };
+        var scope = {
+          model: {
+            spec: {
+              listener: listener
+            }
+          },
+          workflow: workflow
+        };
+        ctrl = $controller('ListenerDetailsController', { $scope: scope });
       }));
 
       it('should define error messages for invalid fields', function() {
         expect(ctrl.portError).toBeDefined();
+        expect(ctrl.certificatesError).toBeDefined();
+      });
+
+      it('should show certificates step if selecting TERMINATED_HTTPS', function() {
+        listener.protocol = 'TERMINATED_HTTPS';
+        workflow.steps.push(workflow.certificatesStep);
+        spyOn(workflow, 'after');
+
+        ctrl.protocolChange();
+        expect(workflow.after).not.toHaveBeenCalled();
+
+        workflow.steps.splice(1, 1);
+        ctrl.protocolChange();
+        expect(workflow.after).toHaveBeenCalledWith('listener', workflow.certificatesStep);
+      });
+
+      it('should hide certificates step if not selecting TERMINATED_HTTPS', function() {
+        listener.protocol = 'HTTP';
+        spyOn(workflow, 'remove');
+
+        ctrl.protocolChange();
+        expect(workflow.remove).not.toHaveBeenCalled();
+
+        workflow.steps.push(workflow.certificatesStep);
+        ctrl.protocolChange();
+        expect(workflow.remove).toHaveBeenCalledWith('certificates');
       });
 
     });

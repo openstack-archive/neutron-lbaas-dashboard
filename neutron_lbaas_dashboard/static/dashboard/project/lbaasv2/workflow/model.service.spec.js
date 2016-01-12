@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Workflow Model Service', function() {
-    var model, $q, scope, listenerResources;
+    var model, $q, scope, listenerResources, barbicanEnabled, certificatesError;
 
     beforeEach(module('horizon.framework.util.i18n'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
@@ -30,7 +30,8 @@
           description: 'listener description',
           protocol: 'HTTP',
           protocol_port: 80,
-          loadbalancers: [ { id: '1234' } ]
+          loadbalancers: [ { id: '1234' } ],
+          sni_container_refs: ['container2']
         },
         pool: {
           id: '1234',
@@ -66,6 +67,8 @@
           url_path: '/test'
         }
       };
+      barbicanEnabled = true;
+      certificatesError = false;
     });
 
     beforeEach(module(function($provide) {
@@ -164,6 +167,56 @@
         }
       });
 
+      $provide.value('horizon.app.core.openstack-service-api.barbican', {
+        getCertificates: function() {
+          var containers = [
+            {
+              container_ref: 'container1',
+              secret_refs: [{name: 'certificate', secret_ref: 'secret1'}]
+            }, {
+              container_ref: 'container2',
+              secret_refs: [{name: 'certificate', secret_ref: 'certificate1'},
+                            {name: 'private_key', secret_ref: 'privatekey1'}]
+            },
+            {
+              container_ref: 'container3',
+              secret_refs: [{name: 'certificate', secret_ref: 'certificate2'},
+                            {name: 'private_key', secret_ref: 'privatekey2'}]
+            }
+          ];
+
+          var deferred = $q.defer();
+          if (certificatesError) {
+            deferred.reject();
+          } else {
+            deferred.resolve({ data: { items: containers } });
+          }
+
+          return deferred.promise;
+        },
+        getSecrets: function() {
+          var secrets = [
+            {
+              name: 'foo',
+              expiration: '2016-03-26T21:10:45.417835',
+              secret_ref: 'certificate1'
+            },{
+              expiration: '2016-03-28T21:10:45.417835',
+              secret_ref: 'certificate2'
+            },{
+              secret_ref: 'privatekey1'
+            },{
+              secret_ref: 'privatekey2'
+            }
+          ];
+
+          var deferred = $q.defer();
+          deferred.resolve({ data: { items: secrets } });
+
+          return deferred.promise;
+        }
+      });
+
       $provide.value('horizon.app.core.openstack-service-api.neutron', {
         getSubnets: function() {
           var subnets = [ { id: 'subnet-1', name: 'subnet-1' },
@@ -200,6 +253,14 @@
           return deferred.promise;
         }
       });
+
+      $provide.value('horizon.app.core.openstack-service-api.serviceCatalog', {
+        ifTypeEnabled: function() {
+          var deferred = $q.defer();
+          deferred[barbicanEnabled ? 'resolve' : 'reject']();
+          return deferred.promise;
+        }
+      });
     }));
 
     beforeEach(inject(function ($injector) {
@@ -233,12 +294,16 @@
         expect(model.members).toEqual([]);
       });
 
+      it('has empty certificates array', function() {
+        expect(model.certificates).toEqual([]);
+      });
+
       it('has array of pool protocols', function() {
         expect(model.poolProtocols).toEqual(['TCP', 'HTTP', 'HTTPS']);
       });
 
       it('has array of listener protocols', function() {
-        expect(model.listenerProtocols).toEqual(['TCP', 'HTTP', 'HTTPS']);
+        expect(model.listenerProtocols).toEqual(['TCP', 'HTTP', 'HTTPS', 'TERMINATED_HTTPS']);
       });
 
       it('has array of pool methods', function() {
@@ -278,13 +343,16 @@
         expect(model.initialized).toBe(true);
         expect(model.subnets.length).toBe(2);
         expect(model.members.length).toBe(2);
+        expect(model.certificates.length).toBe(2);
         expect(model.spec).toBeDefined();
         expect(model.spec.loadbalancer_id).toBeNull();
         expect(model.spec.loadbalancer).toBeDefined();
         expect(model.spec.listener).toBeDefined();
         expect(model.spec.pool).toBeDefined();
         expect(model.spec.members).toEqual([]);
+        expect(model.spec.certificates).toEqual([]);
         expect(model.spec.monitor).toBeDefined();
+        expect(model.certificatesError).toBe(false);
       });
 
       it('should initialize names', function() {
@@ -362,6 +430,39 @@
         expect(model.context.resource).toBe('loadbalancer');
         expect(model.context.id).toBe('1234');
         expect(model.context.submit).toBeDefined();
+      });
+
+      it('should initialize listener protocols', function() {
+        expect(model.listenerProtocols.length).toBe(4);
+        expect(model.listenerProtocols.indexOf('TERMINATED_HTTPS')).toBe(3);
+      });
+    });
+
+    describe('Post initialize model (without barbican)', function() {
+
+      beforeEach(function() {
+        barbicanEnabled = false;
+        model.initialize('loadbalancer');
+        scope.$apply();
+      });
+
+      it('should initialize listener protocols', function() {
+        expect(model.listenerProtocols.length).toBe(3);
+        expect(model.listenerProtocols.indexOf('TERMINATED_HTTPS')).toBe(-1);
+      });
+    });
+
+    describe('Post initialize model (certificates error)', function() {
+
+      beforeEach(function() {
+        certificatesError = true;
+        model.initialize('loadbalancer');
+        scope.$apply();
+      });
+
+      it('should initialize listener protocols', function() {
+        expect(model.certificates).toEqual([]);
+        expect(model.certificatesError).toBe(true);
       });
     });
 
@@ -444,6 +545,37 @@
       });
     });
 
+    describe('Post initialize model (edit listener TERMINATED_HTTPS)', function() {
+
+      beforeEach(function() {
+        listenerResources.listener.protocol = 'TERMINATED_HTTPS';
+        model.initialize('listener', '1234');
+        scope.$apply();
+      });
+
+      it('should initialize certificates', function() {
+        expect(model.certificates.length).toBe(2);
+        expect(model.spec.certificates.length).toBe(1);
+        expect(model.spec.certificates[0].id).toBe('container2');
+      });
+    });
+
+    describe('Post initialize model (edit listener TERMINATED_HTTPS no barbican)', function() {
+
+      beforeEach(function() {
+        listenerResources.listener.protocol = 'TERMINATED_HTTPS';
+        barbicanEnabled = false;
+        model.initialize('listener', '1234');
+        scope.$apply();
+      });
+
+      it('should initialize certificates', function() {
+        expect(model.certificates.length).toBe(0);
+        expect(model.spec.certificates.length).toBe(0);
+        expect(model.spec.listener.protocol).toBe('TERMINATED_HTTPS');
+      });
+    });
+
     describe('Post initialize model - Initializing', function() {
 
       beforeEach(function() {
@@ -455,7 +587,7 @@
       // This is here to ensure that as people add/change spec properties, they don't forget
       // to implement tests for them.
       it('has the right number of properties', function() {
-        expect(Object.keys(model.spec).length).toBe(6);
+        expect(Object.keys(model.spec).length).toBe(7);
         expect(Object.keys(model.spec.loadbalancer).length).toBe(4);
         expect(Object.keys(model.spec.listener).length).toBe(5);
         expect(Object.keys(model.spec.pool).length).toBe(5);
@@ -688,6 +820,11 @@
         model.spec.monitor.interval = 1;
         model.spec.monitor.retry = 1;
         model.spec.monitor.timeout = 1;
+        model.spec.certificates = [{
+          id: 'container1',
+          name: 'foo',
+          expiration: '2015-03-26T21:10:45.417835'
+        }];
 
         var finalSpec = model.submit();
 
@@ -732,6 +869,31 @@
         expect(finalSpec.monitor.interval).toBe(1);
         expect(finalSpec.monitor.retry).toBe(1);
         expect(finalSpec.monitor.timeout).toBe(1);
+        expect(finalSpec.certificates).toBeUndefined();
+      });
+
+      it('should set final spec certificates', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'TERMINATED_HTTPS';
+        model.spec.listener.port = 443;
+        model.spec.certificates = [{
+          id: 'container1',
+          name: 'foo',
+          expiration: '2015-03-26T21:10:45.417835'
+        }];
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer.name).toBe('Load Balancer 3');
+        expect(finalSpec.loadbalancer.description).toBeUndefined();
+        expect(finalSpec.loadbalancer.ip).toBe('1.2.3.4');
+        expect(finalSpec.loadbalancer.subnet).toBe(model.subnets[0].id);
+        expect(finalSpec.listener.name).toBe('Listener 1');
+        expect(finalSpec.listener.description).toBeUndefined();
+        expect(finalSpec.listener.protocol).toBe('TERMINATED_HTTPS');
+        expect(finalSpec.listener.port).toBe(443);
+        expect(finalSpec.certificates).toEqual(['container1']);
       });
 
       it('should delete load balancer if any required property is not set', function() {
@@ -752,6 +914,33 @@
         expect(finalSpec.loadbalancer).toBeDefined();
         expect(finalSpec.listener).toBeUndefined();
         expect(finalSpec.pool).toBeUndefined();
+      });
+
+      it('should delete listener if using TERMINATED_HTTPS but no certificates', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'TERMINATED_HTTPS';
+        model.spec.listener.port = 443;
+        model.spec.certificates = [];
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeUndefined();
+      });
+
+      it('should delete certificates if not using TERMINATED_HTTPS', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTP';
+        model.spec.listener.port = 80;
+        model.spec.certificates = [{id: '1'}];
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeDefined();
+        expect(finalSpec.certificates).toBeUndefined();
       });
 
       it('should delete pool if any required property is not set', function() {

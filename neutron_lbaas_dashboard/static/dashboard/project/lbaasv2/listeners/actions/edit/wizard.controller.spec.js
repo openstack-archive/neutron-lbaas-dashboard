@@ -31,6 +31,7 @@
     var workflow = {
       steps: [{id: 'listener'}],
       allSteps: [{id: 'listener'}, {id: 'pool'}, {id: 'monitor'}],
+      certificatesStep: {id: 'certificates'},
       append: angular.noop
     };
 

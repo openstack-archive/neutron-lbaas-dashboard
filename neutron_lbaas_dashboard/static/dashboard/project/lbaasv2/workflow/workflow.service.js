@@ -65,6 +65,16 @@
       }
     ];
 
+    // This step is kept separate from the rest because it is only added to the workflow by
+    // the Listener Details step if the TERMINATED_HTTPS protocol is selected.
+    var certificatesStep = {
+      id: 'certificates',
+      title: gettext('SSL Certificates'),
+      templateUrl: basePath + 'workflow/certificates/certificates.html',
+      helpUrl: basePath + 'workflow/certificates/certificates.help.html',
+      formName: 'certificateDetailsForm'
+    };
+
     return initWorkflow;
 
     function initWorkflow(title, icon, steps, promise) {
@@ -92,7 +102,8 @@
           finish: icon
         },
         steps: filteredSteps,
-        allSteps: workflowSteps
+        allSteps: workflowSteps,
+        certificatesStep: certificatesStep
       });
     }
   }

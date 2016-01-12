@@ -76,6 +76,13 @@
     }
   }
 
+  /* Listeners tab */
+  [ng-form="listenerDetailsForm"] {
+    div.listener-protocol > span.fa-exclamation-triangle {
+      color: #aaaaaa;
+    }
+  }
+
   /* Pool Members tab */
   [ng-form="memberDetailsForm"] {
     .transfer-section:first-child {

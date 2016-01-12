@@ -21,6 +21,7 @@
     .controller('ListenerDetailsController', ListenerDetailsController);
 
   ListenerDetailsController.$inject = [
+    '$scope',
     'horizon.framework.util.i18n.gettext'
   ];
 
@@ -34,11 +35,32 @@
    * @returns undefined
    */
 
-  function ListenerDetailsController(gettext) {
+  function ListenerDetailsController($scope, gettext) {
 
     var ctrl = this;
 
     // Error text for invalid fields
     ctrl.portError = gettext('The port must be a number between 1 and 65535.');
+    ctrl.certificatesError = gettext('There was an error obtaining certificates from the ' +
+      'key-manager service. The TERMINATED_HTTPS protocol is unavailable.');
+
+    ctrl.protocolChange = protocolChange;
+
+    //////////
+
+    // Called when the listener protocol is changed. Shows the SSL Certificates step if
+    // TERMINATED_HTTPS is selected.
+    function protocolChange() {
+      var protocol = $scope.model.spec.listener.protocol;
+      var workflow = $scope.workflow;
+      var certificates = workflow.steps.some(function checkCertificatesStep(step) {
+        return step.id === 'certificates';
+      });
+      if (protocol === 'TERMINATED_HTTPS' && !certificates) {
+        workflow.after('listener', workflow.certificatesStep);
+      } else if (protocol !== 'TERMINATED_HTTPS' && certificates) {
+        workflow.remove('certificates');
+      }
+    }
   }
 })();

@@ -27,6 +27,8 @@
     'horizon.app.core.openstack-service-api.neutron',
     'horizon.app.core.openstack-service-api.nova',
     'horizon.app.core.openstack-service-api.lbaasv2',
+    'horizon.app.core.openstack-service-api.barbican',
+    'horizon.app.core.openstack-service-api.serviceCatalog',
     'horizon.framework.util.i18n.gettext'
   ];
 
@@ -43,12 +45,22 @@
    * @param neutronAPI The neutron service API.
    * @param novaAPI The nova service API.
    * @param lbaasv2API The LBaaS V2 service API.
+   * @param barbicanAPI The barbican service API.
+   * @param serviceCatalog The keystone service catalog API.
    * @param gettext The horizon gettext function for translation.
    * @returns The model service for the create load balancer workflow.
    */
 
-  function workflowModel($q, neutronAPI, novaAPI, lbaasv2API, gettext) {
-    var ports;
+  function workflowModel(
+    $q,
+    neutronAPI,
+    novaAPI,
+    lbaasv2API,
+    barbicanAPI,
+    serviceCatalog,
+    gettext
+  ) {
+    var ports, keymanagerPromise;
 
     /**
      * @ngdoc model api object
@@ -73,11 +85,12 @@
       visibleResources: [],
       subnets: [],
       members: [],
-      listenerProtocols: ['TCP', 'HTTP', 'HTTPS'],
+      listenerProtocols: ['TCP', 'HTTP', 'HTTPS', 'TERMINATED_HTTPS'],
       poolProtocols: ['TCP', 'HTTP', 'HTTPS'],
       methods: ['ROUND_ROBIN', 'LEAST_CONNECTIONS', 'SOURCE_IP'],
       monitorTypes: ['HTTP', 'HTTPS', 'PING', 'TCP'],
       monitorMethods: ['GET', 'HEAD'],
+      certificates: [],
 
       /**
        * api methods for UI controllers
@@ -88,6 +101,8 @@
     };
 
     return model;
+
+    ///////////////
 
     /**
      * @ngdoc method
@@ -105,6 +120,7 @@
     function initialize(resource, id) {
       var promise;
 
+      model.certificatesError = false;
       model.context = {
         resource: resource,
         id: id,
@@ -112,6 +128,7 @@
       };
 
       model.visibleResources = [];
+      model.certificates = [];
 
       model.spec = {
         loadbalancer_id: null,
@@ -145,7 +162,8 @@
           status: '200',
           path: '/'
         },
-        members: []
+        members: [],
+        certificates: []
       };
 
       if (model.initializing) {
@@ -153,13 +171,21 @@
       }
       model.initializing = true;
 
+      var type = (id ? 'edit' : 'create') + resource;
+      keymanagerPromise = serviceCatalog.ifTypeEnabled('key-manager');
+
+      if (type === 'createloadbalancer' || resource === 'listener') {
+        keymanagerPromise.then(angular.noop, certificatesNotSupported);
+      }
+
       switch ((id ? 'edit' : 'create') + resource) {
         case 'createloadbalancer':
           promise = $q.all([
             lbaasv2API.getLoadBalancers().then(onGetLoadBalancers),
             neutronAPI.getSubnets().then(onGetSubnets),
             neutronAPI.getPorts().then(onGetPorts),
-            novaAPI.getServers().then(onGetServers)
+            novaAPI.getServers().then(onGetServers),
+            keymanagerPromise.then(prepareCertificates)
           ]).then(initMemberAddresses);
           model.context.submit = createLoadBalancer;
           break;
@@ -247,10 +273,22 @@
     }
 
     function cleanFinalSpecListener(finalSpec) {
-
-      // Listener requires protocol and port
       if (!finalSpec.listener.protocol || !finalSpec.listener.port) {
+        // Listener requires protocol and port
         delete finalSpec.listener;
+      } else if (finalSpec.listener.protocol === 'TERMINATED_HTTPS' &&
+          finalSpec.certificates.length === 0) {
+        // TERMINATED_HTTPS requires certificates
+        delete finalSpec.listener;
+      } else if (finalSpec.listener.protocol !== 'TERMINATED_HTTPS') {
+        // Remove certificate containers if not using TERMINATED_HTTPS
+        delete finalSpec.certificates;
+      } else {
+        var containers = [];
+        angular.forEach(finalSpec.certificates, function(cert) {
+          containers.push(cert.id);
+        });
+        finalSpec.certificates = containers;
       }
     }
 
@@ -405,6 +443,19 @@
       model.visibleResources.push('listener');
       model.spec.loadbalancer_id = resources.listener.loadbalancers[0].id;
 
+      if (resources.listener.protocol === 'TERMINATED_HTTPS') {
+        keymanagerPromise.then(prepareCertificates).then(function addAvailableCertificates() {
+          resources.listener.sni_container_refs.forEach(function addAvailableCertificate(ref) {
+            model.certificates.filter(function matchCertificate(cert) {
+              return cert.id === ref;
+            }).forEach(function addCertificate(cert) {
+              model.spec.certificates.push(cert);
+            });
+          });
+        });
+        model.visibleResources.push('certificates');
+      }
+
       if (resources.pool) {
         setPoolSpec(resources.pool);
         model.visibleResources.push('pool');
@@ -476,6 +527,45 @@
       spec.path = monitor.url_path;
     }
 
+    function prepareCertificates() {
+      return $q.all([
+        barbicanAPI.getCertificates(true),
+        barbicanAPI.getSecrets(true)
+      ]).then(onGetCertificates, certificatesError);
+    }
+
+    function onGetCertificates(results) {
+      // To use the TERMINATED_HTTPS protocol with a listener, the LBaaS v2 API wants a default
+      // container ref and a list of containers that hold TLS secrets. In barbican the container
+      // object has a list of references to the secrets it holds. This assumes that each
+      // certificate container has exactly one certificate and private key. We fetch both the
+      // certificate containers and the secrets so that we can display the secret names and
+      // expirations dates.
+      model.certificates.length = 0;
+      var certificates = [];
+      // Only accept containers that have both a certificate and private_key ref
+      var containers = results[0].data.items.filter(function validateContainer(container) {
+        container.refs = {};
+        container.secret_refs.forEach(function(ref) {
+          container.refs[ref.name] = ref.secret_ref;
+        });
+        return 'certificate' in container.refs && 'private_key' in container.refs;
+      });
+      var secrets = {};
+      results[1].data.items.forEach(function addSecret(secret) {
+        secrets[secret.secret_ref] = secret;
+      });
+      containers.forEach(function addCertificateContainer(container) {
+        var secret = secrets[container.refs.certificate];
+        certificates.push({
+          id: container.container_ref,
+          name: secret.name || secret.secret_ref.split('/').reverse()[0],
+          expiration: secret.expiration
+        });
+      });
+      push.apply(model.certificates, certificates);
+    }
+
     function initSubnet() {
       var subnet = model.subnets.filter(function filterSubnetsByLoadBalancer(s) {
         return s.id === model.spec.loadbalancer.subnet;
@@ -489,6 +579,22 @@
       });
 
       return subnet[0];
+    }
+
+    function certificatesNotSupported() {
+      // This function is called if the key-manager service is not available. In that case we
+      // cannot support the TERMINATED_HTTPS listener protocol so we hide the option if creating
+      // a new load balancer or listener. However for editing we still need it.
+      if (!model.context.id) {
+        model.listenerProtocols.splice(3, 1);
+      }
+    }
+
+    function certificatesError() {
+      // This function is called if there is an error fetching the certificate containers or
+      // secrets. In that case we cannot support the TERMINATED_HTTPS listener protocol but we
+      // want to make the user aware of the error.
+      model.certificatesError = true;
     }
   }
 

@@ -32,11 +32,16 @@
           <div class="col-sm-6 col-md-3">
             <div class="form-field required listener-protocol">
               <label translate class="on-top" for="listener-protocol">Protocol</label>
-              <select class="form-control input-sm" name="listener-protocol"
-                      id="listener-protocol"
-                      ng-options="protocol for protocol in model.listenerProtocols"
+              <span class="fa fa-exclamation-triangle invalid"
+                  ng-show="model.certificatesError"
+                  popover="{$ ::ctrl.certificatesError $}"
+                  popover-placement="top" popover-append-to-body="true"
+                  popover-trigger="hover"></span>
+              <select class="form-control input-sm" name="listener-protocol" id="listener-protocol"
                       ng-model="model.spec.listener.protocol" ng-required="model.context.resource === 'listener'"
-                      ng-disabled="model.context.id">
+                      ng-change="ctrl.protocolChange()" ng-disabled="model.context.id">
+                <option ng-repeat="protocol in model.listenerProtocols" value="{$ protocol $}"
+                        ng-disabled="protocol==='TERMINATED_HTTPS' && model.certificatesError">{$ protocol $}</option>
               </select>
             </div>
           </div>
