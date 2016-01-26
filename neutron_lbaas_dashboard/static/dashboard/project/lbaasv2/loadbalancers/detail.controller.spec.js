@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Load Balancer Detail Controller', function() {
-    var controller, lbaasv2API, staticUrl, loadbalancer;
+    var controller, lbaasv2API, loadbalancer;
 
     function fakeAPI() {
       return {
@@ -39,7 +39,6 @@
       loadbalancer = { id: '1234' };
       lbaasv2API = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
       controller = $injector.get('$controller');
-      staticUrl = $injector.get('$window').STATIC_URL;
       spyOn(lbaasv2API, 'getLoadBalancer').and.callFake(fakeAPI);
     }));
 

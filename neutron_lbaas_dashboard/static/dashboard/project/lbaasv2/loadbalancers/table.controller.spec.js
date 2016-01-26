@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Load Balancers Table Controller', function() {
-    var controller, lbaasv2API, staticUrl, scope, batchActionsService;
+    var controller, lbaasv2API, scope;
     var items = [];
 
     function fakeAPI() {
@@ -42,10 +42,7 @@
 
     beforeEach(inject(function($injector) {
       lbaasv2API = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
-      batchActionsService = $injector.get(
-        'horizon.dashboard.project.lbaasv2.loadbalancers.actions.batchActions');
       controller = $injector.get('$controller');
-      staticUrl = $injector.get('$window').STATIC_URL;
       scope = $injector.get('$rootScope').$new();
       scope.lbaasv2API = lbaasv2API;
       spyOn(lbaasv2API, 'getLoadBalancers').and.callFake(fakeAPI);

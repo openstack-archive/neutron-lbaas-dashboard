@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Load Balancers Table Batch Actions Service', function() {
-    var batchActionsService, scope;
+    var batchActionsService;
 
     beforeEach(module('horizon.framework.util'));
     beforeEach(module('horizon.framework.conf'));
@@ -30,7 +30,6 @@
     }));
 
     beforeEach(inject(function ($injector) {
-      scope = $injector.get('$rootScope').$new();
       batchActionsService = $injector.get(
         'horizon.dashboard.project.lbaasv2.loadbalancers.actions.batchActions');
     }));
