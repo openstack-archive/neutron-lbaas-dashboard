@@ -33,10 +33,10 @@
   ) {
     // Note: we set these attributes on the $scope so that the scope inheritance used all
     // through the wizard continues to work.
-    $scope.workflow = createLoadBalancerWorkflow;    // eslint-disable-line angular/ng_controller_as
-    $scope.model = createLoadBalancerModel;          // eslint-disable-line angular/ng_controller_as
+    $scope.workflow = createLoadBalancerWorkflow;    // eslint-disable-line angular/controller-as
+    $scope.model = createLoadBalancerModel;          // eslint-disable-line angular/controller-as
     $scope.model.initialize();
-    $scope.submit = $scope.model.createLoadBalancer; // eslint-disable-line angular/ng_controller_as
+    $scope.submit = $scope.model.createLoadBalancer; // eslint-disable-line angular/controller-as
   }
 
 })();
