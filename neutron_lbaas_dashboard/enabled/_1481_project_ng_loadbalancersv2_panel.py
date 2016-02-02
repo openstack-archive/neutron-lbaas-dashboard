@@ -85,7 +85,7 @@ ADD_JS_SPEC_FILES = [
     'dashboard/project/lbaasv2/listeners/listeners.module.spec.js',
     'dashboard/project/lbaasv2/listeners/table.controller.spec.js',
     'dashboard/project/lbaasv2/listeners/detail.controller.spec.js',
-    'dashboard/project/lbassv2/listeners/filters.spec.js'
+    'dashboard/project/lbaasv2/listeners/filters.spec.js'
 ]
 
 ADD_SCSS_FILES = [
