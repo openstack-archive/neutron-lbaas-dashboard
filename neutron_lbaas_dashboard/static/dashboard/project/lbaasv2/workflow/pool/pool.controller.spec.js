@@ -18,14 +18,18 @@
 
   describe('Create Pool Details Step', function() {
     var ctrl;
-    var members = [{port: ''}, {port: ''}];
+    var availableMembers = [{port: ''}, {port: ''}];
+    var allocatedMembers = [{port: ''}, {port: ''}];
 
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(inject(function($controller) {
       var scope = {
         model: {
-          members: members
+          members: availableMembers,
+          spec: {
+            members: allocatedMembers
+          }
         }
       };
       ctrl = $controller('CreatePoolDetailsController', { $scope: scope });
@@ -38,7 +42,7 @@
     it('should update member ports on protocol change to HTTP', function() {
       ctrl.protocolChange('HTTP');
 
-      members.forEach(function(member) {
+      availableMembers.concat(allocatedMembers).forEach(function(member) {
         expect(member.port).toBe(80);
       });
     });
@@ -46,7 +50,7 @@
     it('should update member ports on protocol change to HTTPS', function() {
       ctrl.protocolChange('HTTPS');
 
-      members.forEach(function(member) {
+      availableMembers.concat(allocatedMembers).forEach(function(member) {
         expect(member.port).toBe(443);
       });
     });
@@ -54,8 +58,8 @@
     it('should update member ports on protocol change to TCP', function() {
       ctrl.protocolChange('TCP');
 
-      members.forEach(function(member) {
-        expect(member.port).toBe('');
+      availableMembers.concat(allocatedMembers).forEach(function(member) {
+        expect(member.port).toBeUndefined();
       });
     });
   });

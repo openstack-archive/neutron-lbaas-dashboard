@@ -24,6 +24,7 @@
     '$scope',
     '$compile',
     'horizon.dashboard.project.lbaasv2.popovers',
+    'horizon.dashboard.project.lbaasv2.patterns',
     'horizon.framework.util.i18n.gettext'
   ];
 
@@ -35,18 +36,21 @@
    * @param $scope The angular scope object.
    * @param $compile The angular compile service.
    * @param popoverTemplates LBaaS v2 popover templates constant.
+   * @param patterns The LBaaS v2 patterns constant.
    * @param gettext The horizon gettext function for translation.
    * @returns undefined
    */
 
-  function MemberDetailsController($scope, $compile, popoverTemplates, gettext) {
+  function MemberDetailsController($scope, $compile, popoverTemplates, patterns, gettext) {
     var ctrl = this;
+    var memberCounter = 0;
 
     // Error text for invalid fields
     ctrl.portError = gettext('The port must be a number between 1 and 65535.');
     ctrl.weightError = gettext('The weight must be a number between 1 and 256.');
+    ctrl.ipError = gettext('The IP address is not valid.');
 
-    // Table widget properties
+    // Instances transer table widget properties
     ctrl.tableData = {
       available: $scope.model.members,
       allocated: $scope.model.spec.members,
@@ -58,14 +62,26 @@
     };
     ctrl.tableHelp = {
       availHelpText: '',
-      noneAllocText: gettext('Select members from the available members below'),
-      noneAvailText: gettext('No available members')
+      noneAllocText: gettext('No members have been allocated'),
+      noneAvailText: gettext('No available instances'),
+      allocTitle: gettext('Allocated Members'),
+      availTitle: gettext('Available Instances')
     };
+
+    // IP address validation pattern
+    ctrl.ipPattern = [patterns.ipv4, patterns.ipv6].join('|');
 
     // Functions to control the IP address popover
     ctrl.showAddressPopover = showAddressPopover;
     ctrl.hideAddressPopover = hideAddressPopover;
     ctrl.addressPopoverTarget = addressPopoverTarget;
+
+    // Member management
+    ctrl.allocateExternalMember = allocateExternalMember;
+    ctrl.allocateMember = allocateMember;
+    ctrl.deallocateMember = deallocateMember;
+
+    ctrl.getSubnetName = getSubnetName;
 
     //////////
 
@@ -90,6 +106,33 @@
 
     function addressPopoverTarget(member) {
       return interpolate(gettext('%(ip)s...'), { ip: member.address.ip }, true);
+    }
+
+    function allocateExternalMember() {
+      var protocol = $scope.model.spec.pool.protocol;
+      $scope.model.spec.members.push({
+        id: memberCounter++,
+        address: null,
+        subnet: null,
+        port: { HTTP: 80, HTTPS: 443 }[protocol],
+        weight: 1
+      });
+    }
+
+    function allocateMember(member) {
+      var newMember = angular.extend(angular.copy(member), { id: memberCounter++ });
+      $scope.model.spec.members.push(newMember);
+    }
+
+    function deallocateMember(member) {
+      var index = $scope.model.spec.members.indexOf(member);
+      $scope.model.spec.members.splice(index, 1);
+    }
+
+    function getSubnetName(member) {
+      return $scope.model.subnets.filter(function filterSubnet(subnet) {
+        return subnet.id === member.address.subnet;
+      })[0].name;
     }
   }
 })();

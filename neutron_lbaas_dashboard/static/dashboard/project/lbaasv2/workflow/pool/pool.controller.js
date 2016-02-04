@@ -43,13 +43,11 @@
     //////////
 
     function protocolChange(protocol) {
-      var port = '';
-      if (protocol === 'HTTP') {
-        port = 80;
-      } else if (protocol === 'HTTPS') {
-        port = 443;
-      }
-      $scope.model.members.forEach(function setPort(member) {
+      var port = { HTTP: 80, HTTPS: 443 }[protocol];
+      $scope.model.members.forEach(function setAvailableInstancePort(member) {
+        member.port = port;
+      });
+      $scope.model.spec.members.forEach(function setAllocatedMemberPort(member) {
         member.port = port;
       });
     }

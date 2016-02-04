@@ -379,6 +379,24 @@
           description: 'bar',
           port: 80,
           weight: 1
+        }, {
+          id: 'external-member-0',
+          address: '2.3.4.5',
+          subnet: null,
+          port: 80,
+          weight: 1
+        }, {
+          id: 'external-member-1',
+          address: null,
+          subnet: null,
+          port: 80,
+          weight: 1
+        }, {
+          id: 'external-member-2',
+          address: '3.4.5.6',
+          subnet: { id: '1' },
+          port: 80,
+          weight: 1
         }];
         model.spec.monitor.type = 'PING';
         model.spec.monitor.interval = 1;
@@ -399,7 +417,7 @@
         expect(finalSpec.pool.description).toBe('pool description');
         expect(finalSpec.pool.protocol).toBe('HTTP');
         expect(finalSpec.pool.method).toBe('LEAST_CONNECTIONS');
-        expect(finalSpec.members.length).toBe(1);
+        expect(finalSpec.members.length).toBe(3);
         expect(finalSpec.members[0].address).toBe('1.2.3.4');
         expect(finalSpec.members[0].subnet).toBe('1');
         expect(finalSpec.members[0].port).toBe(80);
@@ -407,7 +425,16 @@
         expect(finalSpec.members[0].addresses).toBeUndefined();
         expect(finalSpec.members[0].id).toBeUndefined();
         expect(finalSpec.members[0].name).toBeUndefined();
-        expect(finalSpec.members[0].description).toBeUndefined();
+        expect(finalSpec.members[1].id).toBeUndefined();
+        expect(finalSpec.members[1].address).toBe('2.3.4.5');
+        expect(finalSpec.members[1].subnet).toBeUndefined();
+        expect(finalSpec.members[1].port).toBe(80);
+        expect(finalSpec.members[1].weight).toBe(1);
+        expect(finalSpec.members[2].id).toBeUndefined();
+        expect(finalSpec.members[2].address).toBe('3.4.5.6');
+        expect(finalSpec.members[2].subnet).toBe('1');
+        expect(finalSpec.members[2].port).toBe(80);
+        expect(finalSpec.members[2].weight).toBe(1);
         expect(finalSpec.monitor.type).toBe('PING');
         expect(finalSpec.monitor.interval).toBe(1);
         expect(finalSpec.monitor.retry).toBe(1);
@@ -454,6 +481,27 @@
         model.spec.listener.port = 80;
         model.spec.pool.protocol = 'HTTP';
         model.spec.pool.method = 'LEAST_CONNECTIONS';
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeDefined();
+        expect(finalSpec.pool).toBeDefined();
+        expect(finalSpec.members).toBeUndefined();
+      });
+
+      it('should delete members if no members are valid', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTPS';
+        model.spec.listener.port = 80;
+        model.spec.pool.protocol = 'HTTP';
+        model.spec.pool.method = 'LEAST_CONNECTIONS';
+        model.spec.members = [{
+          id: 'foo',
+          address: '2.3.4.5',
+          weight: 1
+        }];
 
         var finalSpec = model.submit();
 

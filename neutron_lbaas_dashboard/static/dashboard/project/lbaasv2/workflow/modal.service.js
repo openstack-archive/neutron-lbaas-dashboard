@@ -83,7 +83,8 @@
         var spec = {
           backdrop: 'static',
           controller: 'ModalContainerController',
-          template: '<wizard ng-controller="' + args.controller + '"></wizard>',
+          template: '<wizard class="lbaas-wizard" ng-controller="' +
+            args.controller + '"></wizard>',
           windowClass: 'modal-dialog-wizard',
           resolve: {
             launchContext: function() {
