@@ -4,7 +4,6 @@
   <!--content-->
   <div class="content">
     <div translate class="subtitle">Add members to the load balancer pool.</div>
-
     <transfer-table tr-model="ctrl.tableData"
                     limits="::ctrl.tableLimits"
                     help-text="::ctrl.tableHelp">
@@ -16,18 +15,19 @@
                class="table-striped table-rsp table-detail modern form-group">
           <thead>
             <tr>
-              <th class="expander"></th>
-              <th class="rsp-p2" translate>Name</th>
-              <th class="rsp-p3" translate>Description</th>
               <th class="rsp-p1"
                   ng-class="{ 'required': ctrl.tableData.displayedAllocated.length > 0 }">
                 <label translate>IP Address</label>
               </th>
-              <th class="rsp-p1" translate>Weight</th>
+              <th class="rsp-p1"
+                  ng-class="{ 'required': ctrl.tableData.displayedAllocated.length > 0 }">
+                <label translate>Subnet</label>
+              </th>
               <th class="rsp-p1"
                   ng-class="{ 'required': ctrl.tableData.displayedAllocated.length > 0 }">
                 <label translate>Port</label>
               </th>
+              <th class="rsp-p1" translate>Weight</th>
               <th></th>
             </tr>
           </thead>
@@ -39,36 +39,40 @@
                 </div>
               </td>
             </tr>
-            <tr ng-repeat-start="row in ctrl.tableData.displayedAllocated track by row.id">
-              <td class="expander">
-                <i class="fa fa-chevron-right"
-                   hz-expand-detail
-                   duration="200">
-                </i>
-              </td>
-              <td class="rsp-p2">{$ ::row.name $}</td>
-              <td class="rsp-p3">{$ ::row.description | noValue $}</td>
+            <tr ng-repeat="row in ctrl.tableData.displayedAllocated track by row.id">
               <td class="rsp-p1">
+                <div ng-if="!row.addresses"
+                     class="form-field member-address"
+                     ng-class="{ 'has-error': memberDetailsForm['{$ ::row.id $}-address'].$invalid && memberDetailsForm['{$ ::row.id $}-address'].$dirty }">
+                  <input name="{$ ::row.id $}-address" type="text" class="form-control input-sm"
+                         ng-model="row.address" ng-pattern="::ctrl.ipPattern"
+                         ng-required="true">
+                </div>
+                <span ng-if="!row.addresses"
+                      class="fa fa-exclamation-triangle invalid"
+                      ng-show="memberDetailsForm['{$ ::row.id $}-address'].$invalid && memberDetailsForm.$dirty"
+                      popover="{$ ::ctrl.ipError $}"
+                      popover-placement="top" popover-append-to-body="true"
+                      popover-trigger="hover"></span>
                 <span ng-if="row.addresses.length === 1">{$ row.address.ip $}</span>
                 <div ng-if="row.addresses.length > 1"
                      class="form-field member-address">
                   <select class="form-control input-sm"
                           ng-options="addr.ip for addr in row.addresses"
-                          ng-model="row.address" ng-required="true">
+                          ng-model="row.address" ng-required="true"
+                          ng-if="row.addresses">
                   </select>
                 </div>
               </td>
               <td class="rsp-p1">
-                <div class="form-field member-weight"
-                     ng-class="{ 'has-error': memberDetailsForm['{$ ::row.id $}-weight'].$invalid && memberDetailsForm['{$ ::row.id $}-weight'].$dirty }">
-                  <input name="{$ ::row.id $}-weight" type="number" class="form-control input-sm"
-                         ng-model="row.weight" ng-pattern="/^\d+$/" min="1" max="256">
+                <div ng-if="!row.addresses"
+                     class="form-field">
+                  <select name="{$ ::row.id $}-subnet" class="form-control input-sm"
+                          ng-options="subnet.name for subnet in model.subnets"
+                          ng-model="row.subnet">
+                  </select>
                 </div>
-                <span class="fa fa-exclamation-triangle invalid"
-                      ng-show="memberDetailsForm['{$ ::row.id $}-weight'].$invalid && memberDetailsForm.$dirty"
-                      popover="{$ ::ctrl.weightError $}"
-                      popover-placement="top" popover-append-to-body="true"
-                      popover-trigger="hover"></span>
+                <span ng-if="row.addresses">{$ ctrl.getSubnetName(row) $}</span>
               </td>
               <td class="rsp-p1">
                 <div class="form-field member-port"
@@ -83,27 +87,35 @@
                       popover-placement="top" popover-append-to-body="true"
                       popover-trigger="hover"></span>
               </td>
+              <td class="rsp-p1">
+                <div class="form-field member-weight"
+                     ng-class="{ 'has-error': memberDetailsForm['{$ ::row.id $}-weight'].$invalid && memberDetailsForm['{$ ::row.id $}-weight'].$dirty }">
+                  <input name="{$ ::row.id $}-weight" type="number" class="form-control input-sm"
+                         ng-model="row.weight" ng-pattern="/^\d+$/" min="1" max="256">
+                </div>
+                <span class="fa fa-exclamation-triangle invalid"
+                      ng-show="memberDetailsForm['{$ ::row.id $}-weight'].$invalid && memberDetailsForm.$dirty"
+                      popover="{$ ::ctrl.weightError $}"
+                      popover-placement="top" popover-append-to-body="true"
+                      popover-trigger="hover"></span>
+              </td>
               <td class="action-col">
                 <action-list>
                   <action action-classes="'btn btn-sm btn-default'"
-                          callback="trCtrl.deallocate" item="row">
-                    <span class="fa fa-minus"></span>
+                          callback="ctrl.deallocateMember" item="row">
+                    <span translate>Remove</span>
                   </action>
                 </action-list>
               </td>
             </tr>
-            <tr ng-repeat-end class="detail-row">
-              <td class="detail" colspan="100">
-                <div class="row">
-                   <dl class="rsp-alt-p2 col-sm-2">
-                     <dt translate>Name</dt>
-                     <dd>{$ ::row.name $}</dd>
-                   </dl>
-                   <dl class="rsp-alt-p3 col-sm-2">
-                     <dt translate>Description</dt>
-                     <dd>{$ ::row.description | noValue $}</dd>
-                   </dl>
-                </div>
+            <tr>
+              <td colspan="100">
+                <action-list class="pull-right">
+                  <action action-classes="'btn btn-sm btn-default'"
+                          callback="ctrl.allocateExternalMember">
+                    <span translate>Add external member</span>
+                  </action>
+                </action-list>
               </td>
             </tr>
           </tbody>
@@ -131,7 +143,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-if="trCtrl.numAvailable() === 0">
+            <tr ng-if="ctrl.tableData.available.length === 0">
               <td colspan="100">
                 <div class="no-rows-help">
                   {$ ::trCtrl.helpText.noneAvailText $}
@@ -161,8 +173,8 @@
               <td class="action-col">
                 <action-list>
                   <action action-classes="'btn btn-sm btn-default'"
-                          callback="trCtrl.allocate" item="row">
-                    <span class="fa fa-plus"></span>
+                          callback="ctrl.allocateMember" item="row">
+                    <span translate>Add</span>
                   </action>
                 </action-list>
               </td>
@@ -184,8 +196,6 @@
           </tbody>
         </table>
       </available>
-
     </transfer-table> <!-- End Transfer Table -->
-
   </div> <!-- end content -->
 </div>

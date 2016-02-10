@@ -253,16 +253,33 @@
       // subnet, and port so we can assume those exist here.
       if (!finalSpec.pool || finalSpec.members.length === 0) {
         delete finalSpec.members;
+        return;
       }
 
+      var members = [];
       angular.forEach(finalSpec.members, function cleanMember(member) {
-        delete member.id;
-        delete member.addresses;
-        delete member.name;
-        delete member.description;
-        member.subnet = member.address.subnet;
-        member.address = member.address.ip;
+        if (member.address && member.port) {
+          ['id', 'name', 'description', 'addresses'].forEach(function deleteProperty(prop) {
+            if (angular.isDefined(member[prop])) {
+              delete member[prop];
+            }
+          });
+          if (angular.isObject(member.address)) {
+            member.subnet = member.address.subnet;
+            member.address = member.address.ip;
+          } else if (member.subnet) {
+            member.subnet = member.subnet.id;
+          } else {
+            delete member.subnet;
+          }
+          members.push(member);
+        }
       });
+      if (members.length > 0) {
+        finalSpec.members = members;
+      } else {
+        delete finalSpec.members;
+      }
     }
 
     function cleanFinalSpecMonitor(finalSpec) {
