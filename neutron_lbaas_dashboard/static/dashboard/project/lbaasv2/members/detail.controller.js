@@ -39,58 +39,22 @@
 
   function MemberDetailController(api, $routeParams) {
     var ctrl = this;
-    ctrl.member = {};
-    ctrl.pool = {};
-    ctrl.listener = {};
-    ctrl.loadbalancer = {};
-
-    var poolID = $routeParams.poolId;
-    var memberID = $routeParams.memberId;
 
     init();
 
     ////////////////////////////////
 
     function init() {
-      api.getMember(poolID, memberID).success(memberSuccess);
+      api.getMember($routeParams.poolId, $routeParams.memberId).success(set('member'));
+      api.getPool($routeParams.poolId).success(set('pool'));
+      api.getListener($routeParams.listenerId).success(set('listener'));
+      api.getLoadBalancer($routeParams.loadbalancerId).success(set('loadbalancer'));
     }
 
-    function memberSuccess(response) {
-      ctrl.member = response;
-      getPoolDetails(poolID);
-    }
-
-    function getPoolDetails(poolId) {
-      api.getPool(poolId).success(poolSuccess);
-    }
-
-    function poolSuccess(response) {
-      ctrl.pool = response;
-      if (ctrl.pool.hasOwnProperty('listeners') &&
-        ctrl.pool.listeners.length > 0) {
-        getListenerDetails(ctrl.pool.listeners[0].id);
-      }
-    }
-
-    function getListenerDetails(listenerId) {
-      api.getListener(listenerId).success(listenerSuccess);
-    }
-
-    function listenerSuccess(response) {
-      ctrl.listener = response;
-
-      if (ctrl.listener.hasOwnProperty('loadbalancers') &&
-        ctrl.listener.loadbalancers.length > 0) {
-        getLoadBalancerDetails(ctrl.listener.loadbalancers[0].id);
-      }
-    }
-
-    function getLoadBalancerDetails(loadbalancerId) {
-      api.getLoadBalancer(loadbalancerId).success(loadbalancerSuccess);
-    }
-
-    function loadbalancerSuccess(response) {
-      ctrl.loadbalancer = response;
+    function set(property) {
+      return angular.bind(null, function setProp(property, value) {
+        ctrl[property] = value;
+      }, property);
     }
 
   }

@@ -17,12 +17,12 @@
   'use strict';
 
   describe('LBaaS v2 Listener Detail Controller', function() {
-    var controller, lbaasv2API, listener;
+    var lbaasv2API, ctrl;
 
     function fakeAPI() {
       return {
         success: function(callback) {
-          callback(listener);
+          callback('foo');
         }
       };
     }
@@ -37,29 +37,22 @@
 
     beforeEach(inject(function($injector) {
       lbaasv2API = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
-      controller = $injector.get('$controller');
       spyOn(lbaasv2API, 'getListener').and.callFake(fakeAPI);
       spyOn(lbaasv2API, 'getLoadBalancer').and.callFake(fakeAPI);
+      var controller = $injector.get('$controller');
+      ctrl = controller('ListenerDetailController', {
+        $routeParams: {
+          loadbalancerId: 'loadbalancerId',
+          listenerId: 'listenerId'
+        }
+      });
     }));
 
-    function createController() {
-      return controller('ListenerDetailController', {
-        api: lbaasv2API,
-        $routeParams: { listenerId: '1234' }
-      });
-    }
-
     it('should invoke lbaasv2 apis', function() {
-      listener = { id: '1234', loadbalancers: [{id: '5678'}] };
-      createController();
-      expect(lbaasv2API.getListener).toHaveBeenCalledWith('1234');
-      expect(lbaasv2API.getLoadBalancer).toHaveBeenCalledWith('5678');
-    });
-
-    it('should not invoke getLoadBalancer lbaasv2 api', function() {
-      listener = { id: '1234', loadbalancers: [] };
-      createController();
-      expect(lbaasv2API.getListener).toHaveBeenCalledWith('1234');
+      expect(lbaasv2API.getListener).toHaveBeenCalledWith('listenerId');
+      expect(lbaasv2API.getLoadBalancer).toHaveBeenCalledWith('loadbalancerId');
+      expect(ctrl.loadbalancer).toBe('foo');
+      expect(ctrl.listener).toBe('foo');
     });
 
   });

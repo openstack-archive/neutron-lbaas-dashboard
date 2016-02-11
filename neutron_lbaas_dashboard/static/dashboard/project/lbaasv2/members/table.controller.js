@@ -43,16 +43,16 @@
     ctrl.items = [];
     ctrl.src = [];
     ctrl.checked = {};
-
-    var poolID = $routeParams.poolId;
-    ctrl.pool_id = poolID;
+    ctrl.loadbalancerId = $routeParams.loadbalancerId;
+    ctrl.listenerId = $routeParams.listenerId;
+    ctrl.poolId = $routeParams.poolId;
 
     init();
 
     ////////////////////////////////
 
     function init() {
-      api.getMembers(poolID).success(success);
+      api.getMembers(ctrl.poolId).success(success);
     }
 
     function success(response) {

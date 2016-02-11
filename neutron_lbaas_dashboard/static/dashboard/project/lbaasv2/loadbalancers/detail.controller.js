@@ -40,19 +40,16 @@
    */
 
   function LoadBalancerDetailController(api, rowActions, $routeParams) {
-
     var ctrl = this;
-    ctrl.loadbalancer = null;
-    ctrl.actions = rowActions.actions;
 
-    var loadbalancerId = $routeParams.loadbalancerId;
+    ctrl.actions = rowActions.actions;
 
     init();
 
     ////////////////////////////////
 
     function init() {
-      api.getLoadBalancer(loadbalancerId).success(success);
+      api.getLoadBalancer($routeParams.loadbalancerId).success(success);
     }
 
     function success(response) {

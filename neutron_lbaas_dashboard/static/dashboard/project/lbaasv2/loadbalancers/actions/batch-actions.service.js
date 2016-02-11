@@ -78,7 +78,7 @@
     }
 
     function onCreate(response) {
-      $location.path('project/ngloadbalancersv2/detail/' + response.data.id);
+      $location.path('project/ngloadbalancersv2/' + response.data.id);
     }
   }
 

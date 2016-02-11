@@ -46,15 +46,14 @@
     ctrl.src = [];
     ctrl.checked = {};
     ctrl.batchActions = batchActions;
-
-    var loadbalancerId = $routeParams.loadbalancerId;
+    ctrl.loadbalancerId = $routeParams.loadbalancerId;
 
     init();
 
     ////////////////////////////////
 
     function init() {
-      api.getListeners(loadbalancerId).success(success);
+      api.getListeners(ctrl.loadbalancerId).success(success);
     }
 
     function success(response) {

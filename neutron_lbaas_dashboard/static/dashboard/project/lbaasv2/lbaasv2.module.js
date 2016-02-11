@@ -54,27 +54,32 @@
   ];
 
   function config($provide, $windowProvider, $routeProvider) {
-    var href = '/project/ngloadbalancersv2/';
     var basePath = $windowProvider.$get().STATIC_URL + 'dashboard/project/lbaasv2/';
     $provide.constant('horizon.dashboard.project.lbaasv2.basePath', basePath);
 
+    var loadbalancers = '/project/ngloadbalancersv2';
+    var listener = loadbalancers + '/:loadbalancerId/listeners/:listenerId';
+    var pool = listener + '/pools/:poolId';
+    var member = pool + '/members/:memberId';
+    var healthmonitor = pool + '/healthmonitors/:healthmonitorId';
+
     $routeProvider
-      .when(href, {
+      .when(loadbalancers, {
         templateUrl: basePath + 'loadbalancers/table.html'
       })
-      .when(href + 'detail/:loadbalancerId', {
+      .when(loadbalancers + '/:loadbalancerId', {
         templateUrl: basePath + 'loadbalancers/detail.html'
       })
-      .when(href + 'listeners/detail/:listenerId', {
+      .when(listener, {
         templateUrl: basePath + 'listeners/detail.html'
       })
-      .when(href + 'pools/detail/:poolId', {
+      .when(pool, {
         templateUrl: basePath + 'pools/detail.html'
       })
-      .when(href + 'pools/:poolId/members/detail/:memberId', {
+      .when(member, {
         templateUrl: basePath + 'members/detail.html'
       })
-      .when(href + 'healthmonitors/detail/:healthmonitorId', {
+      .when(healthmonitor, {
         templateUrl: basePath + 'healthmonitors/detail.html'
       });
   }

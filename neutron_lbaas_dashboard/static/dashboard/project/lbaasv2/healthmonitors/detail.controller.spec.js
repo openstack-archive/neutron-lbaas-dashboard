@@ -17,36 +17,12 @@
   'use strict';
 
   describe('LBaaS v2 Healthmonitor Detail Controller', function() {
-    var controller, lbaasv2API, healthmonitor, pool, listener, loadbalancer;
+    var lbaasv2API, ctrl;
 
-    function fakeHealthMonitorAPI() {
+    function fakeAPI() {
       return {
         success: function(callback) {
-          callback(healthmonitor);
-        }
-      };
-    }
-
-    function fakePoolAPI() {
-      return {
-        success: function(callback) {
-          callback(pool);
-        }
-      };
-    }
-
-    function fakeListenerAPI() {
-      return {
-        success: function(callback) {
-          callback(listener);
-        }
-      };
-    }
-
-    function fakeLoadBalancerAPI() {
-      return {
-        success: function(callback) {
-          callback(loadbalancer);
+          callback('foo');
         }
       };
     }
@@ -61,60 +37,30 @@
 
     beforeEach(inject(function($injector) {
       lbaasv2API = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
-      controller = $injector.get('$controller');
-      spyOn(lbaasv2API, 'getHealthMonitor').and.callFake(fakeHealthMonitorAPI);
-      spyOn(lbaasv2API, 'getPool').and.callFake(fakePoolAPI);
-      spyOn(lbaasv2API, 'getListener').and.callFake(fakeListenerAPI);
-      spyOn(lbaasv2API, 'getLoadBalancer').and.callFake(fakeLoadBalancerAPI);
+      spyOn(lbaasv2API, 'getHealthMonitor').and.callFake(fakeAPI);
+      spyOn(lbaasv2API, 'getPool').and.callFake(fakeAPI);
+      spyOn(lbaasv2API, 'getListener').and.callFake(fakeAPI);
+      spyOn(lbaasv2API, 'getLoadBalancer').and.callFake(fakeAPI);
+      var controller = $injector.get('$controller');
+      ctrl = controller('HealthMonitorDetailController', {
+        $routeParams: {
+          loadbalancerId: 'loadbalancerId',
+          listenerId: 'listenerId',
+          poolId: 'poolId',
+          healthmonitorId: 'healthmonitorId'
+        }
+      });
     }));
 
-    function createController() {
-      return controller('HealthMonitorDetailController', {
-        api: lbaasv2API,
-        $routeParams: { healthmonitorId: 'healthmonitorId' }
-      });
-    }
-
     it('should invoke lbaasv2 apis', function() {
-      healthmonitor = { id: 'healthmonitorId', pools: [{id: 'poolId'}] };
-      pool = { id: 'poolId', listeners: [{id: 'listenerId'}] };
-      listener = { id: 'listenerId', loadbalancers: [{id: 'loadbalancerId'}] };
-      loadbalancer = { id: 'loadbalancerId' };
-      createController();
       expect(lbaasv2API.getHealthMonitor).toHaveBeenCalledWith('healthmonitorId');
       expect(lbaasv2API.getPool).toHaveBeenCalledWith('poolId');
       expect(lbaasv2API.getListener).toHaveBeenCalledWith('listenerId');
       expect(lbaasv2API.getLoadBalancer).toHaveBeenCalledWith('loadbalancerId');
-    });
-
-    it('should not invoke the getPool, getListener or getLoadBalancer lbaasv2 api', function() {
-      healthmonitor = { id: 'healthmonitorId', pools: [] };
-      createController();
-      expect(lbaasv2API.getHealthMonitor).toHaveBeenCalledWith('healthmonitorId');
-      expect(lbaasv2API.getPool).not.toHaveBeenCalled();
-      expect(lbaasv2API.getListener).not.toHaveBeenCalled();
-      expect(lbaasv2API.getLoadBalancer).not.toHaveBeenCalled();
-    });
-
-    it('should not invoke the getListener or getLoadBalancer lbaasv2 api', function() {
-      healthmonitor = { id: 'healthmonitorId', pools: [{id: 'poolId'}] };
-      pool = { id: 'poolId', listeners: [] };
-      createController();
-      expect(lbaasv2API.getHealthMonitor).toHaveBeenCalledWith('healthmonitorId');
-      expect(lbaasv2API.getPool).toHaveBeenCalledWith('poolId');
-      expect(lbaasv2API.getListener).not.toHaveBeenCalled();
-      expect(lbaasv2API.getLoadBalancer).not.toHaveBeenCalled();
-    });
-
-    it('should not invoke getLoadBalancer lbaasv2 api', function() {
-      healthmonitor = { id: 'healthmonitorId', pools: [{id: 'poolId'}] };
-      pool = { id: 'poolId', listeners: [{id: 'listenerId'}] };
-      listener = { id: 'listenerId', loadbalancers: [] };
-      createController();
-      expect(lbaasv2API.getHealthMonitor).toHaveBeenCalledWith('healthmonitorId');
-      expect(lbaasv2API.getPool).toHaveBeenCalledWith('poolId');
-      expect(lbaasv2API.getListener).toHaveBeenCalledWith('listenerId');
-      expect(lbaasv2API.getLoadBalancer).not.toHaveBeenCalled();
+      expect(ctrl.loadbalancer).toBe('foo');
+      expect(ctrl.listener).toBe('foo');
+      expect(ctrl.pool).toBe('foo');
+      expect(ctrl.healthmonitor).toBe('foo');
     });
 
   });

@@ -2,9 +2,9 @@
   <div class='page-header'>
     <ol class="breadcrumb">
       <li><a href="project/ngloadbalancersv2/"><translate>Load Balancers</translate></a></li>
-      <li><a href="project/ngloadbalancersv2/detail/{$ ::ctrl.loadbalancer.id $}">{$ ::(ctrl.loadbalancer.name || ctrl.loadbalancer.id) $}</a></li>
-      <li><a href="project/ngloadbalancersv2/listeners/detail/{$ ::ctrl.listener.id $}">{$ ::(ctrl.listener.name || ctrl.listener.id) $}</a></li>
-      <li><a href="project/ngloadbalancersv2/pools/detail/{$ ::ctrl.pool.id $}">{$ ::(ctrl.pool.name || ctrl.pool.id) $}</a></li>
+      <li><a href="project/ngloadbalancersv2/{$ ::ctrl.loadbalancer.id $}">{$ ::(ctrl.loadbalancer.name || ctrl.loadbalancer.id) $}</a></li>
+      <li><a href="project/ngloadbalancersv2/{$ ::ctrl.loadbalancer.id $}/listeners/{$ ::ctrl.listener.id $}">{$ ::(ctrl.listener.name || ctrl.listener.id) $}</a></li>
+      <li><a href="project/ngloadbalancersv2/{$ ::ctrl.loadbalancer.id $}/listeners/{$ ::ctrl.listener.id $}/pools/{$ ::ctrl.pool.id $}">{$ ::(ctrl.pool.name || ctrl.pool.id) $}</a></li>
       <li class="active">{$ ::(ctrl.member.name || ctrl.member.id) $}</li>
     </ol>
   </div>

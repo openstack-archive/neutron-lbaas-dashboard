@@ -95,45 +95,36 @@
     });
 
     it('should route URLs', function () {
-      var href = '/project/ngloadbalancersv2/';
-      var routes = [
-        [
-          href,
-          {
-            templateUrl: basePath + 'loadbalancers/table.html'
-          }
-        ],
-        [
-          href + 'detail/:loadbalancerId',
-          {
-            templateUrl: basePath + 'loadbalancers/detail.html'
-          }
-        ],
-        [
-          href + 'listeners/detail/:listenerId',
-          {
-            templateUrl: basePath + 'listeners/detail.html'
-          }
-        ],
-        [
-          href + 'pools/detail/:poolId',
-          {
-            templateUrl: basePath + 'pools/detail.html'
-          }
-        ],
-        [
-          href + 'pools/:poolId/members/detail/:memberId',
-          {
-            templateUrl: basePath + 'members/detail.html'
-          }
-        ],
-        [
-          href + 'healthmonitors/detail/:healthmonitorId',
-          {
-            templateUrl: basePath + 'healthmonitors/detail.html'
-          }
-        ]
-      ];
+      var loadbalancers = '/project/ngloadbalancersv2';
+      var listener = loadbalancers + '/:loadbalancerId/listeners/:listenerId';
+      var pool = listener + '/pools/:poolId';
+      var member = pool + '/members/:memberId';
+      var healthmonitor = pool + '/healthmonitors/:healthmonitorId';
+      var routes = [[
+        loadbalancers, {
+          templateUrl: basePath + 'loadbalancers/table.html'
+        }
+      ], [
+        loadbalancers + '/:loadbalancerId', {
+          templateUrl: basePath + 'loadbalancers/detail.html'
+        }
+      ], [
+        listener, {
+          templateUrl: basePath + 'listeners/detail.html'
+        }
+      ], [
+        pool, {
+          templateUrl: basePath + 'pools/detail.html'
+        }
+      ], [
+        member, {
+          templateUrl: basePath + 'members/detail.html'
+        }
+      ], [
+        healthmonitor, {
+          templateUrl: basePath + 'healthmonitors/detail.html'
+        }
+      ]];
 
       expect($routeProvider.when.calls.count()).toBe(6);
       angular.forEach($routeProvider.when.calls.all(), function(call, i) {

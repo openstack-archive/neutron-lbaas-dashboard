@@ -60,7 +60,7 @@
                ng-model="selected[item.id].checked"
                hz-select="item">
       </td>
-      <td class="rsp-p1"><a ng-href="project/ngloadbalancersv2/pools/{$ ::table.pool_id $}/members/detail/{$ ::item.id $}">{$ ::item.id $}</a></td>
+      <td class="rsp-p1"><a ng-href="project/ngloadbalancersv2/{$ ::table.loadbalancerId $}/listeners/{$ ::table.listenerId $}/pools/{$ ::table.poolId $}/members/{$ ::item.id $}">{$ ::item.id $}</a></td>
       <td class="rsp-p1">{$ ::item.address $}</td>
       <td class="rsp-p1">{$ ::item.protocol_port $}</td>
       <td class="rsp-p1">{$ ::item.weight $}</td>

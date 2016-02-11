@@ -39,62 +39,22 @@
 
   function HealthMonitorDetailController(api, $routeParams) {
     var ctrl = this;
-    ctrl.healthmonitor = {};
-    ctrl.pool = {};
-    ctrl.listener = {};
-    ctrl.loadbalancer = {};
-
-    var healthmonitorID = $routeParams.healthmonitorId;
 
     init();
 
     ////////////////////////////////
 
     function init() {
-      api.getHealthMonitor(healthmonitorID).success(healthMonitorSuccess);
+      api.getHealthMonitor($routeParams.healthmonitorId).success(set('healthmonitor'));
+      api.getPool($routeParams.poolId).success(set('pool'));
+      api.getListener($routeParams.listenerId).success(set('listener'));
+      api.getLoadBalancer($routeParams.loadbalancerId).success(set('loadbalancer'));
     }
 
-    function healthMonitorSuccess(response) {
-      ctrl.healthmonitor = response;
-
-      if (ctrl.healthmonitor.hasOwnProperty('pools') &&
-        ctrl.healthmonitor.pools.length > 0) {
-        getPoolDetails(ctrl.healthmonitor.pools[0].id);
-      }
-    }
-
-    function getPoolDetails(poolId) {
-      api.getPool(poolId).success(poolSuccess);
-    }
-
-    function poolSuccess(response) {
-      ctrl.pool = response;
-
-      if (ctrl.pool.hasOwnProperty('listeners') &&
-        ctrl.pool.listeners.length > 0) {
-        getListenerDetails(ctrl.pool.listeners[0].id);
-      }
-    }
-
-    function getListenerDetails(listenerId) {
-      api.getListener(listenerId).success(listenerSuccess);
-    }
-
-    function listenerSuccess(response) {
-      ctrl.listener = response;
-
-      if (ctrl.listener.hasOwnProperty('loadbalancers') &&
-        ctrl.listener.loadbalancers.length > 0) {
-        getLoadBalancerDetails(ctrl.listener.loadbalancers[0].id);
-      }
-    }
-
-    function getLoadBalancerDetails(loadbalancerId) {
-      api.getLoadBalancer(loadbalancerId).success(loadbalancerSuccess);
-    }
-
-    function loadbalancerSuccess(response) {
-      ctrl.loadbalancer = response;
+    function set(property) {
+      return angular.bind(null, function setProp(property, value) {
+        ctrl[property] = value;
+      }, property);
     }
 
   }

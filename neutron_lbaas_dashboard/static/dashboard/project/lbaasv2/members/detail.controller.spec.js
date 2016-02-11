@@ -17,36 +17,12 @@
   'use strict';
 
   describe('LBaaS v2 Member Detail Controller', function() {
-    var controller, lbaasv2API, member, pool, listener, loadbalancer;
+    var lbaasv2API, ctrl;
 
-    function fakeMemberAPI() {
+    function fakeAPI() {
       return {
         success: function(callback) {
-          callback(member);
-        }
-      };
-    }
-
-    function fakePoolAPI() {
-      return {
-        success: function(callback) {
-          callback(pool);
-        }
-      };
-    }
-
-    function fakeListenerAPI() {
-      return {
-        success: function(callback) {
-          callback(listener);
-        }
-      };
-    }
-
-    function fakeLoadBalancerAPI() {
-      return {
-        success: function(callback) {
-          callback(loadbalancer);
+          callback('foo');
         }
       };
     }
@@ -60,50 +36,31 @@
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(inject(function($injector) {
-      member = { id: '5678' };
       lbaasv2API = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
-      controller = $injector.get('$controller');
-      spyOn(lbaasv2API, 'getMember').and.callFake(fakeMemberAPI);
-      spyOn(lbaasv2API, 'getPool').and.callFake(fakePoolAPI);
-      spyOn(lbaasv2API, 'getListener').and.callFake(fakeListenerAPI);
-      spyOn(lbaasv2API, 'getLoadBalancer').and.callFake(fakeLoadBalancerAPI);
+      spyOn(lbaasv2API, 'getMember').and.callFake(fakeAPI);
+      spyOn(lbaasv2API, 'getPool').and.callFake(fakeAPI);
+      spyOn(lbaasv2API, 'getListener').and.callFake(fakeAPI);
+      spyOn(lbaasv2API, 'getLoadBalancer').and.callFake(fakeAPI);
+      var controller = $injector.get('$controller');
+      ctrl = controller('MemberDetailController', {
+        $routeParams: {
+          loadbalancerId: 'loadbalancerId',
+          listenerId: 'listenerId',
+          poolId: 'poolId',
+          memberId: 'memberId'
+        }
+      });
     }));
 
-    function createController() {
-      return controller('MemberDetailController', {
-        api: lbaasv2API,
-        $routeParams: { poolId: 'poolId', memberId: 'memberId' }
-      });
-    }
-
     it('should invoke lbaasv2 apis', function() {
-      pool = { id: 'poolId', listeners: [{id: 'listenerId'}] };
-      listener = { id: 'listenerId', loadbalancers: [{id: 'loadbalancerId'}] };
-      loadbalancer = { id: 'loadbalancerId' };
-      createController();
-      expect(lbaasv2API.getMember).toHaveBeenCalledWith('poolId', 'memberId');
+      expect(lbaasv2API.getMember).toHaveBeenCalledWith('poolId','memberId');
       expect(lbaasv2API.getPool).toHaveBeenCalledWith('poolId');
       expect(lbaasv2API.getListener).toHaveBeenCalledWith('listenerId');
       expect(lbaasv2API.getLoadBalancer).toHaveBeenCalledWith('loadbalancerId');
-    });
-
-    it('should not invoke the getListener or getLoadBalancer lbaasv2 api', function() {
-      pool = { id: 'poolId', listeners: [] };
-      createController();
-      expect(lbaasv2API.getMember).toHaveBeenCalledWith('poolId', 'memberId');
-      expect(lbaasv2API.getPool).toHaveBeenCalledWith('poolId');
-      expect(lbaasv2API.getListener).not.toHaveBeenCalled();
-      expect(lbaasv2API.getLoadBalancer).not.toHaveBeenCalled();
-    });
-
-    it('should not invoke getLoadBalancer lbaasv2 api', function() {
-      pool = { id: 'poolId', listeners: [{id: 'listenerId'}] };
-      listener = { id: 'listenerId', loadbalancers: [] };
-      createController();
-      expect(lbaasv2API.getMember).toHaveBeenCalledWith('poolId', 'memberId');
-      expect(lbaasv2API.getPool).toHaveBeenCalledWith('poolId');
-      expect(lbaasv2API.getListener).toHaveBeenCalledWith('listenerId');
-      expect(lbaasv2API.getLoadBalancer).not.toHaveBeenCalled();
+      expect(ctrl.loadbalancer).toBe('foo');
+      expect(ctrl.listener).toBe('foo');
+      expect(ctrl.pool).toBe('foo');
+      expect(ctrl.member).toBe('foo');
     });
 
   });

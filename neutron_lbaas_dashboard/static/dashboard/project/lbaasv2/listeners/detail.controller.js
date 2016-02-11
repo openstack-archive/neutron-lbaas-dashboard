@@ -39,34 +39,20 @@
 
   function ListenerDetailController(api, $routeParams) {
     var ctrl = this;
-    ctrl.listener = {};
-    ctrl.loadbalancer = {};
-
-    var listenerID = $routeParams.listenerId;
 
     init();
 
     ////////////////////////////////
 
     function init() {
-      api.getListener(listenerID).success(listenerSuccess);
+      api.getListener($routeParams.listenerId).success(set('listener'));
+      api.getLoadBalancer($routeParams.loadbalancerId).success(set('loadbalancer'));
     }
 
-    function listenerSuccess(response) {
-      ctrl.listener = response;
-
-      if (ctrl.listener.hasOwnProperty('loadbalancers') &&
-        ctrl.listener.loadbalancers.length > 0) {
-        getLoadBalancerDetails(ctrl.listener.loadbalancers[0].id);
-      }
-    }
-
-    function getLoadBalancerDetails(loadbalancerId) {
-      api.getLoadBalancer(loadbalancerId).success(loadbalancerSuccess);
-    }
-
-    function loadbalancerSuccess(response) {
-      ctrl.loadbalancer = response;
+    function set(property) {
+      return angular.bind(null, function setProp(property, value) {
+        ctrl[property] = value;
+      }, property);
     }
 
   }

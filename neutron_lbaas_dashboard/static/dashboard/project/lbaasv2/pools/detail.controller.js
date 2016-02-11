@@ -41,52 +41,27 @@
 
   function PoolDetailController(api, $routeParams, gettext) {
     var ctrl = this;
-    ctrl.pool = {};
-    ctrl.listener = {};
-    ctrl.loadbalancer = {};
-    ctrl.lb_algorithm_mappings = {
+
+    ctrl.loadBalancerAlgorithm = {
       'ROUND_ROBIN': gettext('Round Robin'),
       'LEAST_CONNECTIONS': gettext('Least Connections'),
       'SOURCE_IP': gettext('Source IP')
     };
-
-    var poolId = $routeParams.poolId;
 
     init();
 
     ////////////////////////////////
 
     function init() {
-      api.getPool(poolId).success(poolSuccess);
+      api.getPool($routeParams.poolId).success(set('pool'));
+      api.getListener($routeParams.listenerId).success(set('listener'));
+      api.getLoadBalancer($routeParams.loadbalancerId).success(set('loadbalancer'));
     }
 
-    function poolSuccess(response) {
-      ctrl.pool = response;
-      if (ctrl.pool.hasOwnProperty('listeners') &&
-        ctrl.pool.listeners.length > 0) {
-        getListenerDetails(ctrl.pool.listeners[0].id);
-      }
-    }
-
-    function getListenerDetails(listenerId) {
-      api.getListener(listenerId).success(listenerSuccess);
-    }
-
-    function listenerSuccess(response) {
-      ctrl.listener = response;
-
-      if (ctrl.listener.hasOwnProperty('loadbalancers') &&
-        ctrl.listener.loadbalancers.length > 0) {
-        getLoadBalancerDetails(ctrl.listener.loadbalancers[0].id);
-      }
-    }
-
-    function getLoadBalancerDetails(loadbalancerId) {
-      api.getLoadBalancer(loadbalancerId).success(loadbalancerSuccess);
-    }
-
-    function loadbalancerSuccess(response) {
-      ctrl.loadbalancer = response;
+    function set(property) {
+      return angular.bind(null, function setProp(property, value) {
+        ctrl[property] = value;
+      }, property);
     }
 
   }
