@@ -42,6 +42,7 @@
       editLoadBalancer: editLoadBalancer,
       getListeners: getListeners,
       getListener: getListener,
+      editListener: editListener,
       getPool: getPool,
       getMembers: getMembers,
       getMember: getMember,
@@ -110,7 +111,7 @@
      */
 
     function editLoadBalancer(id, spec) {
-      return apiService.put('/api/lbaas/loadbalancers/' + id + '/', spec)
+      return apiService.put('/api/lbaas/loadbalancers/' + id, spec)
         .error(function () {
           toastService.add('error', gettext('Unable to update load balancer.'));
         });
@@ -146,12 +147,34 @@
      * Get a single listener by ID.
      * @param {string} id
      * Specifies the id of the listener to request.
+     * @param {boolean} includeChildResources
+     * If true, all child resources below the listener will be included in the response.
      */
 
-    function getListener(id) {
-      return apiService.get('/api/lbaas/listeners/' + id)
+    function getListener(id, includeChildResources) {
+      var params = includeChildResources
+          ? {'params': {'includeChildResources': includeChildResources}}
+          : {};
+      return apiService.get('/api/lbaas/listeners/' + id, params)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve listener.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.editListener
+     * @description
+     * Edit a listener
+     * @param {string} id
+     * Specifies the id of the listener to update.
+     * @param {object} spec
+     * Specifies the data used to update the listener.
+     */
+
+    function editListener(id, spec) {
+      return apiService.put('/api/lbaas/listeners/' + id, spec)
+        .error(function () {
+          toastService.add('error', gettext('Unable to update listener.'));
         });
     }
 

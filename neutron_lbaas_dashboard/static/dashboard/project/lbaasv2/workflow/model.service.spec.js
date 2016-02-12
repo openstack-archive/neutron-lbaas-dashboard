@@ -17,15 +17,64 @@
   'use strict';
 
   describe('LBaaS v2 Workflow Model Service', function() {
-    var model, $q, scope;
+    var model, $q, scope, listenerResources;
 
     beforeEach(module('horizon.framework.util.i18n'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
+    beforeEach(function() {
+      listenerResources = {
+        listener: {
+          id: '1234',
+          name: 'Listener 1',
+          description: 'listener description',
+          protocol: 'HTTP',
+          protocol_port: 80,
+          loadbalancers: [ { id: '1234' } ]
+        },
+        pool: {
+          id: '1234',
+          name: 'Pool 1',
+          protocol: 'HTTP',
+          lb_algorithm: 'ROUND_ROBIN',
+          description: 'pool description'
+        },
+        members: [
+          {
+            id: '1234',
+            address: '1.2.3.4',
+            subnet_id: 'subnet-1',
+            protocol_port: 80,
+            weight: 1
+          },
+          {
+            id: '5678',
+            address: '5.6.7.8',
+            subnet_id: 'subnet-1',
+            protocol_port: 80,
+            weight: 1
+          }
+        ],
+        monitor: {
+          id: '1234',
+          type: 'HTTP',
+          delay: 1,
+          timeout: 1,
+          max_retries: 1,
+          http_method: 'POST',
+          expected_codes: '200',
+          url_path: '/test'
+        }
+      };
+    });
+
     beforeEach(module(function($provide) {
       $provide.value('horizon.app.core.openstack-service-api.lbaasv2', {
         getLoadBalancers: function() {
-          var loadbalancers = [ { name: 'Load Balancer 1' }, { name: 'Load Balancer 2' } ];
+          var loadbalancers = [
+            { id: '1234', name: 'Load Balancer 1' },
+            { id: '5678', name: 'Load Balancer 2' }
+          ];
 
           var deferred = $q.defer();
           deferred.resolve({ data: { items: loadbalancers } });
@@ -33,10 +82,74 @@
           return deferred.promise;
         },
         getLoadBalancer: function() {
-          var loadbalancer = { vip_subnet_id: 'subnet-1' };
+            var loadbalancer = {
+              id: '1234',
+              name: 'Load Balancer 1',
+              vip_address: '1.2.3.4',
+              vip_subnet_id: 'subnet-1',
+              description: ''
+            };
+
+            var deferred = $q.defer();
+            deferred.resolve({ data: loadbalancer });
+
+            return deferred.promise;
+          },
+        getListener: function() {
+          var deferred = $q.defer();
+          deferred.resolve({ data: listenerResources });
+          return deferred.promise;
+        },
+        getPool: function() {
+          var pool = {
+            id: '1234',
+            name: 'Pool 1',
+            protocol: 'HTTP',
+            lb_algorithm: 'ROUND_ROBIN',
+            description: 'pool description'
+          };
 
           var deferred = $q.defer();
-          deferred.resolve({ data: loadbalancer });
+          deferred.resolve({ data: pool });
+
+          return deferred.promise;
+        },
+        getMembers: function() {
+          var members = [
+            {
+              id: '1234',
+              address: '1.2.3.4',
+              subnet_id: 'subnet-1',
+              protocol_port: 80,
+              weight: 1
+            },
+            {
+              id: '5678',
+              address: '5.6.7.8',
+              subnet_id: 'subnet-1',
+              protocol_port: 80,
+              weight: 1
+            }];
+
+          var deferred = $q.defer();
+          deferred.resolve({ data: { items: members } });
+
+          return deferred.promise;
+        },
+        getHealthMonitor: function() {
+          var monitor = {
+            id: '1234',
+            type: 'HTTP',
+            delay: 1,
+            timeout: 1,
+            max_retries: 1,
+            http_method: 'POST',
+            expected_codes: '200',
+            url_path: '/test'
+          };
+
+          var deferred = $q.defer();
+          deferred.resolve({ data: monitor });
 
           return deferred.promise;
         },
@@ -44,6 +157,9 @@
           return spec;
         },
         editLoadBalancer: function(id, spec) {
+          return spec;
+        },
+        editListener: function(id, spec) {
           return spec;
         }
       });
@@ -94,7 +210,7 @@
       scope = $injector.get('$rootScope').$new();
     }));
 
-    describe('Initial object (pre-initialize)', function() {
+    describe('Initial model (pre-initialize)', function() {
 
       it('is defined', function() {
         expect(model).toBeDefined();
@@ -150,7 +266,7 @@
       });
     });
 
-    describe('Post initialize model', function() {
+    describe('Post initialize model (create loadbalancer)', function() {
 
       beforeEach(function() {
         model.initialize('loadbalancer');
@@ -163,6 +279,7 @@
         expect(model.subnets.length).toBe(2);
         expect(model.members.length).toBe(2);
         expect(model.spec).toBeDefined();
+        expect(model.spec.loadbalancer_id).toBeNull();
         expect(model.spec.loadbalancer).toBeDefined();
         expect(model.spec.listener).toBeDefined();
         expect(model.spec.pool).toBeDefined();
@@ -176,16 +293,266 @@
         expect(model.spec.pool.name).toBe('Pool 1');
       });
 
-      it('should initialize monitor fields', function() {
+      it('should initialize context properties', function() {
+        expect(model.context.resource).toBe('loadbalancer');
+        expect(model.context.id).toBeUndefined();
+        expect(model.context.submit).toBeDefined();
+      });
+    });
+
+    describe('Post initialize model (edit loadbalancer)', function() {
+
+      beforeEach(function() {
+        model.initialize('loadbalancer', '1234');
+        scope.$apply();
+      });
+
+      it('should initialize model properties', function() {
+        expect(model.initializing).toBe(false);
+        expect(model.initialized).toBe(true);
+        expect(model.subnets.length).toBe(2);
+        expect(model.members).toEqual([]);
+        expect(model.spec).toBeDefined();
+        expect(model.spec.loadbalancer_id).toBeNull();
+        expect(model.spec.loadbalancer).toBeDefined();
+        expect(model.spec.listener).toBeDefined();
+        expect(model.spec.pool).toBeDefined();
+        expect(model.spec.members).toEqual([]);
+        expect(model.spec.monitor).toBeDefined();
+      });
+
+      it('should initialize loadbalancer model spec properties', function() {
+        expect(model.spec.loadbalancer.name).toEqual('Load Balancer 1');
+        expect(model.spec.loadbalancer.description).toEqual('');
+        expect(model.spec.loadbalancer.ip).toEqual('1.2.3.4');
+        expect(model.spec.loadbalancer.subnet).toEqual({ id: 'subnet-1', name: 'subnet-1' });
+      });
+
+      it('should not initialize listener model spec properties', function() {
+        expect(model.spec.listener.id).toBeNull();
+        expect(model.spec.listener.name).toBe('Listener 1');
+        expect(model.spec.listener.description).toBeNull();
+        expect(model.spec.listener.protocol).toBeNull();
+        expect(model.spec.listener.port).toBeNull();
+      });
+
+      it('should not initialize pool model spec properties', function() {
+        expect(model.spec.pool.id).toBeNull();
+        expect(model.spec.pool.name).toBe('Pool 1');
+        expect(model.spec.pool.description).toBeNull();
+        expect(model.spec.pool.protocol).toBeNull();
+        expect(model.spec.pool.method).toBeNull();
+      });
+
+      it('should initialize monitor model spec properties to null', function() {
+        expect(model.spec.monitor.type).toBeNull();
+        expect(model.spec.monitor.interval).toBeNull();
+        expect(model.spec.monitor.retry).toBeNull();
+        expect(model.spec.monitor.timeout).toBeNull();
         expect(model.spec.monitor.method).toBe('GET');
         expect(model.spec.monitor.status).toBe('200');
         expect(model.spec.monitor.path).toBe('/');
       });
 
+      it('should not initialize any members in the model spec', function() {
+        expect(model.spec.members).toEqual([]);
+      });
+
       it('should initialize context', function() {
         expect(model.context.resource).toBe('loadbalancer');
-        expect(model.context.id).toBeUndefined();
+        expect(model.context.id).toBe('1234');
         expect(model.context.submit).toBeDefined();
+      });
+    });
+
+    describe('Post initialize model (edit listener)', function() {
+
+      beforeEach(function() {
+        model.initialize('listener', '1234');
+        scope.$apply();
+      });
+
+      it('should initialize model properties', function() {
+        expect(model.initializing).toBe(false);
+        expect(model.initialized).toBe(true);
+        expect(model.subnets.length).toBe(2);
+        expect(model.members.length).toEqual(2);
+        expect(model.spec).toBeDefined();
+        expect(model.spec.loadbalancer_id).toBeDefined();
+        expect(model.spec.loadbalancer).toBeDefined();
+        expect(model.spec.listener).toBeDefined();
+        expect(model.spec.pool).toBeDefined();
+        expect(model.subnets.length).toBe(2);
+        expect(model.spec.monitor).toBeDefined();
+      });
+
+      it('should initialize the loadbalancer_id property', function() {
+        expect(model.spec.loadbalancer_id).toBe('1234');
+      });
+
+      it('should initialize all loadbalancer properties to null', function() {
+        expect(model.spec.loadbalancer.name).toBeNull();
+        expect(model.spec.loadbalancer.description).toBeNull();
+        expect(model.spec.loadbalancer.ip).toBeNull();
+        expect(model.spec.loadbalancer.subnet).toBeNull();
+      });
+
+      it('should initialize all listener properties', function() {
+        expect(model.spec.listener.id).toBe('1234');
+        expect(model.spec.listener.name).toBe('Listener 1');
+        expect(model.spec.listener.description).toBe('listener description');
+        expect(model.spec.listener.protocol).toBe('HTTP');
+        expect(model.spec.listener.port).toBe(80);
+      });
+
+      it('should initialize all pool properties', function() {
+        expect(model.spec.pool.id).toBe('1234');
+        expect(model.spec.pool.name).toBe('Pool 1');
+        expect(model.spec.pool.description).toBe('pool description');
+        expect(model.spec.pool.protocol).toBe('HTTP');
+        expect(model.spec.pool.method).toBe('ROUND_ROBIN');
+      });
+
+      it('should initialize all monitor properties', function() {
+        expect(model.spec.monitor.id).toBe('1234');
+        expect(model.spec.monitor.type).toBe('HTTP');
+        expect(model.spec.monitor.interval).toBe(1);
+        expect(model.spec.monitor.retry).toBe(1);
+        expect(model.spec.monitor.timeout).toBe(1);
+        expect(model.spec.monitor.method).toBe('POST');
+        expect(model.spec.monitor.status).toBe('200');
+        expect(model.spec.monitor.path).toBe('/test');
+      });
+
+      it('should initialize members and properties', function() {
+        expect(model.spec.members[0].id).toBe('1234');
+        expect(model.spec.members[0].address).toBe('1.2.3.4');
+        expect(model.spec.members[0].subnet).toEqual({ id: 'subnet-1', name: 'subnet-1' });
+        expect(model.spec.members[0].port).toBe(80);
+        expect(model.spec.members[0].weight).toBe(1);
+        expect(model.spec.members[1].id).toBe('5678');
+        expect(model.spec.members[1].address).toBe('5.6.7.8');
+        expect(model.spec.members[1].subnet).toEqual({ id: 'subnet-1', name: 'subnet-1' });
+        expect(model.spec.members[1].port).toBe(80);
+        expect(model.spec.members[1].weight).toBe(1);
+      });
+
+      it('should initialize context', function() {
+        expect(model.context.resource).toBe('listener');
+        expect(model.context.id).toBeDefined();
+        expect(model.context.submit).toBeDefined();
+      });
+    });
+
+    describe('Post initialize model - Initializing', function() {
+
+      beforeEach(function() {
+        model.initializing = true;
+        model.initialize('loadbalancer');
+        scope.$apply();
+      });
+
+      // This is here to ensure that as people add/change spec properties, they don't forget
+      // to implement tests for them.
+      it('has the right number of properties', function() {
+        expect(Object.keys(model.spec).length).toBe(6);
+        expect(Object.keys(model.spec.loadbalancer).length).toBe(4);
+        expect(Object.keys(model.spec.listener).length).toBe(5);
+        expect(Object.keys(model.spec.pool).length).toBe(5);
+        expect(Object.keys(model.spec.monitor).length).toBe(8);
+        expect(model.spec.members).toEqual([]);
+      });
+
+      it('sets load balancer ID to null', function() {
+        expect(model.spec.loadbalancer_id).toBeNull();
+      });
+
+      it('sets load balancer name to null', function() {
+        expect(model.spec.loadbalancer.name).toBeNull();
+      });
+
+      it('sets load balancer description to null', function() {
+        expect(model.spec.loadbalancer.description).toBeNull();
+      });
+
+      it('sets load balancer ip address to null', function() {
+        expect(model.spec.loadbalancer.ip).toBeNull();
+      });
+
+      it('sets load balancer subnet to null', function() {
+        expect(model.spec.loadbalancer.subnet).toBeNull();
+      });
+
+      it('sets listener id to null', function() {
+        expect(model.spec.listener.id).toBeNull();
+      });
+
+      it('sets listener name to reasonable default', function() {
+        expect(model.spec.listener.name).toBe('Listener 1');
+      });
+
+      it('sets listener description to null', function() {
+        expect(model.spec.listener.description).toBeNull();
+      });
+
+      it('sets listener protocol to null', function() {
+        expect(model.spec.listener.protocol).toBeNull();
+      });
+
+      it('sets listener port to null', function() {
+        expect(model.spec.listener.port).toBeNull();
+      });
+
+      it('sets pool id to null', function() {
+        expect(model.spec.pool.id).toBeNull();
+      });
+
+      it('sets pool name to reasonable default', function() {
+        expect(model.spec.pool.name).toBe('Pool 1');
+      });
+
+      it('sets pool description to null', function() {
+        expect(model.spec.pool.description).toBeNull();
+      });
+
+      it('sets pool protocol to null', function() {
+        expect(model.spec.pool.protocol).toBeNull();
+      });
+
+      it('sets pool method to null', function() {
+        expect(model.spec.pool.method).toBeNull();
+      });
+
+      it('sets monitor id to null', function() {
+        expect(model.spec.monitor.id).toBeNull();
+      });
+
+      it('sets monitor type to null', function() {
+        expect(model.spec.monitor.type).toBeNull();
+      });
+
+      it('sets monitor interval to null', function() {
+        expect(model.spec.monitor.interval).toBeNull();
+      });
+
+      it('sets monitor retry count to null', function() {
+        expect(model.spec.monitor.retry).toBeNull();
+      });
+
+      it('sets monitor timeout to null', function() {
+        expect(model.spec.monitor.timeout).toBeNull();
+      });
+
+      it('sets monitor method to default', function() {
+        expect(model.spec.monitor.method).toBe('GET');
+      });
+
+      it('sets monitor status code to default', function() {
+        expect(model.spec.monitor.status).toBe('200');
+      });
+
+      it('sets monitor URL path to default', function() {
+        expect(model.spec.monitor.path).toBe('/');
       });
     });
 
@@ -231,101 +598,6 @@
       });
     });
 
-    describe('Post initialize model - Initializing', function() {
-
-      beforeEach(function() {
-        model.initializing = true;
-        model.initialize('loadbalancer');
-        scope.$apply();
-      });
-
-      // This is here to ensure that as people add/change spec properties, they don't forget
-      // to implement tests for them.
-      it('has the right number of properties', function() {
-        expect(Object.keys(model.spec).length).toBe(5);
-        expect(Object.keys(model.spec.loadbalancer).length).toBe(4);
-        expect(Object.keys(model.spec.listener).length).toBe(4);
-        expect(Object.keys(model.spec.pool).length).toBe(4);
-        expect(Object.keys(model.spec.monitor).length).toBe(7);
-      });
-
-      it('sets load balancer name to null', function() {
-        expect(model.spec.loadbalancer.name).toBeNull();
-      });
-
-      it('sets load balancer description to null', function() {
-        expect(model.spec.loadbalancer.description).toBeNull();
-      });
-
-      it('sets load balancer ip address to null', function() {
-        expect(model.spec.loadbalancer.ip).toBeNull();
-      });
-
-      it('sets load balancer subnet to null', function() {
-        expect(model.spec.loadbalancer.subnet).toBeNull();
-      });
-
-      it('sets listener name to reasonable default', function() {
-        expect(model.spec.listener.name).toBe('Listener 1');
-      });
-
-      it('sets listener description to null', function() {
-        expect(model.spec.listener.description).toBeNull();
-      });
-
-      it('sets listener protocol to null', function() {
-        expect(model.spec.listener.protocol).toBeNull();
-      });
-
-      it('sets listener port to null', function() {
-        expect(model.spec.listener.port).toBeNull();
-      });
-
-      it('sets pool name to reasonable default', function() {
-        expect(model.spec.pool.name).toBe('Pool 1');
-      });
-
-      it('sets pool description to null', function() {
-        expect(model.spec.pool.description).toBeNull();
-      });
-
-      it('sets pool protocol to null', function() {
-        expect(model.spec.pool.protocol).toBeNull();
-      });
-
-      it('sets pool method to null', function() {
-        expect(model.spec.pool.method).toBeNull();
-      });
-
-      it('sets monitor type to null', function() {
-        expect(model.spec.monitor.type).toBeNull();
-      });
-
-      it('sets monitor interval to null', function() {
-        expect(model.spec.monitor.interval).toBeNull();
-      });
-
-      it('sets monitor retry count to null', function() {
-        expect(model.spec.monitor.retry).toBeNull();
-      });
-
-      it('sets monitor timeout to null', function() {
-        expect(model.spec.monitor.timeout).toBeNull();
-      });
-
-      it('sets monitor method to default', function() {
-        expect(model.spec.monitor.method).toBe('GET');
-      });
-
-      it('sets monitor status code to default', function() {
-        expect(model.spec.monitor.status).toBe('200');
-      });
-
-      it('sets monitor URL path to default', function() {
-        expect(model.spec.monitor.path).toBe('/');
-      });
-    });
-
     describe('context (create loadbalancer)', function() {
 
       beforeEach(function() {
@@ -351,6 +623,20 @@
         expect(model.context.resource).toBe('loadbalancer');
         expect(model.context.id).toBe('1');
         expect(model.context.submit.name).toBe('editLoadBalancer');
+      });
+    });
+
+    describe('context (edit listener)', function() {
+
+      beforeEach(function() {
+        model.initialize('listener', '1');
+        scope.$apply();
+      });
+
+      it('should initialize context', function() {
+        expect(model.context.resource).toBe('listener');
+        expect(model.context.id).toBe('1');
+        expect(model.context.submit.name).toBe('editListener');
       });
     });
 
@@ -409,32 +695,39 @@
         expect(finalSpec.loadbalancer.description).toBeUndefined();
         expect(finalSpec.loadbalancer.ip).toBe('1.2.3.4');
         expect(finalSpec.loadbalancer.subnet).toBe(model.subnets[0].id);
+
         expect(finalSpec.listener.name).toBe('Listener 1');
         expect(finalSpec.listener.description).toBeUndefined();
         expect(finalSpec.listener.protocol).toBe('HTTPS');
         expect(finalSpec.listener.port).toBe(80);
+
         expect(finalSpec.pool.name).toBe('pool name');
         expect(finalSpec.pool.description).toBe('pool description');
         expect(finalSpec.pool.protocol).toBe('HTTP');
         expect(finalSpec.pool.method).toBe('LEAST_CONNECTIONS');
+
         expect(finalSpec.members.length).toBe(3);
         expect(finalSpec.members[0].address).toBe('1.2.3.4');
         expect(finalSpec.members[0].subnet).toBe('1');
         expect(finalSpec.members[0].port).toBe(80);
         expect(finalSpec.members[0].weight).toBe(1);
+        expect(finalSpec.members[0].id).toBe('1');
         expect(finalSpec.members[0].addresses).toBeUndefined();
-        expect(finalSpec.members[0].id).toBeUndefined();
         expect(finalSpec.members[0].name).toBeUndefined();
-        expect(finalSpec.members[1].id).toBeUndefined();
+        expect(finalSpec.members[0].allocatedMember).toBeUndefined();
+        expect(finalSpec.members[1].id).toBe('external-member-0');
         expect(finalSpec.members[1].address).toBe('2.3.4.5');
         expect(finalSpec.members[1].subnet).toBeUndefined();
         expect(finalSpec.members[1].port).toBe(80);
         expect(finalSpec.members[1].weight).toBe(1);
-        expect(finalSpec.members[2].id).toBeUndefined();
+        expect(finalSpec.members[1].allocatedMember).toBeUndefined();
+        expect(finalSpec.members[2].id).toBe('external-member-2');
         expect(finalSpec.members[2].address).toBe('3.4.5.6');
         expect(finalSpec.members[2].subnet).toBe('1');
         expect(finalSpec.members[2].port).toBe(80);
         expect(finalSpec.members[2].weight).toBe(1);
+        expect(finalSpec.members[2].allocatedMember).toBeUndefined();
+
         expect(finalSpec.monitor.type).toBe('PING');
         expect(finalSpec.monitor.interval).toBe(1);
         expect(finalSpec.monitor.retry).toBe(1);
@@ -535,7 +828,7 @@
     describe('Model submit function (edit loadbalancer)', function() {
 
       beforeEach(function() {
-        model.initialize('loadbalancer', '1');
+        model.initialize('loadbalancer', '1234');
         scope.$apply();
       });
 
@@ -544,10 +837,78 @@
 
         var finalSpec = model.submit();
 
-        expect(finalSpec.loadbalancer.name).toBe('');
+        expect(finalSpec.loadbalancer.name).toBe('Load Balancer 1');
         expect(finalSpec.loadbalancer.description).toBe('new description');
-        expect(finalSpec.loadbalancer.ip).toBe('');
+        expect(finalSpec.loadbalancer.ip).toBe('1.2.3.4');
         expect(finalSpec.loadbalancer.subnet).toBe('subnet-1');
+      });
+    });
+
+    describe('Model submit function (edit listener)', function() {
+
+      beforeEach(function() {
+        model.initialize('listener', '1234');
+        scope.$apply();
+      });
+
+      it('should set final spec properties', function() {
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer).toBeUndefined();
+
+        expect(finalSpec.listener.name).toBe('Listener 1');
+        expect(finalSpec.listener.description).toBe('listener description');
+        expect(finalSpec.listener.protocol).toBe('HTTP');
+        expect(finalSpec.listener.port).toBe(80);
+
+        expect(finalSpec.pool.name).toBe('Pool 1');
+        expect(finalSpec.pool.description).toBe('pool description');
+        expect(finalSpec.pool.protocol).toBe('HTTP');
+        expect(finalSpec.pool.method).toBe('ROUND_ROBIN');
+
+        expect(finalSpec.members.length).toBe(2);
+        expect(finalSpec.members[0].id).toBe('1234');
+        expect(finalSpec.members[0].address).toBe('1.2.3.4');
+        expect(finalSpec.members[0].subnet).toBe('subnet-1');
+        expect(finalSpec.members[0].port).toBe(80);
+        expect(finalSpec.members[0].weight).toBe(1);
+        expect(finalSpec.members[1].id).toBe('5678');
+        expect(finalSpec.members[1].address).toBe('5.6.7.8');
+        expect(finalSpec.members[1].subnet).toBe('subnet-1');
+        expect(finalSpec.members[1].port).toBe(80);
+        expect(finalSpec.members[1].weight).toBe(1);
+
+        expect(finalSpec.monitor.type).toBe('HTTP');
+        expect(finalSpec.monitor.interval).toBe(1);
+        expect(finalSpec.monitor.retry).toBe(1);
+        expect(finalSpec.monitor.timeout).toBe(1);
+      });
+    });
+
+    describe('Model visible resources (edit listener, no pool)', function() {
+
+      beforeEach(function() {
+        delete listenerResources.pool;
+        model.initialize('listener', '1234');
+        scope.$apply();
+      });
+
+      it('should only show listener details', function() {
+        expect(model.visibleResources).toEqual(['listener']);
+      });
+    });
+
+    describe('Model visible resources (edit listener, no monitor or existing members)', function() {
+
+      beforeEach(function() {
+        delete listenerResources.members;
+        delete listenerResources.monitor;
+        model.initialize('listener', '1234');
+        scope.$apply();
+      });
+
+      it('should only show listener, pool, and member details', function() {
+        expect(model.visibleResources).toEqual(['listener', 'pool', 'members']);
       });
     });
 

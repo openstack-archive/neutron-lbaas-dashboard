@@ -44,6 +44,10 @@
   div.tab-pane > dl {
     margin-top: 12px;
   }
+
+  actions + dl {
+    clear: both;
+  }
 }
 
 /* Load Balancer Wizard */

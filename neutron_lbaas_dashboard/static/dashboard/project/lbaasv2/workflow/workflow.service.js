@@ -67,7 +67,22 @@
 
     return initWorkflow;
 
-    function initWorkflow(title, icon, steps) {
+    function initWorkflow(title, icon, steps, promise) {
+
+      var filteredSteps = steps ? workflowSteps.filter(function(step) {
+        return steps.indexOf(step.id) > -1;
+      }) : workflowSteps;
+
+      // If a promise is provided then add a checkReadiness function to the first step so
+      // that the workflow will not show until the promise is resolved. There must always
+      // be at least one step in the workflow.
+      if (promise) {
+        filteredSteps[0] = angular.copy(filteredSteps[0]);
+        filteredSteps[0].checkReadiness = function() {
+          return promise;
+        };
+      }
+
       return dashboardWorkflow({
         title: title,
         btnText: {
@@ -76,9 +91,8 @@
         btnIcon: {
           finish: icon
         },
-        steps: steps ? workflowSteps.filter(function(step) {
-          return steps.indexOf(step.id) > -1;
-        }) : workflowSteps
+        steps: filteredSteps,
+        allSteps: workflowSteps
       });
     }
   }

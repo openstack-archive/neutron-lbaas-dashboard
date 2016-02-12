@@ -62,6 +62,7 @@
       var workflow = workflowService('My Workflow', 'foo', ['listener', 'pool']);
       expect(workflow.steps).toBeDefined();
       expect(workflow.steps.length).toBe(2);
+      expect(workflow.steps[0].checkReadiness).not.toBeDefined();
 
       var forms = [
         'listenerDetailsForm',
@@ -71,6 +72,13 @@
       forms.forEach(function(expectedForm, idx) {
         expect(workflow.steps[idx].formName).toBe(expectedForm);
       });
+    });
+
+    it('can wait for all steps to be ready', function () {
+      var workflow = workflowService('My Workflow', 'foo', null, 'promise');
+
+      expect(workflow.steps[0].checkReadiness).toBeDefined();
+      expect(workflow.steps[0].checkReadiness()).toBe('promise');
     });
 
     it('can be extended', function () {

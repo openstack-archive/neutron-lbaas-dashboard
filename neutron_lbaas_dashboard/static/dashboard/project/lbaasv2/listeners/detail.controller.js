@@ -22,6 +22,7 @@
 
   ListenerDetailController.$inject = [
     'horizon.app.core.openstack-service-api.lbaasv2',
+    'horizon.dashboard.project.lbaasv2.listeners.actions.rowActions',
     '$routeParams'
   ];
 
@@ -33,12 +34,15 @@
    * Controller for the LBaaS v2 listener detail page.
    *
    * @param api The LBaaS v2 API service.
+   * @param rowActions The listener row actions service.
    * @param $routeParams The angular $routeParams service.
    * @returns undefined
    */
 
-  function ListenerDetailController(api, $routeParams) {
+  function ListenerDetailController(api, rowActions, $routeParams) {
     var ctrl = this;
+
+    ctrl.actions = rowActions.actions;
 
     init();
 

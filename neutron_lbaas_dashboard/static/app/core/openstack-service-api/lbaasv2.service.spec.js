@@ -76,9 +76,26 @@
         "func": "getListener",
         "method": "get",
         "path": "/api/lbaas/listeners/1234",
+        "data": {
+          "params": {
+            "includeChildResources": true
+          }
+        },
         "error": "Unable to retrieve listener.",
         "testInput": [
-          '1234'
+          '1234',
+          true
+        ]
+      },
+      {
+        "func": "getListener",
+        "method": "get",
+        "path": "/api/lbaas/listeners/1234",
+        "data": {},
+        "error": "Unable to retrieve listener.",
+        "testInput": [
+          '1234',
+          false
         ]
       },
       {
@@ -131,12 +148,23 @@
       {
         "func": "editLoadBalancer",
         "method": "put",
-        "path": "/api/lbaas/loadbalancers/1234/",
+        "path": "/api/lbaas/loadbalancers/1234",
         "error": "Unable to update load balancer.",
         "data": { "name": "loadbalancer-1" },
         "testInput": [
           "1234",
           { "name": "loadbalancer-1" }
+        ]
+      },
+      {
+        "func": "editListener",
+        "method": "put",
+        "path": "/api/lbaas/listeners/1234",
+        "error": "Unable to update listener.",
+        "data": { "name": "listener-1" },
+        "testInput": [
+          "1234",
+          { "name": "listener-1" }
         ]
       }
     ];

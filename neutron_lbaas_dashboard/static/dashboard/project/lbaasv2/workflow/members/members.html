@@ -46,7 +46,8 @@
                      ng-class="{ 'has-error': memberDetailsForm['{$ ::row.id $}-address'].$invalid && memberDetailsForm['{$ ::row.id $}-address'].$dirty }">
                   <input name="{$ ::row.id $}-address" type="text" class="form-control input-sm"
                          ng-model="row.address" ng-pattern="::ctrl.ipPattern"
-                         ng-required="true">
+                         ng-required="true"
+                         ng-disabled="model.context.id && row.allocatedMember">
                 </div>
                 <span ng-if="!row.addresses"
                       class="fa fa-exclamation-triangle invalid"
@@ -69,7 +70,8 @@
                      class="form-field">
                   <select name="{$ ::row.id $}-subnet" class="form-control input-sm"
                           ng-options="subnet.name for subnet in model.subnets"
-                          ng-model="row.subnet">
+                          ng-model="row.subnet"
+                          ng-disabled="model.context.id && row.allocatedMember">
                   </select>
                 </div>
                 <span ng-if="row.addresses">{$ ctrl.getSubnetName(row) $}</span>
@@ -79,7 +81,8 @@
                      ng-class="{ 'has-error': memberDetailsForm['{$ ::row.id $}-port'].$invalid && memberDetailsForm['{$ ::row.id $}-port'].$dirty }">
                   <input name="{$ ::row.id $}-port" type="number" class="form-control input-sm"
                          ng-model="row.port" ng-pattern="/^\d+$/" min="1" max="65535"
-                         ng-required="true">
+                         ng-required="true"
+                         ng-disabled="model.context.id && row.allocatedMember">
                 </div>
                 <span class="fa fa-exclamation-triangle invalid"
                       ng-show="memberDetailsForm['{$ ::row.id $}-port'].$invalid && memberDetailsForm.$dirty"
@@ -91,7 +94,8 @@
                 <div class="form-field member-weight"
                      ng-class="{ 'has-error': memberDetailsForm['{$ ::row.id $}-weight'].$invalid && memberDetailsForm['{$ ::row.id $}-weight'].$dirty }">
                   <input name="{$ ::row.id $}-weight" type="number" class="form-control input-sm"
-                         ng-model="row.weight" ng-pattern="/^\d+$/" min="1" max="256">
+                         ng-model="row.weight" ng-pattern="/^\d+$/" min="1" max="256"
+                         ng-disabled="model.context.id && row.allocatedMember">
                 </div>
                 <span class="fa fa-exclamation-triangle invalid"
                       ng-show="memberDetailsForm['{$ ::row.id $}-weight'].$invalid && memberDetailsForm.$dirty"

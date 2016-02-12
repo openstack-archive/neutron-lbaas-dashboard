@@ -40,7 +40,7 @@
               <input name="loadbalancer-ip" id="loadbalancer-ip"
                      type="text" class="form-control input-sm"
                      ng-model="model.spec.loadbalancer.ip" ng-pattern="::ctrl.ipPattern"
-                     ng-disabled="model.context.resource === 'loadbalancer' && model.context.id">
+                     ng-disabled="model.context.id">
             </div>
           </div>
 
@@ -51,7 +51,7 @@
                       id="loadbalancer-subnet"
                       ng-options="subnet.name for subnet in model.subnets"
                       ng-model="model.spec.loadbalancer.subnet" ng-required="true"
-                      ng-disabled="model.context.resource === 'loadbalancer' && model.context.id">
+                      ng-disabled="model.context.id">
               </select>
             </div>
           </div>

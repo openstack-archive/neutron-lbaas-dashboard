@@ -70,6 +70,13 @@
       <td class="rsp-p1">{$ ::item.description | noValue $}</td>
       <td class="rsp-p1">{$ ::item.protocol$}</td>
       <td class="rsp-p1">{$ ::item.protocol_port$}</td>
+      <td class="action-col">
+        <!--
+        Table-row-action-column:
+        Actions taken here apply to a single item/row.
+        -->
+        <actions allowed="table.rowActions.actions" type="row" item="item"></actions>
+      </td>
     </tr>
 
     <tr ng-repeat-end class="detail-row">

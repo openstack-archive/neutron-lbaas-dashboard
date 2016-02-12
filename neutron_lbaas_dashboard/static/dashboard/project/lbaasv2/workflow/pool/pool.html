@@ -36,7 +36,8 @@
                       id="pool-protocol"
                       ng-options="protocol for protocol in model.poolProtocols"
                       ng-model="model.spec.pool.protocol"
-                      ng-change="ctrl.protocolChange(model.spec.pool.protocol)">
+                      ng-change="ctrl.protocolChange(model.spec.pool.protocol)"
+                      ng-disabled="model.context.id">
               </select>
             </div>
           </div>
@@ -47,7 +48,8 @@
               <select class="form-control input-sm" name="pool-method"
                       id="pool-method"
                       ng-options="method for method in model.methods"
-                      ng-model="model.spec.pool.method">
+                      ng-model="model.spec.pool.method"
+                      ng-disabled="model.context.id">
               </select>
             </div>
           </div>

@@ -8,6 +8,7 @@
     <p ng-if="::ctrl.listener.description">{$ ::ctrl.listener.description $}</p>
   </div>
   <div class="detail-page">
+    <actions allowed="ctrl.actions" type="row" item="ctrl.listener" ng-if="ctrl.listener" class="pull-right"></actions>
     <dl class="dl-horizontal">
       <div>
         <dt translate>Listener ID</dt>

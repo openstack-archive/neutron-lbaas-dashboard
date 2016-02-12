@@ -35,7 +35,8 @@
               <select class="form-control input-sm" name="listener-protocol"
                       id="listener-protocol"
                       ng-options="protocol for protocol in model.listenerProtocols"
-                      ng-model="model.spec.listener.protocol" ng-required="model.context.resource === 'listener'">
+                      ng-model="model.spec.listener.protocol" ng-required="model.context.resource === 'listener'"
+                      ng-disabled="model.context.id">
               </select>
             </div>
           </div>
@@ -52,7 +53,8 @@
               <input name="listener-port" id="listener-port"
                      type="number" class="form-control input-sm"
                      ng-model="model.spec.listener.port" ng-pattern="/^\d+$/" min="1" max="65535"
-                     ng-required="model.context.resource === 'listener'">
+                     ng-required="model.context.resource === 'listener'"
+                     ng-disabled="model.context.id">
             </div>
           </div>
 

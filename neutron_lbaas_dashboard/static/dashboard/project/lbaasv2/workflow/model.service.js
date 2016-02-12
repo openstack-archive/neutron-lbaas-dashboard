@@ -48,7 +48,7 @@
    */
 
   function workflowModel($q, neutronAPI, novaAPI, lbaasv2API, gettext) {
-    var initPromise, ports;
+    var ports;
 
     /**
      * @ngdoc model api object
@@ -70,6 +70,7 @@
 
       spec: null,
 
+      visibleResources: [],
       subnets: [],
       members: [],
       listenerProtocols: ['TCP', 'HTTP', 'HTTPS'],
@@ -85,6 +86,8 @@
       initialize: initialize,
       submit: submit
     };
+
+    return model;
 
     /**
      * @ngdoc method
@@ -108,7 +111,10 @@
         submit: null
       };
 
+      model.visibleResources = [];
+
       model.spec = {
+        loadbalancer_id: null,
         loadbalancer: {
           name: null,
           description: null,
@@ -116,18 +122,21 @@
           subnet: null
         },
         listener: {
+          id: null,
           name: gettext('Listener 1'),
           description: null,
           protocol: null,
           port: null
         },
         pool: {
+          id: null,
           name: gettext('Pool 1'),
           description: null,
           protocol: null,
           method: null
         },
         monitor: {
+          id: null,
           type: null,
           interval: null,
           retry: null,
@@ -140,35 +149,40 @@
       };
 
       if (model.initializing) {
-        promise = initPromise;
-      } else {
-        model.initializing = true;
+        return promise;
+      }
+      model.initializing = true;
 
-        switch ((id ? 'edit' : 'create') + resource) {
-          case 'createloadbalancer':
-            promise = $q.all([
-              lbaasv2API.getLoadBalancers().then(onGetLoadBalancers),
-              neutronAPI.getSubnets().then(onGetSubnets),
-              neutronAPI.getPorts().then(onGetPorts),
-              novaAPI.getServers().then(onGetServers)
-            ]).then(initMemberAddresses);
-            model.context.submit = createLoadBalancer;
-            break;
-          case 'editloadbalancer':
-            promise = $q.all([
-              lbaasv2API.getLoadBalancer(model.context.id).then(onGetLoadBalancer),
-              neutronAPI.getSubnets().then(onGetSubnets)
-            ]).then(initSubnet);
-            model.context.submit = editLoadBalancer;
-            break;
-          default:
-            throw Error('Invalid resource context: ' + (id ? 'edit' : 'create') + resource);
-        }
-
-        promise.then(onInitSuccess, onInitFail);
+      switch ((id ? 'edit' : 'create') + resource) {
+        case 'createloadbalancer':
+          promise = $q.all([
+            lbaasv2API.getLoadBalancers().then(onGetLoadBalancers),
+            neutronAPI.getSubnets().then(onGetSubnets),
+            neutronAPI.getPorts().then(onGetPorts),
+            novaAPI.getServers().then(onGetServers)
+          ]).then(initMemberAddresses);
+          model.context.submit = createLoadBalancer;
+          break;
+        case 'editloadbalancer':
+          promise = $q.all([
+            lbaasv2API.getLoadBalancer(model.context.id).then(onGetLoadBalancer),
+            neutronAPI.getSubnets().then(onGetSubnets)
+          ]).then(initSubnet);
+          model.context.submit = editLoadBalancer;
+          break;
+        case 'editlistener':
+          promise = $q.all([
+            neutronAPI.getSubnets().then(onGetSubnets).then(getListener).then(onGetListener),
+            neutronAPI.getPorts().then(onGetPorts),
+            novaAPI.getServers().then(onGetServers)
+          ]).then(initMemberAddresses);
+          model.context.submit = editListener;
+          break;
+        default:
+          throw Error('Invalid resource context: ' + (id ? 'edit' : 'create') + resource);
       }
 
-      return promise;
+      return promise.then(onInitSuccess, onInitFail);
     }
 
     function onInitSuccess() {
@@ -209,6 +223,10 @@
 
     function editLoadBalancer(spec) {
       return lbaasv2API.editLoadBalancer(model.context.id, spec);
+    }
+
+    function editListener(spec) {
+      return lbaasv2API.editListener(model.context.id, spec);
     }
 
     function cleanFinalSpecLoadBalancer(finalSpec) {
@@ -259,7 +277,8 @@
       var members = [];
       angular.forEach(finalSpec.members, function cleanMember(member) {
         if (member.address && member.port) {
-          ['id', 'name', 'description', 'addresses'].forEach(function deleteProperty(prop) {
+          ['name', 'description', 'addresses', 'allocatedMember'].forEach(
+              function deleteProperty(prop) {
             if (angular.isDefined(member[prop])) {
               delete member[prop];
             }
@@ -362,16 +381,99 @@
           });
         });
         member.address = member.addresses[0];
+
+        if (model.spec.pool.protocol) {
+          member.port = {'HTTP': 80}[model.spec.pool.protocol];
+        }
       });
+    }
+
+    function getListener() {
+      return lbaasv2API.getListener(model.context.id, true);
     }
 
     function onGetLoadBalancer(response) {
       var loadbalancer = response.data;
+      setLoadBalancerSpec(loadbalancer);
+      model.visibleResources.push('loadbalancer');
+    }
+
+    function onGetListener(response) {
+      var resources = response.data;
+
+      setListenerSpec(resources.listener);
+      model.visibleResources.push('listener');
+      model.spec.loadbalancer_id = resources.listener.loadbalancers[0].id;
+
+      if (resources.pool) {
+        setPoolSpec(resources.pool);
+        model.visibleResources.push('pool');
+        model.visibleResources.push('members');
+
+        if (resources.members) {
+          setMembersSpec(resources.members);
+        }
+
+        if (resources.monitor) {
+          setMonitorSpec(resources.monitor);
+          model.visibleResources.push('monitor');
+        }
+      }
+    }
+
+    function setLoadBalancerSpec(loadbalancer) {
       var spec = model.spec.loadbalancer;
-      spec.name = loadbalancer.name || '';
-      spec.description = loadbalancer.description || '';
-      spec.ip = loadbalancer.vip_address || '';
+      spec.name = loadbalancer.name;
+      spec.description = loadbalancer.description;
+      spec.ip = loadbalancer.vip_address;
       spec.subnet = loadbalancer.vip_subnet_id;
+    }
+
+    function setListenerSpec(listener) {
+      var spec = model.spec.listener;
+      spec.id = listener.id;
+      spec.name = listener.name;
+      spec.description = listener.description;
+      spec.protocol = listener.protocol;
+      spec.port = listener.protocol_port;
+    }
+
+    function setPoolSpec(pool) {
+      var spec = model.spec.pool;
+      spec.id = pool.id;
+      spec.name = pool.name;
+      spec.description = pool.description;
+      spec.protocol = pool.protocol;
+      spec.method = pool.lb_algorithm;
+    }
+
+    function setMembersSpec(membersList) {
+      model.spec.members.length = 0;
+      var members = [];
+
+      angular.forEach(membersList, function addMember(member) {
+        members.push({
+          id: member.id,
+          address: member.address,
+          subnet: mapSubnetObj(member.subnet_id),
+          port: member.protocol_port,
+          weight: member.weight,
+          allocatedMember: true
+        });
+      });
+      push.apply(model.spec.members, members);
+    }
+
+    function setMonitorSpec(monitor) {
+      var spec = model.spec.monitor;
+      spec.id = monitor.id;
+      spec.type = monitor.type;
+      spec.interval = monitor.delay;
+      spec.timeout = monitor.timeout;
+      spec.retry = monitor.max_retries;
+      spec.method = monitor.http_method;
+      spec.status = monitor.expected_codes;
+      spec.path = monitor.url_path;
     }
 
     function initSubnet() {
@@ -381,7 +483,13 @@
       model.spec.loadbalancer.subnet = subnet;
     }
 
-    return model;
+    function mapSubnetObj(subnetId) {
+      var subnet = model.subnets.filter(function mapSubnet(subnet) {
+        return subnet.id === subnetId;
+      });
+
+      return subnet[0];
+    }
   }
 
 })();

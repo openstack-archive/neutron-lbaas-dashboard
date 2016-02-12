@@ -118,8 +118,19 @@ def add_member(request, **kwargs):
 
     """
     data = request.DATA
-    members = data['members']
-    index = kwargs['index']
+    members = data.get('members')
+
+    if kwargs.get('members_to_add'):
+        members_to_add = kwargs['members_to_add']
+        index = [members.index(member) for member in members
+                 if member['id'] == members_to_add[0]][0]
+        pool_id = data['pool'].get('id')
+        loadbalancer_id = data.get('loadbalancer_id')
+    else:
+        index = kwargs.get('index')
+        pool_id = kwargs.get('pool_id')
+        loadbalancer_id = kwargs.get('loadbalancer_id')
+
     member = members[index]
     memberSpec = {
         'address': member['address'],
@@ -128,21 +139,53 @@ def add_member(request, **kwargs):
     }
     if member.get('weight'):
         memberSpec['weight'] = member['weight']
+
     member = neutronclient(request).create_lbaas_member(
-        kwargs['pool_id'], {'member': memberSpec}).get('member')
+        pool_id, {'member': memberSpec}).get('member')
 
     index += 1
-    if len(members) > index:
-        args = (request, kwargs['loadbalancer_id'], add_member)
-        kwargs = {'callback_kwargs': {'pool_id': kwargs['pool_id'],
+    if kwargs.get('members_to_add'):
+        args = (request, loadbalancer_id, update_member_list)
+        members_to_add = kwargs['members_to_add']
+        members_to_add.pop(0)
+        kwargs = {'callback_kwargs': {
+            'existing_members': kwargs.get('existing_members'),
+            'members_to_add': members_to_add,
+            'members_to_delete': kwargs.get('members_to_delete')}}
+        thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
+    elif len(members) > index:
+        args = (request, loadbalancer_id, add_member)
+        kwargs = {'callback_kwargs': {'pool_id': pool_id,
                                       'index': index}}
         thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
     elif data.get('monitor'):
-        args = (request, kwargs['loadbalancer_id'], add_monitor)
-        kwargs = {'callback_kwargs': {'pool_id': kwargs['pool_id']}}
+        args = (request, loadbalancer_id, add_monitor)
+        kwargs = {'callback_kwargs': {'pool_id': pool_id}}
         thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
 
     return member
+
+
+def remove_member(request, **kwargs):
+    """Remove a member from the pool.
+
+    """
+    data = request.DATA
+    loadbalancer_id = data.get('loadbalancer_id')
+    pool_id = data['pool']['id']
+
+    if kwargs.get('members_to_delete'):
+        members_to_delete = kwargs['members_to_delete']
+        member_id = members_to_delete.pop(0)
+
+        neutronclient(request).delete_lbaas_member(member_id, pool_id)
+
+        args = (request, loadbalancer_id, update_member_list)
+        kwargs = {'callback_kwargs': {
+            'existing_members': kwargs.get('existing_members'),
+            'members_to_add': kwargs.get('members_to_add'),
+            'members_to_delete': members_to_delete}}
+        thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
 
 
 def add_monitor(request, **kwargs):
@@ -165,6 +208,140 @@ def add_monitor(request, **kwargs):
         monitorSpec['expected_codes'] = data['monitor']['status']
     return neutronclient(request).create_lbaas_healthmonitor(
         {'healthmonitor': monitorSpec}).get('healthmonitor')
+
+
+def update_loadbalancer(request, **kwargs):
+    """Update a load balancer.
+
+    """
+    data = request.DATA
+    spec = {}
+    loadbalancer_id = kwargs.get('loadbalancer_id')
+
+    if data['loadbalancer'].get('name'):
+        spec['name'] = data['loadbalancer']['name']
+    if data['loadbalancer'].get('description'):
+        spec['description'] = data['loadbalancer']['description']
+    return neutronclient(request).update_loadbalancer(
+        loadbalancer_id, {'loadbalancer': spec}).get('loadbalancer')
+
+
+def update_listener(request, **kwargs):
+    """Update a listener.
+
+    """
+    data = request.DATA
+    listener_spec = {}
+    listener_id = data['listener'].get('id')
+    loadbalancer_id = data.get('loadbalancer_id')
+
+    if data['listener'].get('name'):
+        listener_spec['name'] = data['listener']['name']
+    if data['listener'].get('description'):
+        listener_spec['description'] = data['listener']['description']
+
+    listener = neutronclient(request).update_listener(
+        listener_id, {'listener': listener_spec}).get('listener')
+
+    if data.get('pool'):
+        args = (request, loadbalancer_id, update_pool)
+        thread.start_new_thread(poll_loadbalancer_status, args)
+
+    return listener
+
+
+def update_pool(request, **kwargs):
+    """Update a pool.
+
+    """
+    data = request.DATA
+    pool_spec = {}
+    pool_id = data['pool'].get('id')
+    loadbalancer_id = data.get('loadbalancer_id')
+
+    if data['pool'].get('name'):
+        pool_spec['name'] = data['pool']['name']
+    if data['pool'].get('description'):
+        pool_spec['description'] = data['pool']['description']
+
+    pools = neutronclient(request).update_lbaas_pool(
+        pool_id, {'pool': pool_spec}).get('pools')
+
+    # Assemble the lists of member id's to add and remove, if any exist
+    tenant_id = request.user.project_id
+    new_members = data.get('members', [])
+    existing_members = neutronclient(request).list_lbaas_members(
+        pool_id, tenant_id=tenant_id).get('members')
+    new_member_ids = [member['id'] for member in new_members]
+    existing_member_ids = [member['id'] for member in existing_members]
+    members_to_add = [member_id for member_id in new_member_ids
+                      if member_id not in existing_member_ids]
+    members_to_delete = [member_id for member_id in existing_member_ids
+                         if member_id not in new_member_ids]
+
+    if members_to_add or members_to_delete:
+        args = (request, loadbalancer_id, update_member_list)
+        kwargs = {'callback_kwargs': {'existing_members': existing_members,
+                                      'members_to_add': members_to_add,
+                                      'members_to_delete': members_to_delete}}
+        thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
+    elif data.get('monitor'):
+        args = (request, loadbalancer_id, update_monitor)
+        thread.start_new_thread(poll_loadbalancer_status, args)
+
+    return pools
+
+
+def update_monitor(request, **kwargs):
+    """Update a health monitor.
+
+    """
+    data = request.DATA
+    monitor_spec = {}
+    monitor_id = data['monitor']['id']
+
+    if data['monitor'].get('interval'):
+        monitor_spec['delay'] = data['monitor']['interval']
+    if data['monitor'].get('timeout'):
+        monitor_spec['timeout'] = data['monitor']['timeout']
+    if data['monitor'].get('retry'):
+        monitor_spec['max_retries'] = data['monitor']['retry']
+    if data['monitor'].get('method'):
+        monitor_spec['http_method'] = data['monitor']['method']
+    if data['monitor'].get('path'):
+        monitor_spec['url_path'] = data['monitor']['path']
+    if data['monitor'].get('status'):
+        monitor_spec['expected_codes'] = data['monitor']['status']
+
+    healthmonitor = neutronclient(request).update_lbaas_healthmonitor(
+        monitor_id, {'healthmonitor': monitor_spec}).get('healthmonitor')
+
+    return healthmonitor
+
+
+def update_member_list(request, **kwargs):
+    """Update the list of members by adding or removing the necessary members.
+
+    """
+    data = request.DATA
+    loadbalancer_id = data.get('loadbalancer_id')
+    existing_members = kwargs.get('existing_members')
+    members_to_add = kwargs.get('members_to_add')
+    members_to_delete = kwargs.get('members_to_delete')
+
+    if members_to_add:
+        kwargs = {'existing_members': existing_members,
+                  'members_to_add': members_to_add,
+                  'members_to_delete': members_to_delete}
+        add_member(request, **kwargs)
+    elif members_to_delete:
+        kwargs = {'existing_members': existing_members,
+                  'members_to_add': members_to_add,
+                  'members_to_delete': members_to_delete}
+        remove_member(request, **kwargs)
+    elif data.get('monitor'):
+        args = (request, loadbalancer_id, update_monitor)
+        thread.start_new_thread(poll_loadbalancer_status, args)
 
 
 @urls.register
@@ -217,7 +394,7 @@ class LoadBalancers(generic.View):
 
 @urls.register
 class LoadBalancer(generic.View):
-    """API for retrieving a single load balancer.
+    """API for retrieving, updating, and deleting a single load balancer.
 
     """
     url_regex = r'lbaas/loadbalancers/(?P<loadbalancer_id>[^/]+)/$'
@@ -236,14 +413,8 @@ class LoadBalancer(generic.View):
         """Edit a load balancer.
 
         """
-        data = request.DATA
-        spec = {}
-        if data['loadbalancer'].get('name'):
-            spec['name'] = data['loadbalancer']['name']
-        if data['loadbalancer'].get('description'):
-            spec['description'] = data['loadbalancer']['description']
-        return neutronclient(request).update_loadbalancer(
-            loadbalancer_id, {'loadbalancer': spec}).get('loadbalancer')
+        kwargs = {'loadbalancer_id': loadbalancer_id}
+        update_loadbalancer(request, **kwargs)
 
 
 @urls.register
@@ -280,7 +451,7 @@ class Listeners(generic.View):
 
 @urls.register
 class Listener(generic.View):
-    """API for retrieving a single listener.
+    """API for retrieving, updating, and deleting a single listener.
 
     """
     url_regex = r'lbaas/listeners/(?P<listener_id>[^/]+)/$'
@@ -289,10 +460,48 @@ class Listener(generic.View):
     def get(self, request, listener_id):
         """Get a specific listener.
 
+        If the param 'includeChildResources' is passed in as true, the details
+        of all resources that exist under the listener will be returned along
+        with the listener details.
+
         http://localhost/api/lbaas/listeners/cc758c90-3d98-4ea1-af44-aab405c9c915
         """
-        lb = neutronclient(request).show_listener(listener_id)
-        return lb.get('listener')
+        listener = neutronclient(request).show_listener(
+            listener_id).get('listener')
+
+        if request.GET.get('includeChildResources'):
+            resources = {}
+            resources['listener'] = listener
+
+            if listener.get('default_pool_id'):
+                pool_id = listener['default_pool_id']
+                pool = neutronclient(request).show_lbaas_pool(
+                    pool_id).get('pool')
+                resources['pool'] = pool
+
+                if pool.get('members'):
+                    tenant_id = request.user.project_id
+                    members = neutronclient(request).list_lbaas_members(
+                        pool_id, tenant_id=tenant_id).get('members')
+                    resources['members'] = members
+
+                if pool.get('healthmonitor_id'):
+                    monitor_id = pool['healthmonitor_id']
+                    monitor = neutronclient(request).show_lbaas_healthmonitor(
+                        monitor_id).get('healthmonitor')
+                    resources['monitor'] = monitor
+
+            return resources
+        else:
+            return listener
+
+    @rest_utils.ajax()
+    def put(self, request, listener_id):
+        """Edit a listener as well as any resources below it.
+
+        """
+        kwargs = {'listener_id': listener_id}
+        update_listener(request, **kwargs)
 
 
 @urls.register

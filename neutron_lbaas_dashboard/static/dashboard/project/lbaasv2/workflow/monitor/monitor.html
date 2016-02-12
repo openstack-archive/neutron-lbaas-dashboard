@@ -13,7 +13,8 @@
               <select class="form-control input-sm" name="monitor-type"
                       id="monitor-type"
                       ng-options="type for type in model.monitorTypes"
-                      ng-model="model.spec.monitor.type">
+                      ng-model="model.spec.monitor.type"
+                      ng-disabled="model.context.id">
               </select>
             </div>
           </div>
@@ -105,7 +106,8 @@
                   popover-trigger="hover"></span>
               <input name="monitor-status" id="monitor-status"
                      type="text" class="form-control input-sm"
-                     ng-model="model.spec.monitor.status" ng-pattern="::ctrl.statusPattern">
+                     ng-model="model.spec.monitor.status" ng-pattern="::ctrl.statusPattern"
+                     ng-disabled="model.context.id">
             </div>
           </div>
 

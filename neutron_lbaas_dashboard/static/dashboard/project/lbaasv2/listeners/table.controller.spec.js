@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Listeners Table Controller', function() {
-    var controller, lbaasv2API;
+    var controller, lbaasv2API, rowActions;
     var items = [];
 
     function fakeAPI() {
@@ -26,6 +26,10 @@
           callback({ items: items });
         }
       };
+    }
+
+    function initMock() {
+      return rowActions;
     }
 
     ///////////////////////
@@ -43,6 +47,8 @@
     beforeEach(inject(function($injector) {
       lbaasv2API = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
       controller = $injector.get('$controller');
+      rowActions = $injector.get('horizon.dashboard.project.lbaasv2.listeners.actions.rowActions');
+      spyOn(rowActions, 'init').and.callFake(initMock);
       spyOn(lbaasv2API, 'getListeners').and.callFake(fakeAPI);
     }));
 
@@ -57,10 +63,17 @@
       expect(ctrl.items).toEqual([]);
       expect(ctrl.src).toEqual(items);
       expect(ctrl.checked).toEqual({});
-      expect(ctrl.batchActions).toBeDefined();
+      expect(ctrl.loadbalancerId).toEqual('1234');
+      expect(rowActions.init).toHaveBeenCalledWith(ctrl.loadbalancerId);
+      expect(ctrl.rowActions).toEqual(rowActions);
     });
 
     it('should invoke lbaasv2 apis', function() {
+      createController();
+      expect(lbaasv2API.getListeners).toHaveBeenCalled();
+    });
+
+    it('should init the rowactions', function() {
       createController();
       expect(lbaasv2API.getListeners).toHaveBeenCalled();
     });
