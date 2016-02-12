@@ -29,7 +29,7 @@
 
     ///////////////////////
 
-    beforeEach(module('horizon.framework.widgets.toast'));
+    beforeEach(module('horizon.framework.widgets'));
     beforeEach(module('horizon.framework.conf'));
     beforeEach(module('horizon.framework.util'));
     beforeEach(module('horizon.app.core.openstack-service-api'));

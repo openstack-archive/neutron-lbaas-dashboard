@@ -21,7 +21,7 @@
 
     beforeEach(module('horizon.framework.util'));
     beforeEach(module('horizon.framework.conf'));
-    beforeEach(module('horizon.framework.widgets.toast'));
+    beforeEach(module('horizon.framework.widgets'));
     beforeEach(module('horizon.app.core.openstack-service-api'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
@@ -54,8 +54,9 @@
     }));
 
     it('should define correct table batch actions', function() {
-      expect(actions.length).toBe(1);
+      expect(actions.length).toBe(2);
       expect(actions[0].template.text).toBe('Create Load Balancer');
+      expect(actions[1].template.text).toBe('Delete Load Balancers');
     });
 
     it('should have the "allowed" and "perform" functions', function() {

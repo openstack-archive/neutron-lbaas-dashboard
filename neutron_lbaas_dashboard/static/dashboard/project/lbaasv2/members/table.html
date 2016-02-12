@@ -57,7 +57,7 @@
 
       <td class="select-col">
         <input type="checkbox"
-               ng-model="selected[item.id].checked"
+               ng-model="tCtrl.selections[item.id].checked"
                hz-select="item">
       </td>
       <td class="rsp-p1"><a ng-href="project/ngloadbalancersv2/{$ ::table.loadbalancerId $}/listeners/{$ ::table.listenerId $}/pools/{$ ::table.poolId $}/members/{$ ::item.id $}">{$ ::item.id $}</a></td>

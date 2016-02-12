@@ -245,6 +245,14 @@ class LoadBalancer(generic.View):
         return neutronclient(request).update_loadbalancer(
             loadbalancer_id, {'loadbalancer': spec}).get('loadbalancer')
 
+    @rest_utils.ajax()
+    def delete(self, request, loadbalancer_id):
+        """Delete a specific load balancer.
+
+        http://localhost/api/lbaas/loadbalancers/cc758c90-3d98-4ea1-af44-aab405c9c915
+        """
+        neutronclient(request).delete_loadbalancer(loadbalancer_id)
+
 
 @urls.register
 class Listeners(generic.View):

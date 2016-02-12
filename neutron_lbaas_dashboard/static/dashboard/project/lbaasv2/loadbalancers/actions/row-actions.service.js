@@ -25,6 +25,7 @@
     '$q',
     '$route',
     'horizon.dashboard.project.lbaasv2.workflow.modal',
+    'horizon.dashboard.project.lbaasv2.loadbalancers.actions.delete',
     'horizon.app.core.openstack-service-api.policy',
     'horizon.framework.util.q.extensions',
     'horizon.framework.util.i18n.gettext'
@@ -40,13 +41,14 @@
    * @param $q The angular service for promises.
    * @param $route The angular $route service.
    * @param workflowModal The LBaaS workflow modal service.
+   * @param deleteService The load balancer delete service.
    * @param policy The horizon policy service.
    * @param qExtensions Horizon extensions to the $q service.
    * @param gettext The horizon gettext function for translation.
    * @returns Load balancers table batch actions service object.
    */
 
-  function tableRowActions($q, $route, workflowModal, policy, qExtensions, gettext) {
+  function tableRowActions($q, $route, workflowModal, deleteService, policy, qExtensions, gettext) {
 
     var edit = workflowModal.init({
       controller: 'EditLoadBalancerWizardController',
@@ -68,6 +70,12 @@
         service: edit,
         template: {
           text: gettext('Edit')
+        }
+      }, {
+        service: deleteService,
+        template: {
+          text: gettext('Delete Load Balancer'),
+          type: 'delete'
         }
       }];
     }
