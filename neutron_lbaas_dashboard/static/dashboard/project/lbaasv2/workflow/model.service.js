@@ -85,10 +85,9 @@
       visibleResources: [],
       subnets: [],
       members: [],
-      listenerProtocols: ['TCP', 'HTTP', 'HTTPS', 'TERMINATED_HTTPS'],
-      poolProtocols: ['TCP', 'HTTP', 'HTTPS'],
-      methods: ['ROUND_ROBIN', 'LEAST_CONNECTIONS', 'SOURCE_IP'],
-      monitorTypes: ['HTTP', 'HTTPS', 'PING', 'TCP'],
+      listenerProtocols: ['HTTP', 'TCP', 'TERMINATED_HTTPS'],
+      methods: ['LEAST_CONNECTIONS', 'ROUND_ROBIN', 'SOURCE_IP'],
+      monitorTypes: ['HTTP', 'PING', 'TCP'],
       monitorMethods: ['GET', 'HEAD'],
       certificates: [],
 
@@ -155,9 +154,9 @@
         monitor: {
           id: null,
           type: null,
-          interval: null,
-          retry: null,
-          timeout: null,
+          interval: 5,
+          retry: 3,
+          timeout: 5,
           method: 'GET',
           status: '200',
           path: '/'
@@ -295,11 +294,14 @@
     function cleanFinalSpecPool(finalSpec) {
       var resource = model.context.resource;
 
-      // Pool requires protocol and method, and also the listener
-      if (resource !== 'pool' && !finalSpec.listener ||
-          !finalSpec.pool.protocol ||
-          !finalSpec.pool.method) {
+      // Pool requires method and also the listener
+      if (resource !== 'pool' && !finalSpec.listener || !finalSpec.pool.method) {
         delete finalSpec.pool;
+      } else {
+        // The pool protocol must be HTTP if the listener protocol is TERMINATED_HTTPS and
+        // otherwise has to match it.
+        var protocol = finalSpec.listener.protocol;
+        finalSpec.pool.protocol = protocol === 'TERMINATED_HTTPS' ? 'HTTP' : protocol;
       }
     }
 
@@ -315,8 +317,8 @@
       var members = [];
       angular.forEach(finalSpec.members, function cleanMember(member) {
         if (member.address && member.port) {
-          ['name', 'description', 'addresses', 'allocatedMember'].forEach(
-              function deleteProperty(prop) {
+          var propsToRemove = ['name', 'description', 'addresses', 'allocatedMember'];
+          propsToRemove.forEach(function deleteProperty(prop) {
             if (angular.isDefined(member[prop])) {
               delete member[prop];
             }
@@ -393,7 +395,6 @@
         members.push({
           id: server.id,
           name: server.name,
-          description: server.description,
           weight: 1
         });
       });
@@ -586,7 +587,7 @@
       // cannot support the TERMINATED_HTTPS listener protocol so we hide the option if creating
       // a new load balancer or listener. However for editing we still need it.
       if (!model.context.id) {
-        model.listenerProtocols.splice(3, 1);
+        model.listenerProtocols.splice(2, 1);
       }
     }
 

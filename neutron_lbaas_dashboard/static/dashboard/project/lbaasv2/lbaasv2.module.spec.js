@@ -63,6 +63,16 @@
       });
     });
 
+    it('should define correct pattern for health monitor status codes', function () {
+      expect(Object.keys(patterns).length).toBe(4);
+      var regex = patterns.httpStatusCodes;
+      expect(regex.test('200')).toBe(true);
+      expect(regex.test('200-204')).toBe(true);
+      expect(regex.test('200,203,204')).toBe(true);
+      expect(regex.test('foo')).toBe(false);
+      expect(regex.test('200,202-204')).toBe(false);
+    });
+
     it('should define popovers', function () {
       expect(popovers).toBeDefined();
     });

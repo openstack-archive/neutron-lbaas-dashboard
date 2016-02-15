@@ -22,7 +22,7 @@
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     describe('ListenerDetailsController', function() {
-      var ctrl, workflow, listener;
+      var ctrl, workflow, listener, scope;
 
       beforeEach(inject(function($controller) {
         workflow = {
@@ -34,10 +34,12 @@
         listener = {
           protocol: null
         };
-        var scope = {
+        scope = {
           model: {
+            members: [{port: ''}, {port: ''}],
             spec: {
-              listener: listener
+              listener: listener,
+              members: [{port: ''}, {port: ''}]
             }
           },
           workflow: workflow
@@ -51,28 +53,65 @@
       });
 
       it('should show certificates step if selecting TERMINATED_HTTPS', function() {
-        listener.protocol = 'TERMINATED_HTTPS';
         workflow.steps.push(workflow.certificatesStep);
         spyOn(workflow, 'after');
 
-        ctrl.protocolChange();
+        ctrl.protocolChange('TERMINATED_HTTPS');
         expect(workflow.after).not.toHaveBeenCalled();
 
         workflow.steps.splice(1, 1);
-        ctrl.protocolChange();
+        ctrl.protocolChange('TERMINATED_HTTPS');
         expect(workflow.after).toHaveBeenCalledWith('listener', workflow.certificatesStep);
       });
 
       it('should hide certificates step if not selecting TERMINATED_HTTPS', function() {
-        listener.protocol = 'HTTP';
         spyOn(workflow, 'remove');
 
-        ctrl.protocolChange();
+        ctrl.protocolChange('HTTP');
         expect(workflow.remove).not.toHaveBeenCalled();
 
         workflow.steps.push(workflow.certificatesStep);
-        ctrl.protocolChange();
+        ctrl.protocolChange('HTTP');
         expect(workflow.remove).toHaveBeenCalledWith('certificates');
+      });
+
+      it('should update port on protocol change to HTTP', function() {
+        ctrl.protocolChange('HTTP');
+        expect(listener.port).toBe(80);
+      });
+
+      it('should update port on protocol change to TERMINATED_HTTPS', function() {
+        ctrl.protocolChange('TERMINATED_HTTPS');
+        expect(listener.port).toBe(443);
+      });
+
+      it('should update port on protocol change to TCP', function() {
+        ctrl.protocolChange('TCP');
+        expect(listener.port).toBeUndefined();
+      });
+
+      it('should update member ports on protocol change to TERMINATED_HTTPS', function() {
+        ctrl.protocolChange('TERMINATED_HTTPS');
+
+        scope.model.members.concat(scope.model.spec.members).forEach(function(member) {
+          expect(member.port).toBe(80);
+        });
+      });
+
+      it('should update member ports on protocol change to HTTP', function() {
+        ctrl.protocolChange('HTTP');
+
+        scope.model.members.concat(scope.model.spec.members).forEach(function(member) {
+          expect(member.port).toBe(80);
+        });
+      });
+
+      it('should update member ports on protocol change to TCP', function() {
+        ctrl.protocolChange('TCP');
+
+        scope.model.members.concat(scope.model.spec.members).forEach(function(member) {
+          expect(member.port).toBeUndefined();
+        });
       });
 
     });

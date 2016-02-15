@@ -50,7 +50,7 @@
     ctrl.pathError = gettext('The URL path is not valid.');
 
     // Field level help text
-    ctrl.statusHelp = gettext('Enter comma separated values or ranges.');
+    ctrl.statusHelp = gettext('Must be one of a single value, a comma separated list, or a range.');
     ctrl.intervalHelp = gettext('The delay between health check calls.');
     ctrl.retryHelp = interpolate(
       /* eslint-disable max-len */
