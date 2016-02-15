@@ -38,8 +38,9 @@
                   popover-placement="top" popover-append-to-body="true"
                   popover-trigger="hover"></span>
               <select class="form-control input-sm" name="listener-protocol" id="listener-protocol"
-                      ng-model="model.spec.listener.protocol" ng-required="model.context.resource === 'listener'"
-                      ng-change="ctrl.protocolChange(model.spec.listener.protocol)" ng-disabled="model.context.id">
+                      ng-model="model.spec.listener.protocol" ng-required="true"
+                      ng-change="ctrl.protocolChange(model.spec.listener.protocol)"
+                      ng-disabled="model.context.id">
                 <option ng-repeat="protocol in model.listenerProtocols" value="{$ protocol $}"
                         ng-disabled="protocol==='TERMINATED_HTTPS' && model.certificatesError">{$ protocol $}</option>
               </select>
@@ -58,8 +59,7 @@
               <input name="listener-port" id="listener-port"
                      type="number" class="form-control input-sm"
                      ng-model="model.spec.listener.port" ng-pattern="/^\d+$/" min="1" max="65535"
-                     ng-required="model.context.resource === 'listener'"
-                     ng-disabled="model.context.id">
+                     ng-required="true" ng-disabled="model.context.id">
             </div>
           </div>
 

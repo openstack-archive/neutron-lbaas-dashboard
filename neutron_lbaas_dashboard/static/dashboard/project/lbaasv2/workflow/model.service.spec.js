@@ -912,19 +912,6 @@
         expect(finalSpec.pool).toBeUndefined();
       });
 
-      it('should delete listener if using TERMINATED_HTTPS but no certificates', function() {
-        model.spec.loadbalancer.ip = '1.2.3.4';
-        model.spec.loadbalancer.subnet = model.subnets[0];
-        model.spec.listener.protocol = 'TERMINATED_HTTPS';
-        model.spec.listener.port = 443;
-        model.spec.certificates = [];
-
-        var finalSpec = model.submit();
-
-        expect(finalSpec.loadbalancer).toBeDefined();
-        expect(finalSpec.listener).toBeUndefined();
-      });
-
       it('should delete certificates if not using TERMINATED_HTTPS', function() {
         model.spec.loadbalancer.ip = '1.2.3.4';
         model.spec.loadbalancer.subnet = model.subnets[0];

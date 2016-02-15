@@ -32,11 +32,10 @@
           <div class="col-sm-6 col-md-3">
             <div class="form-field required pool-method">
               <label translate class="on-top" for="pool-method">Method</label>
-              <select class="form-control input-sm" name="pool-method"
-                      id="pool-method"
+              <select class="form-control input-sm" name="pool-method" id="pool-method"
                       ng-options="method for method in model.methods"
                       ng-model="model.spec.pool.method"
-                      ng-disabled="model.context.id">
+                      ng-disabled="model.context.id" ng-required="true">
               </select>
             </div>
           </div>
