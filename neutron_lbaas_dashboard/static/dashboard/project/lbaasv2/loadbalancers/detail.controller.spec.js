@@ -55,7 +55,7 @@
 
     it('should invoke lbaasv2 apis', function() {
       createController();
-      expect(lbaasv2API.getLoadBalancer).toHaveBeenCalledWith('1234');
+      expect(lbaasv2API.getLoadBalancer).toHaveBeenCalledWith('1234', true);
     });
 
   });

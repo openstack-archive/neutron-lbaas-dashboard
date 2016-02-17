@@ -69,9 +69,11 @@
     }));
 
     it('should define correct table row actions', function() {
-      expect(actions.length).toBe(2);
+      expect(actions.length).toBe(4);
       expect(actions[0].template.text).toBe('Edit');
-      expect(actions[1].template.text).toBe('Delete Load Balancer');
+      expect(actions[1].template.text).toBe('Associate Floating IP');
+      expect(actions[2].template.text).toBe('Disassociate Floating IP');
+      expect(actions[3].template.text).toBe('Delete Load Balancer');
     });
 
     it('should allow editing an ACTIVE load balancer', function() {

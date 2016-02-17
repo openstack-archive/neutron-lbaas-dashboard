@@ -21,6 +21,7 @@ from django.views import generic
 
 from horizon import conf
 
+from openstack_dashboard.api import network
 from openstack_dashboard.api import neutron
 from openstack_dashboard.api.rest import urls
 from openstack_dashboard.api.rest import utils as rest_utils
@@ -348,6 +349,21 @@ def update_member_list(request, **kwargs):
         thread.start_new_thread(poll_loadbalancer_status, args)
 
 
+def add_floating_ip_info(request, loadbalancers):
+    """Add floating IP address info to each load balancer.
+
+    """
+    floating_ips = network.tenant_floating_ip_list(request)
+    for lb in loadbalancers:
+        floating_ip = {}
+        associated_ip = next((fip for fip in floating_ips
+                              if fip['fixed_ip'] == lb['vip_address']), None)
+        if associated_ip is not None:
+            floating_ip['id'] = associated_ip['id']
+            floating_ip['ip'] = associated_ip['ip']
+        lb['floating_ip'] = floating_ip
+
+
 @urls.register
 class LoadBalancers(generic.View):
     """API for load balancers.
@@ -362,8 +378,11 @@ class LoadBalancers(generic.View):
         The listing result is an object with property "items".
         """
         tenant_id = request.user.project_id
-        result = neutronclient(request).list_loadbalancers(tenant_id=tenant_id)
-        return {'items': result.get('loadbalancers')}
+        loadbalancers = neutronclient(request).list_loadbalancers(
+            tenant_id=tenant_id).get('loadbalancers')
+        if request.GET.get('full') and network.floating_ip_supported(request):
+            add_floating_ip_info(request, loadbalancers)
+        return {'items': loadbalancers}
 
     @rest_utils.ajax()
     def post(self, request):
@@ -409,8 +428,11 @@ class LoadBalancer(generic.View):
 
         http://localhost/api/lbaas/loadbalancers/cc758c90-3d98-4ea1-af44-aab405c9c915
         """
-        lb = neutronclient(request).show_loadbalancer(loadbalancer_id)
-        return lb.get('loadbalancer')
+        loadbalancer = neutronclient(request).show_loadbalancer(
+            loadbalancer_id).get('loadbalancer')
+        if request.GET.get('full') and network.floating_ip_supported(request):
+            add_floating_ip_info(request, [loadbalancer])
+        return loadbalancer
 
     @rest_utils.ajax()
     def put(self, request, loadbalancer_id):

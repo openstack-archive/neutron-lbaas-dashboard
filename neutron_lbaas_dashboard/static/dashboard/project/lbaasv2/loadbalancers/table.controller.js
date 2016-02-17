@@ -57,7 +57,7 @@
     ////////////////////////////////
 
     function init() {
-      api.getLoadBalancers().success(success);
+      api.getLoadBalancers(true).success(success);
     }
 
     function success(response) {

@@ -117,6 +117,10 @@
             <dt translate>Provider</dt>
             <dd>{$ ::item.provider $}</dd>
           </dl>
+          <dl class="col-sm-2" ng-if="item.floating_ip !== undefined">
+            <dt translate>Floating IP Address</dt>
+            <dd>{$ item.floating_ip.ip || 'None' | translate $}</dd>
+          </dl>
           <dl class="col-sm-2">
             <dt translate>Admin State Up</dt>
             <dd>{$ ::item.admin_state_up | yesno $}</dd>
@@ -127,11 +131,11 @@
           </dl>
           <dl class="col-sm-2">
             <dt translate>Subnet ID</dt>
-            <dd>{$ ::item.vip_subnet_id $}</dd>
+            <dd><a target="_self" ng-href="project/networks/subnets/{$ ::item.vip_subnet_id $}/detail">{$ ::item.vip_subnet_id $}</a></dd>
           </dl>
           <dl class="col-sm-2">
             <dt translate>Port ID</dt>
-            <dd>{$ ::item.vip_port_id $}</dd>
+            <dd><a target="_self" ng-href="project/networks/ports/{$ ::item.vip_port_id $}/detail">{$ ::item.vip_port_id $}</a></dd>
           </dl>
         </div>
 

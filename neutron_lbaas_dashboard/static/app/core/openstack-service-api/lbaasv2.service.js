@@ -60,13 +60,14 @@
      * @name horizon.app.core.openstack-service-api.lbaasv2.getLoadBalancers
      * @description
      * Get a list of load balancers.
-     *
+     * @param {boolean} full
      * The listing result is an object with property "items". Each item is
      * a load balancer.
      */
 
-    function getLoadBalancers() {
-      return apiService.get('/api/lbaas/loadbalancers/')
+    function getLoadBalancers(full) {
+      var params = { full: full };
+      return apiService.get('/api/lbaas/loadbalancers/', { params: params })
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve load balancers.'));
         });
@@ -77,11 +78,13 @@
      * @description
      * Get a single load balancer by ID
      * @param {string} id
+     * @param {boolean} full
      * Specifies the id of the load balancer to request.
      */
 
-    function getLoadBalancer(id) {
-      return apiService.get('/api/lbaas/loadbalancers/' + id)
+    function getLoadBalancer(id, full) {
+      var params = { full: full };
+      return apiService.get('/api/lbaas/loadbalancers/' + id, { params: params })
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve load balancer.'));
         });

@@ -26,7 +26,10 @@
     '$route',
     'horizon.dashboard.project.lbaasv2.workflow.modal',
     'horizon.dashboard.project.lbaasv2.loadbalancers.actions.delete',
+    'horizon.dashboard.project.lbaasv2.loadbalancers.actions.associate-ip.modal.service',
+    'horizon.dashboard.project.lbaasv2.loadbalancers.actions.disassociate-ip.modal.service',
     'horizon.app.core.openstack-service-api.policy',
+    'horizon.app.core.openstack-service-api.network',
     'horizon.framework.util.q.extensions',
     'horizon.framework.util.i18n.gettext'
   ];
@@ -42,14 +45,27 @@
    * @param $route The angular $route service.
    * @param workflowModal The LBaaS workflow modal service.
    * @param deleteService The load balancer delete service.
+   * @param associateIp The associate floating IP modal service.
+   * @param disassociateIp The disassociate floating IP modal service.
    * @param policy The horizon policy service.
+   * @param network The horizon network API service.
    * @param qExtensions Horizon extensions to the $q service.
    * @param gettext The horizon gettext function for translation.
-   * @returns Load balancers table batch actions service object.
+   * @returns Load balancers table row actions service object.
    */
 
-  function tableRowActions($q, $route, workflowModal, deleteService, policy, qExtensions, gettext) {
-
+  function tableRowActions(
+    $q,
+    $route,
+    workflowModal,
+    deleteService,
+    associateIp,
+    disassociateIp,
+    policy,
+    network,
+    qExtensions,
+    gettext
+  ) {
     var edit = workflowModal.init({
       controller: 'EditLoadBalancerWizardController',
       message: gettext('The load balancer has been updated.'),
@@ -71,7 +87,17 @@
         template: {
           text: gettext('Edit')
         }
-      }, {
+      },{
+        service: associateIp,
+        template: {
+          text: gettext('Associate Floating IP')
+        }
+      },{
+        service: disassociateIp,
+        template: {
+          text: gettext('Disassociate Floating IP')
+        }
+      },{
         service: deleteService,
         template: {
           text: gettext('Delete Load Balancer'),

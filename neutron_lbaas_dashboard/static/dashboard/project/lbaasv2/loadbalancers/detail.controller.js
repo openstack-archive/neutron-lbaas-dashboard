@@ -53,7 +53,7 @@
     ////////////////////////////////
 
     function init() {
-      api.getLoadBalancer($routeParams.loadbalancerId).success(success);
+      api.getLoadBalancer($routeParams.loadbalancerId, true).success(success);
     }
 
     function success(response) {
