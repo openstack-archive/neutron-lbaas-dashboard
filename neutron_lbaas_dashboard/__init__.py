@@ -12,9 +12,5 @@
 
 import pbr.version
 
-# Register the REST API URLs so they can be called from the JavaScript files
-import neutron_lbaas_dashboard.api.rest  # noqa
-
-
 __version__ = pbr.version.VersionInfo(
     'neutron_lbaas_dashboard').version_string()
