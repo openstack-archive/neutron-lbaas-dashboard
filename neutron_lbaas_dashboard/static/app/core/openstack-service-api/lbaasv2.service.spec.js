@@ -135,6 +135,14 @@
         testInput: [ '1234', { name: 'loadbalancer-1' } ]
       },
       {
+        func: 'createListener',
+        method: 'post',
+        path: '/api/lbaas/listeners/',
+        error: 'Unable to create listener.',
+        data: { name: 'listener-1' },
+        testInput: [ { name: 'listener-1' } ]
+      },
+      {
         func: 'editListener',
         method: 'put',
         path: '/api/lbaas/listeners/1234',

@@ -90,6 +90,7 @@
       monitorTypes: ['HTTP', 'PING', 'TCP'],
       monitorMethods: ['GET', 'HEAD'],
       certificates: [],
+      listenerPorts: [],
 
       /**
        * api methods for UI controllers
@@ -116,7 +117,7 @@
      * @param id ID of the resource being edited.
      */
 
-    function initialize(resource, id) {
+    function initialize(resource, id, loadBalancerId) {
       var promise;
 
       model.certificatesError = false;
@@ -128,9 +129,10 @@
 
       model.visibleResources = [];
       model.certificates = [];
+      model.listenerPorts = [];
 
       model.spec = {
-        loadbalancer_id: null,
+        loadbalancer_id: loadBalancerId,
         loadbalancer: {
           name: null,
           description: null,
@@ -165,19 +167,23 @@
         certificates: []
       };
 
-      if (model.initializing) {
-        return promise;
+      if (!model.initializing) {
+        model.initializing = true;
+        promise = initializeResources();
       }
-      model.initializing = true;
+      return promise;
+    }
 
-      var type = (id ? 'edit' : 'create') + resource;
+    function initializeResources() {
+      var promise;
+      var type = (model.context.id ? 'edit' : 'create') + model.context.resource;
       keymanagerPromise = serviceCatalog.ifTypeEnabled('key-manager');
 
-      if (type === 'createloadbalancer' || resource === 'listener') {
+      if (type === 'createloadbalancer' || model.context.resource === 'listener') {
         keymanagerPromise.then(angular.noop, certificatesNotSupported);
       }
 
-      switch ((id ? 'edit' : 'create') + resource) {
+      switch (type) {
         case 'createloadbalancer':
           promise = $q.all([
             lbaasv2API.getLoadBalancers().then(onGetLoadBalancers),
@@ -187,6 +193,16 @@
             keymanagerPromise.then(prepareCertificates)
           ]).then(initMemberAddresses);
           model.context.submit = createLoadBalancer;
+          break;
+        case 'createlistener':
+          promise = $q.all([
+            lbaasv2API.getListeners(model.spec.loadbalancer_id).then(onGetListeners),
+            neutronAPI.getSubnets().then(onGetSubnets),
+            neutronAPI.getPorts().then(onGetPorts),
+            novaAPI.getServers().then(onGetServers),
+            keymanagerPromise.then(prepareCertificates)
+          ]).then(initMemberAddresses);
+          model.context.submit = createListener;
           break;
         case 'editloadbalancer':
           promise = $q.all([
@@ -204,7 +220,7 @@
           model.context.submit = editListener;
           break;
         default:
-          throw Error('Invalid resource context: ' + (id ? 'edit' : 'create') + resource);
+          throw Error('Invalid resource context: ' + type);
       }
 
       return promise.then(onInitSuccess, onInitFail);
@@ -244,6 +260,10 @@
 
     function createLoadBalancer(spec) {
       return lbaasv2API.createLoadBalancer(spec);
+    }
+
+    function createListener(spec) {
+      return lbaasv2API.createListener(spec);
     }
 
     function editLoadBalancer(spec) {
@@ -375,6 +395,21 @@
       model.spec.loadbalancer.name = name;
     }
 
+    function onGetListeners(response) {
+      var existingNames = {};
+      angular.forEach(response.data.items, function nameExists(listener) {
+        existingNames[listener.name] = 1;
+        model.listenerPorts.push(listener.protocol_port);
+      });
+      var name;
+      var index = 0;
+      do {
+        index += 1;
+        name = interpolate(gettext('Listener %(index)s'), { index: index }, true);
+      } while (name in existingNames);
+      model.spec.listener.name = name;
+    }
+
     function onGetSubnets(response) {
       model.subnets.length = 0;
       push.apply(model.subnets, response.data.items);
@@ -426,7 +461,6 @@
     function onGetLoadBalancer(response) {
       var loadbalancer = response.data;
       setLoadBalancerSpec(loadbalancer);
-      model.visibleResources.push('loadbalancer');
     }
 
     function onGetListener(response) {

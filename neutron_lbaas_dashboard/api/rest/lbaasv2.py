@@ -59,6 +59,31 @@ def poll_loadbalancer_status(request, loadbalancer_id, callback,
         callback(request, **kwargs)
 
 
+def create_loadbalancer(request):
+    data = request.DATA
+    spec = {
+        'vip_subnet_id': data['loadbalancer']['subnet']
+    }
+    if data['loadbalancer'].get('name'):
+        spec['name'] = data['loadbalancer']['name']
+    if data['loadbalancer'].get('description'):
+        spec['description'] = data['loadbalancer']['description']
+    if data['loadbalancer'].get('ip'):
+        spec['vip_address'] = data['loadbalancer']['ip']
+    loadbalancer = neutronclient(request).create_loadbalancer(
+        {'loadbalancer': spec}).get('loadbalancer')
+    if data.get('listener'):
+        # There is work underway to add a new API to LBaaS v2 that will
+        # allow us to pass in all information at once. Until that is
+        # available we use a separate thread to poll for the load
+        # balancer status and create the other resources when it becomes
+        # active.
+        args = (request, loadbalancer['id'], create_listener)
+        kwargs = {'from_state': 'PENDING_CREATE'}
+        thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
+    return loadbalancer
+
+
 def create_listener(request, **kwargs):
     """Create a new listener.
 
@@ -391,28 +416,7 @@ class LoadBalancers(generic.View):
         Creates a new load balancer as well as other optional resources such as
         a listener, pool, monitor, etc.
         """
-        data = request.DATA
-        spec = {
-            'vip_subnet_id': data['loadbalancer']['subnet']
-        }
-        if data['loadbalancer'].get('name'):
-            spec['name'] = data['loadbalancer']['name']
-        if data['loadbalancer'].get('description'):
-            spec['description'] = data['loadbalancer']['description']
-        if data['loadbalancer'].get('ip'):
-            spec['vip_address'] = data['loadbalancer']['ip']
-        loadbalancer = neutronclient(request).create_loadbalancer(
-            {'loadbalancer': spec}).get('loadbalancer')
-        if data.get('listener'):
-            # There is work underway to add a new API to LBaaS v2 that will
-            # allow us to pass in all information at once. Until that is
-            # available we use a separate thread to poll for the load
-            # balancer status and create the other resources when it becomes
-            # active.
-            args = (request, loadbalancer['id'], create_listener)
-            kwargs = {'from_state': 'PENDING_CREATE'}
-            thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
-        return loadbalancer
+        return create_loadbalancer(request)
 
 
 @urls.register
@@ -472,6 +476,16 @@ class Listeners(generic.View):
             listener_list = self._filter_listeners(listener_list,
                                                    loadbalancer_id)
         return {'items': listener_list}
+
+    @rest_utils.ajax()
+    def post(self, request):
+        """Create a new listener.
+
+        Creates a new listener as well as other optional resources such as
+        a pool, members, and health monitor.
+        """
+        kwargs = {'loadbalancer_id': request.DATA.get('loadbalancer_id')}
+        return create_listener(request, **kwargs)
 
     def _filter_listeners(self, listener_list, loadbalancer_id):
         filtered_listeners = []

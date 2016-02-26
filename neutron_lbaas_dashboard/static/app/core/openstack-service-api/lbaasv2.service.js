@@ -43,6 +43,7 @@
       editLoadBalancer: editLoadBalancer,
       getListeners: getListeners,
       getListener: getListener,
+      createListener: createListener,
       editListener: editListener,
       getPool: getPool,
       getMembers: getMembers,
@@ -178,6 +179,21 @@
       return apiService.get('/api/lbaas/listeners/' + id, params)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve listener.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.createListener
+     * @description
+     * Create a new listener
+     * @param {object} spec
+     * Specifies the data used to create the new listener.
+     */
+
+    function createListener(spec) {
+      return apiService.post('/api/lbaas/listeners/', spec)
+        .error(function () {
+          toastService.add('error', gettext('Unable to create listener.'));
         });
     }
 

@@ -32,10 +32,12 @@
           remove: angular.noop
         };
         listener = {
-          protocol: null
+          protocol: null,
+          port: 80
         };
         scope = {
           model: {
+            listenerPorts: [80],
             members: [{port: ''}, {port: ''}],
             spec: {
               listener: listener,
@@ -48,7 +50,8 @@
       }));
 
       it('should define error messages for invalid fields', function() {
-        expect(ctrl.portError).toBeDefined();
+        expect(ctrl.portNumberError).toBeDefined();
+        expect(ctrl.portUniqueError).toBeDefined();
         expect(ctrl.certificatesError).toBeDefined();
       });
 
@@ -77,7 +80,7 @@
 
       it('should update port on protocol change to HTTP', function() {
         ctrl.protocolChange('HTTP');
-        expect(listener.port).toBe(80);
+        expect(listener.port).toBe(81);
       });
 
       it('should update port on protocol change to TERMINATED_HTTPS', function() {

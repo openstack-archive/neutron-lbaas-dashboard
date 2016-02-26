@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Listeners Table Controller', function() {
-    var controller, lbaasv2API, rowActions;
+    var controller, lbaasv2API, rowActions, batchActions;
     var items = [];
 
     function fakeAPI() {
@@ -48,6 +48,8 @@
       lbaasv2API = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
       controller = $injector.get('$controller');
       rowActions = $injector.get('horizon.dashboard.project.lbaasv2.listeners.actions.rowActions');
+      batchActions = $injector.get(
+          'horizon.dashboard.project.lbaasv2.listeners.actions.batchActions');
       spyOn(rowActions, 'init').and.callFake(initMock);
       spyOn(lbaasv2API, 'getListeners').and.callFake(fakeAPI);
     }));
@@ -65,7 +67,10 @@
       expect(ctrl.checked).toEqual({});
       expect(ctrl.loadbalancerId).toEqual('1234');
       expect(rowActions.init).toHaveBeenCalledWith(ctrl.loadbalancerId);
+      expect(ctrl.rowActions).toBeDefined();
       expect(ctrl.rowActions).toEqual(rowActions);
+      expect(ctrl.batchActions).toBeDefined();
+      expect(ctrl.batchActions).toEqual(batchActions);
     });
 
     it('should invoke lbaasv2 apis', function() {

@@ -41,14 +41,21 @@
     ctrl.protocolChange = protocolChange;
 
     // Error text for invalid fields
-    ctrl.portError = gettext('The port must be a number between 1 and 65535.');
+    ctrl.portNumberError = gettext('The port must be a number between 1 and 65535.');
+    ctrl.portUniqueError = gettext(
+        'The port must be unique among all listeners attached to this load balancer.');
     ctrl.certificatesError = gettext('There was an error obtaining certificates from the ' +
       'key-manager service. The TERMINATED_HTTPS protocol is unavailable.');
 
     ////////////
 
     function protocolChange(protocol) {
-      $scope.model.spec.listener.port = { HTTP: 80, TERMINATED_HTTPS: 443 }[protocol];
+      var defaultPort = { HTTP: 80, TERMINATED_HTTPS: 443 }[protocol];
+      while (listenerPortExists(defaultPort)) {
+        defaultPort += 1;
+      }
+      $scope.model.spec.listener.port = defaultPort;
+
       var members = $scope.model.members.concat($scope.model.spec.members);
       members.forEach(function setMemberPort(member) {
         member.port = { HTTP: 80, TERMINATED_HTTPS: 80 }[protocol];
@@ -63,6 +70,12 @@
       } else if (protocol !== 'TERMINATED_HTTPS' && certificates) {
         workflow.remove('certificates');
       }
+    }
+
+    function listenerPortExists(port) {
+      return $scope.model.listenerPorts.some(function(element) {
+        return element === port;
+      });
     }
   }
 })();

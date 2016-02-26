@@ -23,7 +23,8 @@
   ListenersTableController.$inject = [
     'horizon.app.core.openstack-service-api.lbaasv2',
     '$routeParams',
-    'horizon.dashboard.project.lbaasv2.listeners.actions.rowActions'
+    'horizon.dashboard.project.lbaasv2.listeners.actions.rowActions',
+    'horizon.dashboard.project.lbaasv2.listeners.actions.batchActions'
   ];
 
   /**
@@ -36,16 +37,18 @@
    * @param api The LBaaS V2 service API.
    * @param $routeParams The angular $routeParams service.
    * @param rowActions The listener row actions service.
+   * @param batchActions The listener batch actions service.
    * @returns undefined
    */
 
-  function ListenersTableController(api, $routeParams, rowActions) {
+  function ListenersTableController(api, $routeParams, rowActions, batchActions) {
 
     var ctrl = this;
     ctrl.items = [];
     ctrl.src = [];
     ctrl.checked = {};
     ctrl.loadbalancerId = $routeParams.loadbalancerId;
+    ctrl.batchActions = batchActions.init(ctrl.loadbalancerId);
     ctrl.rowActions = rowActions.init(ctrl.loadbalancerId);
 
     init();
