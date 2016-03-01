@@ -73,8 +73,8 @@
       </td>
       <td class="rsp-p1"><a ng-href="project/ngloadbalancersv2/{$ ::item.id $}">{$ ::(item.name || item.id) $}</a></td>
       <td class="rsp-p1">{$ ::item.description | noValue $}</td>
-      <td class="rsp-p1">{$ ::item.operating_status | operatingStatus $}</td>
-      <td class="rsp-p1">{$ ::item.provisioning_status | provisioningStatus $}</td>
+      <td class="rsp-p1">{$ ::item.operating_status | decode:table.operatingStatus $}</td>
+      <td class="rsp-p1">{$ ::item.provisioning_status | decode:table.provisioningStatus $}</td>
       <td class="rsp-p2">{$ ::item.vip_address $}</td>
       <td class="rsp-p2">{$ item.listeners.length $}</td>
       <td class="action-col">

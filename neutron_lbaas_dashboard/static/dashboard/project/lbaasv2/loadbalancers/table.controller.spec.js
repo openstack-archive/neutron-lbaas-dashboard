@@ -58,6 +58,8 @@
       expect(ctrl.checked).toEqual({});
       expect(ctrl.batchActions).toBeDefined();
       expect(ctrl.rowActions).toBeDefined();
+      expect(ctrl.operatingStatus).toBeDefined();
+      expect(ctrl.provisioningStatus).toBeDefined();
     });
 
     it('should invoke lbaasv2 apis', function() {

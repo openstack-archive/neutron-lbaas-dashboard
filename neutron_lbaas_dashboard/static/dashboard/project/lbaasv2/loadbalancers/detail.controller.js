@@ -23,6 +23,7 @@
   LoadBalancerDetailController.$inject = [
     'horizon.app.core.openstack-service-api.lbaasv2',
     'horizon.dashboard.project.lbaasv2.loadbalancers.actions.rowActions',
+    'horizon.dashboard.project.lbaasv2.loadbalancers.service',
     '$routeParams'
   ];
 
@@ -35,14 +36,17 @@
    *
    * @param api The LBaaS v2 API service.
    * @param rowActions The load balancer row actions service.
+   * @param loadBalancersService The LBaaS v2 load balancers service.
    * @param $routeParams The angular $routeParams service.
    * @returns undefined
    */
 
-  function LoadBalancerDetailController(api, rowActions, $routeParams) {
+  function LoadBalancerDetailController(api, rowActions, loadBalancersService, $routeParams) {
     var ctrl = this;
 
     ctrl.actions = rowActions.actions;
+    ctrl.operatingStatus = loadBalancersService.operatingStatus;
+    ctrl.provisioningStatus = loadBalancersService.provisioningStatus;
 
     init();
 

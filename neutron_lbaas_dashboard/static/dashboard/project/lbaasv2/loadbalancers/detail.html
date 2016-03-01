@@ -16,11 +16,11 @@
       </div>
       <div>
         <strong translate>Operating Status</strong>
-        {$ ::ctrl.loadbalancer.operating_status | operatingStatus $}
+        {$ ::ctrl.loadbalancer.operating_status | decode:ctrl.operatingStatus $}
       </div>
       <div>
         <strong translate>Provisioning Status</strong>
-        {$ ::ctrl.loadbalancer.provisioning_status | provisioningStatus $}
+        {$ ::ctrl.loadbalancer.provisioning_status | decode:ctrl.provisioningStatus $}
       </div>
     </div>
     <tabset>
