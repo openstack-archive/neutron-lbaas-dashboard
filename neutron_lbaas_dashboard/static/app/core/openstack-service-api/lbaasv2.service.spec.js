@@ -52,6 +52,15 @@
         ]
       },
       {
+        "func": "deleteLoadBalancer",
+        "method": "delete",
+        "path": "/api/lbaas/loadbalancers/1234",
+        "error": "Unable to delete load balancer.",
+        "testInput": [
+          '1234'
+        ]
+      },
+      {
         "func": "getListeners",
         "method": "get",
         "path": "/api/lbaas/listeners/",
@@ -175,6 +184,11 @@
         var callParams = [apiService, service, toastService, params];
         testCall.apply(this, callParams);
       });
+    });
+
+    it('supresses the error if instructed for deleteLoadBalancer', function() {
+      spyOn(apiService, 'delete').and.returnValue("promise");
+      expect(service.deleteLoadBalancer("whatever", true)).toBe("promise");
     });
 
   });

@@ -106,3 +106,12 @@
     }
   }
 }
+
+/*
+TODO(jpomero): The float property is being set to "none" in _debt.scss apparently
+to work around a known bootstrap bug, but this appears to break the actions menu
+only in angular tables. Setting back to the original value ("left") here for now.
+*/
+td .btn-group.ng-scope > .btn {
+  float: left;
+}

@@ -25,6 +25,7 @@
     '$location',
     'horizon.dashboard.project.lbaasv2.workflow.modal',
     'horizon.dashboard.project.lbaasv2.basePath',
+    'horizon.dashboard.project.lbaasv2.loadbalancers.actions.delete',
     'horizon.app.core.openstack-service-api.policy',
     'horizon.framework.util.i18n.gettext'
   ];
@@ -39,12 +40,13 @@
    * @param $location The angular $location service.
    * @param workflowModal The LBaaS workflow modal service.
    * @param basePath The lbaasv2 module base path.
+   * @param deleteService The load balancer delete service.
    * @param policy The horizon policy service.
    * @param gettext The horizon gettext function for translation.
    * @returns Load balancers table batch actions service object.
    */
 
-  function tableBatchActions($location, workflowModal, basePath, policy, gettext) {
+  function tableBatchActions($location, workflowModal, basePath, deleteService, policy, gettext) {
 
     var create = workflowModal.init({
       controller: 'CreateLoadBalancerWizardController',
@@ -67,6 +69,12 @@
         template: {
           type: 'create',
           text: gettext('Create Load Balancer')
+        }
+      }, {
+        service: deleteService,
+        template: {
+          type: 'delete-selected',
+          text: gettext('Delete Load Balancers')
         }
       }];
     }

@@ -38,6 +38,7 @@
     var service = {
       getLoadBalancers: getLoadBalancers,
       getLoadBalancer: getLoadBalancer,
+      deleteLoadBalancer: deleteLoadBalancer,
       createLoadBalancer: createLoadBalancer,
       editLoadBalancer: editLoadBalancer,
       getListeners: getListeners,
@@ -84,6 +85,22 @@
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve load balancer.'));
         });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.deleteLoadBalancer
+     * @description
+     * Delete a single load balancer by ID
+     * @param {string} id
+     * @param {boolean} quiet
+     * Specifies the id of the load balancer to delete.
+     */
+
+    function deleteLoadBalancer(id, quiet) {
+      var promise = apiService.delete('/api/lbaas/loadbalancers/' + id);
+      return quiet ? promise : promise.error(function () {
+        toastService.add('error', gettext('Unable to delete load balancer.'));
+      });
     }
 
     /**
