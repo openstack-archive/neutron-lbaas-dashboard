@@ -31,27 +31,29 @@
    * @description
    * The `ListenerDetailsController` controller provides functions for
    * configuring the listener details step of the LBaaS wizard.
+   * @param $scope The angular scope object.
    * @param gettext The horizon gettext function for translation.
    * @returns undefined
    */
 
   function ListenerDetailsController($scope, gettext) {
-
     var ctrl = this;
+    ctrl.protocolChange = protocolChange;
 
     // Error text for invalid fields
     ctrl.portError = gettext('The port must be a number between 1 and 65535.');
     ctrl.certificatesError = gettext('There was an error obtaining certificates from the ' +
       'key-manager service. The TERMINATED_HTTPS protocol is unavailable.');
 
-    ctrl.protocolChange = protocolChange;
+    ////////////
 
-    //////////
+    function protocolChange(protocol) {
+      $scope.model.spec.listener.port = { HTTP: 80, TERMINATED_HTTPS: 443 }[protocol];
+      var members = $scope.model.members.concat($scope.model.spec.members);
+      members.forEach(function setMemberPort(member) {
+        member.port = { HTTP: 80, TERMINATED_HTTPS: 80 }[protocol];
+      });
 
-    // Called when the listener protocol is changed. Shows the SSL Certificates step if
-    // TERMINATED_HTTPS is selected.
-    function protocolChange() {
-      var protocol = $scope.model.spec.listener.protocol;
       var workflow = $scope.workflow;
       var certificates = workflow.steps.some(function checkCertificatesStep(step) {
         return step.id === 'certificates';

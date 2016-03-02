@@ -114,7 +114,7 @@
         id: memberCounter++,
         address: null,
         subnet: null,
-        port: { HTTP: 80, HTTPS: 443 }[protocol],
+        port: { HTTP: 80 }[protocol],
         weight: 1
       });
     }

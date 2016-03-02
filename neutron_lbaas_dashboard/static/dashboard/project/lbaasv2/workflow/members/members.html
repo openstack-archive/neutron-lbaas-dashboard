@@ -139,9 +139,7 @@
               </th>
             </tr>
             <tr>
-              <th class="expander"></th>
-              <th st-sort="name" st-sort-default class="rsp-p2" translate>Name</th>
-              <th class="rsp-p3" translate>Description</th>
+              <th st-sort="name" st-sort-default class="rsp-p1" translate>Name</th>
               <th class="rsp-p1" translate>IP Address</th>
               <th></th>
             </tr>
@@ -154,16 +152,9 @@
                 </div>
               </td>
             </tr>
-            <tr ng-repeat-start="row in ctrl.tableData.displayedAvailable track by row.id"
+            <tr ng-repeat="row in ctrl.tableData.displayedAvailable track by row.id"
                 ng-if="!trCtrl.allocatedIds[row.id]">
-              <td class="expander">
-                <i class="fa fa-chevron-right"
-                   hz-expand-detail
-                   duration="200">
-                </i>
-              </td>
-              <td class="rsp-p2">{$ ::row.name $}</td>
-              <td class="rsp-p3">{$ ::row.description | noValue $}</td>
+              <td class="rsp-p1">{$ ::row.name $}</td>
               <td class="rsp-p1">
                 <span ng-if="row.addresses.length === 1">{$ row.address.ip $}</span>
                 <!-- The current version of the popover directive doesn't seem to allow HTML content (0.11.0) -->
@@ -181,20 +172,6 @@
                     <span translate>Add</span>
                   </action>
                 </action-list>
-              </td>
-            </tr>
-            <tr ng-repeat-end class="detail-row">
-              <td class="detail" colspan="100">
-                <div class="row">
-                   <dl class="rsp-alt-p2 col-sm-2">
-                     <dt translate>Name</dt>
-                     <dd>{$ ::row.name $}</dd>
-                   </dl>
-                   <dl class="rsp-alt-p3 col-sm-2">
-                     <dt translate>Description</dt>
-                     <dd>{$ ::row.description | noValue $}</dd>
-                   </dl>
-                </div>
               </td>
             </tr>
           </tbody>
