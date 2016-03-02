@@ -16,11 +16,11 @@
 (function() {
   'use strict';
 
-  describe('LBaaS v2 Load Balancers Table Row Delete Service', function() {
+  describe('LBaaS v2 Listeners Delete Service', function() {
     var service, policy, modal, lbaasv2Api, $scope, $route, $location, $q, toast, items, path;
 
     function allowed(item) {
-      spyOn(policy, 'ifAllowed').and.returnValue(true);
+      spyOn(policy, 'ifAllowed').and.returnValue(makePromise());
       var promise = service.allowed(item);
       var allowed;
       promise.then(function() {
@@ -29,7 +29,7 @@
         allowed = false;
       });
       $scope.$apply();
-      expect(policy.ifAllowed).toHaveBeenCalledWith({rules: [['neutron', 'delete_loadbalancer']]});
+      expect(policy.ifAllowed).toHaveBeenCalledWith({rules: [['neutron', 'delete_listener']]});
       return allowed;
     }
 
@@ -46,8 +46,8 @@
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(function() {
-      items = [{ id: '1', name: 'First', provisioning_status: 'ACTIVE' },
-               { id: '2', name: 'Second', provisioning_status: 'ACTIVE' }];
+      items = [{ id: '1', name: 'First' },
+               { id: '2', name: 'Second' }];
     });
 
     beforeEach(module(function($provide) {
@@ -59,7 +59,7 @@
         }
       });
       $provide.value('horizon.app.core.openstack-service-api.lbaasv2', {
-        deleteLoadBalancer: function() {
+        deleteListener: function() {
           return makePromise();
         }
       });
@@ -79,7 +79,8 @@
       $location = $injector.get('$location');
       $q = $injector.get('$q');
       toast = $injector.get('horizon.framework.widgets.toast.service');
-      service = $injector.get('horizon.dashboard.project.lbaasv2.loadbalancers.actions.delete');
+      service = $injector.get('horizon.dashboard.project.lbaasv2.listeners.actions.delete');
+      service.init('1');
     }));
 
     it('should have the "allowed" and "perform" functions', function() {
@@ -87,21 +88,11 @@
       expect(service.perform).toBeDefined();
     });
 
-    it('should check policy to allow deleting a load balancer (single)', function() {
+    it('should check policy to allow deleting a listener (single)', function() {
       expect(allowed(items[0])).toBe(true);
     });
 
-    it('should check policy to allow deleting a load balancer (batch)', function() {
-      expect(allowed()).toBe(true);
-    });
-
-    it('should not allow deleting load balancers if state check fails (single)', function() {
-      items[0].provisioning_status = 'PENDING_UPDATE';
-      expect(allowed(items[0])).toBe(false);
-    });
-
-    it('should allow batch delete even if state check fails (batch)', function() {
-      items[0].provisioning_status = 'PENDING_UPDATE';
+    it('should check policy to allow deleting a listener (batch)', function() {
       expect(allowed()).toBe(true);
     });
 
@@ -118,45 +109,33 @@
         labels: jasmine.any(Object),
         deleteEntity: jasmine.any(Function)
       }));
-      expect(args[2].labels.title).toBe('Confirm Delete Load Balancers');
+      expect(args[2].labels.title).toBe('Confirm Delete Listeners');
     });
 
-    it('should pass function to modal that deletes load balancers', function() {
+    it('should pass function to modal that deletes listeners', function() {
       spyOn(modal, 'open').and.callThrough();
-      spyOn(lbaasv2Api, 'deleteLoadBalancer').and.callThrough();
+      spyOn(lbaasv2Api, 'deleteListener').and.callThrough();
       service.perform(items[0]);
       $scope.$apply();
-      expect(lbaasv2Api.deleteLoadBalancer.calls.count()).toBe(1);
-      expect(lbaasv2Api.deleteLoadBalancer).toHaveBeenCalledWith('1', true);
-    });
-
-    it('should show message if any selected items do not allow for delete (batch)', function() {
-      spyOn(modal, 'open');
-      spyOn(toast, 'add');
-      items[0].provisioning_status = 'PENDING_UPDATE';
-      items[1].provisioning_status = 'PENDING_DELETE';
-      service.perform(items);
-      $scope.$apply();
-      expect(modal.open).not.toHaveBeenCalled();
-      expect(toast.add).toHaveBeenCalledWith('error',
-        'The following load balancers are pending and cannot be deleted: First, Second.');
+      expect(lbaasv2Api.deleteListener.calls.count()).toBe(1);
+      expect(lbaasv2Api.deleteListener).toHaveBeenCalledWith('1', true);
     });
 
     it('should show message if any items fail to be deleted', function() {
       spyOn(modal, 'open').and.callThrough();
-      spyOn(lbaasv2Api, 'deleteLoadBalancer').and.returnValue(makePromise(true));
+      spyOn(lbaasv2Api, 'deleteListener').and.returnValue(makePromise(true));
       spyOn(toast, 'add');
       items.splice(1, 1);
       service.perform(items);
       $scope.$apply();
       expect(modal.open).toHaveBeenCalled();
-      expect(lbaasv2Api.deleteLoadBalancer.calls.count()).toBe(1);
-      expect(toast.add).toHaveBeenCalledWith('error', 'The following load balancers could not ' +
-        'be deleted, possibly due to existing listeners: First.');
+      expect(lbaasv2Api.deleteListener.calls.count()).toBe(1);
+      expect(toast.add).toHaveBeenCalledWith('error', 'The following listeners could not ' +
+        'be deleted, possibly due to existing pools: First.');
     });
 
     it('should reload table after delete', function() {
-      path = 'project/ngloadbalancersv2';
+      path = 'project/ngloadbalancersv2/1';
       spyOn($route, 'reload');
       service.perform(items);
       $scope.$apply();
@@ -164,19 +143,19 @@
     });
 
     it('should return to table after delete if on detail page', function() {
-      path = 'project/ngloadbalancersv2/1';
+      path = 'project/ngloadbalancersv2/1/listeners/2';
       spyOn($location, 'path');
       spyOn(toast, 'add');
       service.perform(items[0]);
       $scope.$apply();
-      expect($location.path).toHaveBeenCalledWith('project/ngloadbalancersv2');
-      expect(toast.add).toHaveBeenCalledWith('success', 'Deleted load balancers: First.');
+      expect($location.path).toHaveBeenCalledWith('project/ngloadbalancersv2/1');
+      expect(toast.add).toHaveBeenCalledWith('success', 'Deleted listeners: First.');
     });
 
     it('should call handler function if provided', function() {
       var handler = { handler: angular.noop };
       spyOn(handler, 'handler');
-      service.init(handler.handler);
+      service.init('1', null, handler.handler);
       service.perform(items);
       $scope.$apply();
       expect(handler.handler).toHaveBeenCalled();

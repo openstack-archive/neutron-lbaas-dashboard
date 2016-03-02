@@ -27,7 +27,8 @@
     'horizon.dashboard.project.lbaasv2.workflow.modal',
     'horizon.app.core.openstack-service-api.policy',
     'horizon.framework.util.i18n.gettext',
-    'horizon.dashboard.project.lbaasv2.loadbalancers.service'
+    'horizon.dashboard.project.lbaasv2.loadbalancers.service',
+    'horizon.dashboard.project.lbaasv2.listeners.actions.delete'
   ];
 
   /**
@@ -43,11 +44,14 @@
    * @param policy The horizon policy service.
    * @param gettext The horizon gettext function for translation.
    * @param loadBalancersService The LBaaS v2 load balancers service.
+   * @param deleteService The LBaaS v2 listeners delete service.
    * @returns Listeners table batch actions service object.
    */
 
-  function tableBatchActions($q, $location, workflowModal, policy, gettext, loadBalancersService) {
-    var loadBalancerIsActive, loadBalancerId;
+  function tableBatchActions(
+    $q, $location, workflowModal, policy, gettext, loadBalancersService, deleteService
+  ) {
+    var loadBalancerIsActionable, loadBalancerId, handler;
 
     var create = workflowModal.init({
       controller: 'CreateListenerWizardController',
@@ -65,9 +69,10 @@
 
     ///////////////
 
-    function init(loadbalancerId) {
-      loadBalancerId = loadbalancerId;
-      loadBalancerIsActive = loadBalancersService.isActive(loadbalancerId);
+    function init(_loadBalancerId_, _handler_) {
+      loadBalancerId = _loadBalancerId_;
+      handler = _handler_;
+      loadBalancerIsActionable = loadBalancersService.isActionable(loadBalancerId);
       return service;
     }
 
@@ -78,12 +83,18 @@
           type: 'create',
           text: gettext('Create Listener')
         }
+      },{
+        service: deleteService.init(loadBalancerId, loadBalancerIsActionable, handler),
+        template: {
+          text: gettext('Delete Listeners'),
+          type: 'delete-selected'
+        }
       }];
     }
 
     function canCreate() {
       return $q.all([
-        loadBalancerIsActive,
+        loadBalancerIsActionable,
         policy.ifAllowed({ rules: [['neutron', 'create_listener']] })
       ]);
     }

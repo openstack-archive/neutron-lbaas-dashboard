@@ -33,7 +33,7 @@
       return allowed;
     }
 
-    function isActiveMock(id) {
+    function isActionableMock(id) {
       if (id === 'active') {
         return $q.when();
       } else {
@@ -43,7 +43,7 @@
 
     beforeEach(module('horizon.framework.util'));
     beforeEach(module('horizon.framework.conf'));
-    beforeEach(module('horizon.framework.widgets.toast'));
+    beforeEach(module('horizon.framework.widgets'));
     beforeEach(module('horizon.app.core.openstack-service-api'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
@@ -78,12 +78,13 @@
       init = rowActionsService.init;
       var loadbalancerService = $injector.get(
           'horizon.dashboard.project.lbaasv2.loadbalancers.service');
-      spyOn(loadbalancerService, 'isActive').and.callFake(isActiveMock);
+      spyOn(loadbalancerService, 'isActionable').and.callFake(isActionableMock);
     }));
 
     it('should define correct table row actions', function() {
-      expect(actions.length).toBe(1);
+      expect(actions.length).toBe(2);
       expect(actions[0].template.text).toBe('Edit');
+      expect(actions[1].template.text).toBe('Delete Listener');
     });
 
     it('should allow editing a listener of an ACTIVE load balancer', function() {

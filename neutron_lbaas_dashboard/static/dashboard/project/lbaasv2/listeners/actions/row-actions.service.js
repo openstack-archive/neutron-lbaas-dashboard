@@ -27,7 +27,8 @@
     'horizon.dashboard.project.lbaasv2.workflow.modal',
     'horizon.app.core.openstack-service-api.policy',
     'horizon.framework.util.i18n.gettext',
-    'horizon.dashboard.project.lbaasv2.loadbalancers.service'
+    'horizon.dashboard.project.lbaasv2.loadbalancers.service',
+    'horizon.dashboard.project.lbaasv2.listeners.actions.delete'
   ];
 
   /**
@@ -43,10 +44,14 @@
    * @param policy The horizon policy service.
    * @param gettext The horizon gettext function for translation.
    * @param loadBalancersService The LBaaS v2 load balancers service.
+   * @param deleteService The LBaaS v2 listeners delete service.
    * @returns Listeners row actions service object.
    */
 
-  function tableRowActions($q, $route, workflowModal, policy, gettext, loadBalancersService) {
+  function tableRowActions(
+    $q, $route, workflowModal, policy, gettext, loadBalancersService, deleteService
+  ) {
+    var loadbalancerId, loadBalancerIsActionable, handler;
 
     var edit = workflowModal.init({
       controller: 'EditListenerWizardController',
@@ -60,14 +65,14 @@
       init: init
     };
 
-    var loadBalancerIsActive;
-
     return service;
 
     ///////////////
 
-    function init(loadbalancerId) {
-      loadBalancerIsActive = loadBalancersService.isActive(loadbalancerId);
+    function init(_loadbalancerId_, _handler_) {
+      loadbalancerId = _loadbalancerId_;
+      handler = _handler_;
+      loadBalancerIsActionable = loadBalancersService.isActionable(loadbalancerId);
       return service;
     }
 
@@ -77,12 +82,18 @@
         template: {
           text: gettext('Edit')
         }
+      },{
+        service: deleteService.init(loadbalancerId, loadBalancerIsActionable, handler),
+        template: {
+          text: gettext('Delete Listener'),
+          type: 'delete'
+        }
       }];
     }
 
     function canEdit(/*item*/) {
       return $q.all([
-        loadBalancerIsActive,
+        loadBalancerIsActionable,
         policy.ifAllowed({ rules: [['neutron', 'update_listener']] })
       ]);
     }

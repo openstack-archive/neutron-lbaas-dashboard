@@ -54,6 +54,8 @@
   function deleteService(
     $q, $location, $route, deleteModal, api, policy, toast, qExtensions, gettext
   ) {
+    var handler;
+
     // If a batch delete, then this message is displayed for any selected load balancers not in
     // ACTIVE or ERROR state.
     var notAllowedMessage = gettext('The following load balancers are pending and cannot be ' +
@@ -68,17 +70,25 @@
         error: gettext('The following load balancers could not be deleted, possibly due to ' +
                        'existing listeners: %s.')
       },
-      deleteEntity: deleteItem
+      deleteEntity: deleteItem,
+      successEvent: 'success',
+      failedEvent: 'error'
     };
 
     var service = {
       perform: perform,
-      allowed: allowed
+      allowed: allowed,
+      init: init
     };
 
     return service;
 
     //////////////
+
+    function init(_handler_) {
+      handler = _handler_;
+      return service;
+    }
 
     function perform(items) {
       if (angular.isArray(items)) {
@@ -133,13 +143,20 @@
       return result.context;
     }
 
-    function actionComplete() {
-      // If the user is on the load balancers table then just reload the page, otherwise they
-      // are on the details page and we return to the table.
-      if (/\/ngloadbalancersv2(\/)?$/.test($location.path())) {
+    function actionComplete(eventType) {
+      if (angular.isFunction(handler)) {
+        handler();
+      } else if (eventType === context.failedEvent) {
+        // Action failed, reload the page
         $route.reload();
       } else {
-        $location.path('project/ngloadbalancersv2');
+        // If the user is on the load balancers table then just reload the page, otherwise they
+        // are on the details page and we return to the table.
+        if (/\/ngloadbalancersv2(\/)?$/.test($location.path())) {
+          $route.reload();
+        } else {
+          $location.path('project/ngloadbalancersv2');
+        }
       }
     }
 

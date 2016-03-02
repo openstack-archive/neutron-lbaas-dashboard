@@ -55,7 +55,7 @@
     var service = {
       operatingStatus: operatingStatus,
       provisioningStatus: provisioningStatus,
-      isActive: isActive
+      isActionable: isActionable
     };
 
     return service;
@@ -64,16 +64,16 @@
 
     /**
      * @ngdoc method
-     * @name horizon.dashboard.project.lbaasv2.loadbalancers.service.isActive
-     * @description Returns a promise that is resolved if the load balancer is active and
-     * rejected if not.
+     * @name horizon.dashboard.project.lbaasv2.loadbalancers.service.isActionable
+     * @description Returns a promise that is resolved if the load balancer is in a state that
+     * allows for it or child resources to be updated or deleted.
      * @param id The load balancer id.
      * @returns {Promise}
      */
 
-    function isActive(id) {
+    function isActionable(id) {
       return api.getLoadBalancer(id).then(function onLoad(response) {
-        if (response.data.provisioning_status !== 'ACTIVE') {
+        if (['ACTIVE', 'ERROR'].indexOf(response.data.provisioning_status) < 0) {
           return $q.reject();
         }
       });

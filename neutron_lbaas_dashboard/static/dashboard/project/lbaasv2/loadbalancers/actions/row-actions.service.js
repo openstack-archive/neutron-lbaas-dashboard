@@ -66,6 +66,8 @@
     qExtensions,
     gettext
   ) {
+    var handler;
+
     var edit = workflowModal.init({
       controller: 'EditLoadBalancerWizardController',
       message: gettext('The load balancer has been updated.'),
@@ -74,12 +76,18 @@
     });
 
     var service = {
-      actions: actions
+      actions: actions,
+      init: init
     };
 
     return service;
 
     ///////////////
+
+    function init(_handler_) {
+      handler = _handler_;
+      return service;
+    }
 
     function actions() {
       return [{
@@ -98,7 +106,7 @@
           text: gettext('Disassociate Floating IP')
         }
       },{
-        service: deleteService,
+        service: deleteService.init(handler),
         template: {
           text: gettext('Delete Load Balancer'),
           type: 'delete'

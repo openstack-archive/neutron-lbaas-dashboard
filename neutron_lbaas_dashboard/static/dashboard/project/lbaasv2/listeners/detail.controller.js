@@ -42,7 +42,7 @@
   function ListenerDetailController(api, rowActions, $routeParams) {
     var ctrl = this;
 
-    ctrl.actions = rowActions.actions;
+    ctrl.actions = rowActions.init($routeParams.loadbalancerId).actions;
 
     init();
 

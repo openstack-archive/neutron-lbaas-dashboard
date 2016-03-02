@@ -52,14 +52,14 @@
 
     it('should allow checking status of load balancer', function() {
       var active = null;
-      service.isActive(0).then(function() {
+      service.isActionable(0).then(function() {
         active = true;
       });
       $scope.$apply();
       expect(active).toBe(true);
 
       active = null;
-      service.isActive(1).then(angular.noop, function() {
+      service.isActionable(1).then(angular.noop, function() {
         active = false;
       });
       $scope.$apply();

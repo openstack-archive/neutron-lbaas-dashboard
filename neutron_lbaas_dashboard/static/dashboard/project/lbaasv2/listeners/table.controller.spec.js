@@ -66,7 +66,7 @@
       expect(ctrl.src).toEqual(items);
       expect(ctrl.checked).toEqual({});
       expect(ctrl.loadbalancerId).toEqual('1234');
-      expect(rowActions.init).toHaveBeenCalledWith(ctrl.loadbalancerId);
+      expect(rowActions.init).toHaveBeenCalledWith(ctrl.loadbalancerId, jasmine.any(Function));
       expect(ctrl.rowActions).toBeDefined();
       expect(ctrl.rowActions).toEqual(rowActions);
       expect(ctrl.batchActions).toBeDefined();

@@ -45,6 +45,7 @@
       getListener: getListener,
       createListener: createListener,
       editListener: editListener,
+      deleteListener: deleteListener,
       getPool: getPool,
       getMembers: getMembers,
       getMember: getMember,
@@ -212,6 +213,22 @@
         .error(function () {
           toastService.add('error', gettext('Unable to update listener.'));
         });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.deleteListener
+     * @description
+     * Delete a single listener by ID
+     * @param {string} id
+     * @param {boolean} quiet
+     * Specifies the id of the listener to delete.
+     */
+
+    function deleteListener(id, quiet) {
+      var promise = apiService.delete('/api/lbaas/listeners/' + id);
+      return quiet ? promise : promise.error(function () {
+        toastService.add('error', gettext('Unable to delete listener.'));
+      });
     }
 
     // Pools

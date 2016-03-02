@@ -149,6 +149,13 @@
         error: 'Unable to update listener.',
         data: { name: 'listener-1' },
         testInput: [ '1234', { name: 'listener-1' } ]
+      },
+      {
+        func: 'deleteListener',
+        method: 'delete',
+        path: '/api/lbaas/listeners/1234',
+        error: 'Unable to delete listener.',
+        testInput: [ '1234' ]
       }
     ];
 
@@ -163,6 +170,11 @@
     it('supresses the error if instructed for deleteLoadBalancer', function() {
       spyOn(apiService, 'delete').and.returnValue("promise");
       expect(service.deleteLoadBalancer("whatever", true)).toBe("promise");
+    });
+
+    it('supresses the error if instructed for deleteListener', function() {
+      spyOn(apiService, 'delete').and.returnValue("promise");
+      expect(service.deleteListener("whatever", true)).toBe("promise");
     });
 
   });

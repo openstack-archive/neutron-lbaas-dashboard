@@ -551,6 +551,14 @@ class Listener(generic.View):
         kwargs = {'listener_id': listener_id}
         update_listener(request, **kwargs)
 
+    @rest_utils.ajax()
+    def delete(self, request, listener_id):
+        """Delete a specific listener.
+
+        http://localhost/api/lbaas/listeners/cc758c90-3d98-4ea1-af44-aab405c9c915
+        """
+        neutronclient(request).delete_listener(listener_id)
+
 
 @urls.register
 class Pool(generic.View):
