@@ -22,6 +22,7 @@
 
   HealthMonitorDetailController.$inject = [
     'horizon.app.core.openstack-service-api.lbaasv2',
+    'horizon.dashboard.project.lbaasv2.healthmonitors.actions.rowActions',
     '$routeParams'
   ];
 
@@ -33,12 +34,17 @@
    * Controller for the LBaaS v2 health monitor detail page.
    *
    * @param api The LBaaS v2 API service.
+   * @param rowActions The LBaaS v2 health monitor row actions service.
    * @param $routeParams The angular $routeParams service.
    * @returns undefined
    */
 
-  function HealthMonitorDetailController(api, $routeParams) {
+  function HealthMonitorDetailController(api, rowActions, $routeParams) {
     var ctrl = this;
+
+    ctrl.actions = rowActions.init($routeParams.loadbalancerId,
+                                   $routeParams.listenerId,
+                                   $routeParams.poolId).actions;
 
     init();
 

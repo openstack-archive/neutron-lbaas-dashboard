@@ -135,6 +135,13 @@
         testInput: [ '1234' ]
       },
       {
+        func: 'deleteHealthMonitor',
+        method: 'delete',
+        path: '/api/lbaas/healthmonitors/1234',
+        error: 'Unable to delete health monitor.',
+        testInput: [ '1234' ]
+      },
+      {
         func: 'createLoadBalancer',
         method: 'post',
         path: '/api/lbaas/loadbalancers/',
@@ -212,6 +219,11 @@
     it('supresses the error if instructed for deletePool', function() {
       spyOn(apiService, 'delete').and.returnValue("promise");
       expect(service.deletePool("whatever", true)).toBe("promise");
+    });
+
+    it('supresses the error if instructed for deleteHealthMonitor', function() {
+      spyOn(apiService, 'delete').and.returnValue("promise");
+      expect(service.deleteHealthMonitor("whatever", true)).toBe("promise");
     });
 
   });

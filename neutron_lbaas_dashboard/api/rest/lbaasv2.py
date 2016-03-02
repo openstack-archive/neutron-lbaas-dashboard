@@ -685,3 +685,11 @@ class HealthMonitor(generic.View):
         """
         lb = neutronclient(request).show_lbaas_healthmonitor(healthmonitor_id)
         return lb.get('healthmonitor')
+
+    @rest_utils.ajax()
+    def delete(self, request, healthmonitor_id):
+        """Delete a specific health monitor.
+
+        http://localhost/api/lbaas/healthmonitors/cc758c90-3d98-4ea1-af44-aab405c9c915
+        """
+        neutronclient(request).delete_lbaas_healthmonitor(healthmonitor_id)

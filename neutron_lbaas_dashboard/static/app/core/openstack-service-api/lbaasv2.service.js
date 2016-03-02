@@ -52,7 +52,8 @@
       deletePool: deletePool,
       getMembers: getMembers,
       getMember: getMember,
-      getHealthMonitor: getHealthMonitor
+      getHealthMonitor: getHealthMonitor,
+      deleteHealthMonitor: deleteHealthMonitor
     };
 
     return service;
@@ -354,6 +355,22 @@
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve health monitor.'));
         });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.deleteHealthMonitor
+     * @description
+     * Delete a single health monitor by ID
+     * @param {string} id
+     * @param {boolean} quiet
+     * Specifies the id of the health monitor to delete.
+     */
+
+    function deleteHealthMonitor(id, quiet) {
+      var promise = apiService.delete('/api/lbaas/healthmonitors/' + id);
+      return quiet ? promise : promise.error(function () {
+        toastService.add('error', gettext('Unable to delete health monitor.'));
+      });
     }
 
   }

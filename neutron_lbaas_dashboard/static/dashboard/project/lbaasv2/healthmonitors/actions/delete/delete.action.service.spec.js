@@ -16,8 +16,8 @@
 (function() {
   'use strict';
 
-  describe('LBaaS v2 Pool Delete Service', function() {
-    var service, policy, modal, lbaasv2Api, $scope, $location, $q, toast, pool;
+  describe('LBaaS v2 Health Monitor Delete Service', function() {
+    var service, policy, modal, lbaasv2Api, $scope, $location, $q, toast, monitor;
 
     function allowed(item) {
       spyOn(policy, 'ifAllowed').and.returnValue(makePromise());
@@ -29,7 +29,8 @@
         allowed = false;
       });
       $scope.$apply();
-      expect(policy.ifAllowed).toHaveBeenCalledWith({rules: [['neutron', 'delete_pool']]});
+      expect(policy.ifAllowed)
+        .toHaveBeenCalledWith({rules: [['neutron', 'delete_health_monitor']]});
       return allowed;
     }
 
@@ -54,7 +55,7 @@
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(function() {
-      pool = { id: '1', name: 'Pool1' };
+      monitor = { id: '1', name: 'HealthMonitor1' };
     });
 
     beforeEach(module(function($provide) {
@@ -66,7 +67,7 @@
         }
       });
       $provide.value('horizon.app.core.openstack-service-api.lbaasv2', {
-        deletePool: function() {
+        deleteHealthMonitor: function() {
           return makePromise();
         }
       });
@@ -85,8 +86,8 @@
       $location = $injector.get('$location');
       $q = $injector.get('$q');
       toast = $injector.get('horizon.framework.widgets.toast.service');
-      service = $injector.get('horizon.dashboard.project.lbaasv2.pools.actions.delete');
-      service.init('1', '2', isActionable('active'));
+      service = $injector.get('horizon.dashboard.project.lbaasv2.healthmonitors.actions.delete');
+      service.init('1', '2', '3', isActionable('active'));
       $scope.$apply();
     }));
 
@@ -95,59 +96,60 @@
       expect(service.perform).toBeDefined();
     });
 
-    it('should allow deleting pool from load balancer in ACTIVE state', function() {
+    it('should allow deleting health monitor from load balancer in ACTIVE state', function() {
       expect(allowed()).toBe(true);
     });
 
-    it('should not allow deleting pool from load balancer in a PENDING state', function() {
-      service.init('1', '2', isActionable('pending'));
+    it('should not allow deleting health monitor from load balancer in PENDING state', function() {
+      service.init('1', '2', '3', isActionable('pending'));
       expect(allowed()).toBe(false);
     });
 
     it('should open the delete modal', function() {
       spyOn(modal, 'open');
-      service.perform(pool);
+      service.perform(monitor);
       $scope.$apply();
       expect(modal.open.calls.count()).toBe(1);
       var args = modal.open.calls.argsFor(0);
       expect(args.length).toBe(3);
       expect(args[0]).toEqual({ $emit: jasmine.any(Function) });
-      expect(args[1]).toEqual([pool]);
+      expect(args[1]).toEqual([monitor]);
       expect(args[2]).toEqual(jasmine.objectContaining({
         labels: jasmine.any(Object),
         deleteEntity: jasmine.any(Function)
       }));
-      expect(args[2].labels.title).toBe('Confirm Delete Pool');
+      expect(args[2].labels.title).toBe('Confirm Delete Health Monitor');
     });
 
-    it('should pass function to modal that deletes the pool', function() {
+    it('should pass function to modal that deletes the health monitor', function() {
       spyOn(modal, 'open').and.callThrough();
-      spyOn(lbaasv2Api, 'deletePool').and.callThrough();
-      service.perform(pool);
+      spyOn(lbaasv2Api, 'deleteHealthMonitor').and.callThrough();
+      service.perform(monitor);
       $scope.$apply();
-      expect(lbaasv2Api.deletePool.calls.count()).toBe(1);
-      expect(lbaasv2Api.deletePool).toHaveBeenCalledWith('1', true);
+      expect(lbaasv2Api.deleteHealthMonitor.calls.count()).toBe(1);
+      expect(lbaasv2Api.deleteHealthMonitor).toHaveBeenCalledWith('1', true);
     });
 
     it('should show message if any items fail to be deleted', function() {
       spyOn(modal, 'open').and.callThrough();
-      spyOn(lbaasv2Api, 'deletePool').and.returnValue(makePromise(true));
+      spyOn(lbaasv2Api, 'deleteHealthMonitor').and.returnValue(makePromise(true));
       spyOn(toast, 'add');
-      service.perform(pool);
+      service.perform(monitor);
       $scope.$apply();
       expect(modal.open).toHaveBeenCalled();
-      expect(lbaasv2Api.deletePool.calls.count()).toBe(1);
-      expect(toast.add).toHaveBeenCalledWith('error', 'The following pool could not ' +
-        'be deleted: Pool1.');
+      expect(lbaasv2Api.deleteHealthMonitor.calls.count()).toBe(1);
+      expect(toast.add).toHaveBeenCalledWith('error', 'The following health monitor could not ' +
+        'be deleted: HealthMonitor1.');
     });
 
-    it('should return to listener details after delete', function() {
+    it('should return to pool details after delete', function() {
+      var path = 'project/ngloadbalancersv2/1/listeners/2/pools/3';
       spyOn($location, 'path');
       spyOn(toast, 'add');
-      service.perform(pool);
+      service.perform(monitor);
       $scope.$apply();
-      expect($location.path).toHaveBeenCalledWith('project/ngloadbalancersv2/1/listeners/2');
-      expect(toast.add).toHaveBeenCalledWith('success', 'Deleted pool: Pool1.');
+      expect($location.path).toHaveBeenCalledWith(path);
+      expect(toast.add).toHaveBeenCalledWith('success', 'Deleted health monitor: HealthMonitor1.');
     });
 
   });
