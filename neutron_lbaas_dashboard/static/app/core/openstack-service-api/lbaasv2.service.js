@@ -47,6 +47,7 @@
       editListener: editListener,
       deleteListener: deleteListener,
       getPool: getPool,
+      deletePool: deletePool,
       getMembers: getMembers,
       getMember: getMember,
       getHealthMonitor: getHealthMonitor
@@ -246,6 +247,22 @@
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve pool.'));
         });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.deletePool
+     * @description
+     * Delete a single pool by ID
+     * @param {string} id
+     * @param {boolean} quiet
+     * Specifies the id of the pool to delete.
+     */
+
+    function deletePool(id, quiet) {
+      var promise = apiService.delete('/api/lbaas/pools/' + id);
+      return quiet ? promise : promise.error(function () {
+        toastService.add('error', gettext('Unable to delete pool.'));
+      });
     }
 
     // Members

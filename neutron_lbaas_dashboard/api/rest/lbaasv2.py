@@ -576,6 +576,14 @@ class Pool(generic.View):
         lb = neutronclient(request).show_lbaas_pool(pool_id)
         return lb.get('pool')
 
+    @rest_utils.ajax()
+    def delete(self, request, pool_id):
+        """Delete a specific pool.
+
+        http://localhost/api/lbaas/pools/cc758c90-3d98-4ea1-af44-aab405c9c915
+        """
+        neutronclient(request).delete_lbaas_pool(pool_id)
+
 
 @urls.register
 class Members(generic.View):

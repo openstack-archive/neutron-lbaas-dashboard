@@ -22,6 +22,7 @@
 
   PoolDetailController.$inject = [
     'horizon.app.core.openstack-service-api.lbaasv2',
+    'horizon.dashboard.project.lbaasv2.pools.actions.rowActions',
     '$routeParams',
     'horizon.framework.util.i18n.gettext'
   ];
@@ -34,12 +35,13 @@
    * Controller for the LBaaS v2 pool detail page.
    *
    * @param api The LBaaS v2 API service.
+   * @param rowActions The LBaaS v2 pool row actions service.
    * @param $routeParams The angular $routeParams service.
    * @param gettext The horizon gettext function for translation.
    * @returns undefined
    */
 
-  function PoolDetailController(api, $routeParams, gettext) {
+  function PoolDetailController(api, rowActions, $routeParams, gettext) {
     var ctrl = this;
 
     ctrl.loadBalancerAlgorithm = {
@@ -47,6 +49,8 @@
       'LEAST_CONNECTIONS': gettext('Least Connections'),
       'SOURCE_IP': gettext('Source IP')
     };
+
+    ctrl.actions = rowActions.init($routeParams.loadbalancerId, $routeParams.listenerId).actions;
 
     init();
 

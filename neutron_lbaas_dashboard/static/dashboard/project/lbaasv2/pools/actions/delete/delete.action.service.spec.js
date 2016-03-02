@@ -16,8 +16,8 @@
 (function() {
   'use strict';
 
-  describe('LBaaS v2 Listeners Delete Service', function() {
-    var service, policy, modal, lbaasv2Api, $scope, $route, $location, $q, toast, items, path;
+  describe('LBaaS v2 Pool Delete Service', function() {
+    var service, policy, modal, lbaasv2Api, $scope, $location, $q, toast, pool, path;
 
     function allowed(item) {
       spyOn(policy, 'ifAllowed').and.returnValue(makePromise());
@@ -29,7 +29,7 @@
         allowed = false;
       });
       $scope.$apply();
-      expect(policy.ifAllowed).toHaveBeenCalledWith({rules: [['neutron', 'delete_listener']]});
+      expect(policy.ifAllowed).toHaveBeenCalledWith({rules: [['neutron', 'delete_pool']]});
       return allowed;
     }
 
@@ -39,6 +39,14 @@
       return def.promise;
     }
 
+    function isActionable(id) {
+      if (id === 'active') {
+        return $q.when();
+      } else {
+        return $q.reject();
+      }
+    }
+
     beforeEach(module('horizon.framework.util'));
     beforeEach(module('horizon.framework.conf'));
     beforeEach(module('horizon.framework.widgets'));
@@ -46,8 +54,7 @@
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(function() {
-      items = [{ id: '1', name: 'First' },
-               { id: '2', name: 'Second' }];
+      pool = { id: '1', name: 'Pool1' };
     });
 
     beforeEach(module(function($provide) {
@@ -59,7 +66,7 @@
         }
       });
       $provide.value('horizon.app.core.openstack-service-api.lbaasv2', {
-        deleteListener: function() {
+        deletePool: function() {
           return makePromise();
         }
       });
@@ -75,12 +82,12 @@
       lbaasv2Api = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
       modal = $injector.get('horizon.framework.widgets.modal.deleteModalService');
       $scope = $injector.get('$rootScope').$new();
-      $route = $injector.get('$route');
       $location = $injector.get('$location');
       $q = $injector.get('$q');
       toast = $injector.get('horizon.framework.widgets.toast.service');
-      service = $injector.get('horizon.dashboard.project.lbaasv2.listeners.actions.delete');
-      service.init('1', makePromise());
+      service = $injector.get('horizon.dashboard.project.lbaasv2.pools.actions.delete');
+      service.init('1', '2', isActionable('active'));
+      $scope.$apply();
     }));
 
     it('should have the "allowed" and "perform" functions', function() {
@@ -88,82 +95,60 @@
       expect(service.perform).toBeDefined();
     });
 
-    it('should check policy to allow deleting a listener (single)', function() {
-      expect(allowed(items[0])).toBe(true);
-    });
-
-    it('should check policy to allow deleting a listener (batch)', function() {
+    it('should allow deleting pool from load balancer in ACTIVE state', function() {
       expect(allowed()).toBe(true);
     });
 
-    it('should not allow deleting listener from load balancer in a PENDING state', function() {
-      service.init('1', makePromise(true));
+    it('should not allow deleting pool from load balancer in a PENDING state', function() {
+      service.init('1', '2', isActionable('pending'));
       expect(allowed()).toBe(false);
     });
 
     it('should open the delete modal', function() {
       spyOn(modal, 'open');
-      service.perform(items[0]);
+      service.perform(pool);
       $scope.$apply();
       expect(modal.open.calls.count()).toBe(1);
       var args = modal.open.calls.argsFor(0);
       expect(args.length).toBe(3);
       expect(args[0]).toEqual({ $emit: jasmine.any(Function) });
-      expect(args[1]).toEqual([jasmine.objectContaining({ id: '1' })]);
+      expect(args[1]).toEqual([pool]);
       expect(args[2]).toEqual(jasmine.objectContaining({
         labels: jasmine.any(Object),
         deleteEntity: jasmine.any(Function)
       }));
-      expect(args[2].labels.title).toBe('Confirm Delete Listeners');
+      expect(args[2].labels.title).toBe('Confirm Delete Pool');
     });
 
-    it('should pass function to modal that deletes listeners', function() {
+    it('should pass function to modal that deletes the pool', function() {
       spyOn(modal, 'open').and.callThrough();
-      spyOn(lbaasv2Api, 'deleteListener').and.callThrough();
-      service.perform(items[0]);
+      spyOn(lbaasv2Api, 'deletePool').and.callThrough();
+      service.perform(pool);
       $scope.$apply();
-      expect(lbaasv2Api.deleteListener.calls.count()).toBe(1);
-      expect(lbaasv2Api.deleteListener).toHaveBeenCalledWith('1', true);
+      expect(lbaasv2Api.deletePool.calls.count()).toBe(1);
+      expect(lbaasv2Api.deletePool).toHaveBeenCalledWith('1', true);
     });
 
     it('should show message if any items fail to be deleted', function() {
       spyOn(modal, 'open').and.callThrough();
-      spyOn(lbaasv2Api, 'deleteListener').and.returnValue(makePromise(true));
+      spyOn(lbaasv2Api, 'deletePool').and.returnValue(makePromise(true));
       spyOn(toast, 'add');
-      items.splice(1, 1);
-      service.perform(items);
+      service.perform(pool);
       $scope.$apply();
       expect(modal.open).toHaveBeenCalled();
-      expect(lbaasv2Api.deleteListener.calls.count()).toBe(1);
-      expect(toast.add).toHaveBeenCalledWith('error', 'The following listeners could not ' +
-        'be deleted, possibly due to existing pools: First.');
+      expect(lbaasv2Api.deletePool.calls.count()).toBe(1);
+      expect(toast.add).toHaveBeenCalledWith('error', 'The following pool could not ' +
+        'be deleted: Pool1.');
     });
 
-    it('should reload table after delete', function() {
+    it('should return to listener details after delete', function() {
       path = 'project/ngloadbalancersv2/1';
-      spyOn($route, 'reload');
-      service.perform(items);
-      $scope.$apply();
-      expect($route.reload).toHaveBeenCalled();
-    });
-
-    it('should return to table after delete if on detail page', function() {
-      path = 'project/ngloadbalancersv2/1/listeners/2';
       spyOn($location, 'path');
       spyOn(toast, 'add');
-      service.perform(items[0]);
+      service.perform(pool);
       $scope.$apply();
-      expect($location.path).toHaveBeenCalledWith('project/ngloadbalancersv2/1');
-      expect(toast.add).toHaveBeenCalledWith('success', 'Deleted listeners: First.');
-    });
-
-    it('should call handler function if provided', function() {
-      var handler = { handler: angular.noop };
-      spyOn(handler, 'handler');
-      service.init('1', null, handler.handler);
-      service.perform(items);
-      $scope.$apply();
-      expect(handler.handler).toHaveBeenCalled();
+      expect($location.path).toHaveBeenCalledWith('project/ngloadbalancersv2/1/listeners/2');
+      expect(toast.add).toHaveBeenCalledWith('success', 'Deleted pool: Pool1.');
     });
 
   });

@@ -98,6 +98,13 @@
         testInput: [ '1234' ]
       },
       {
+        func: 'deletePool',
+        method: 'delete',
+        path: '/api/lbaas/pools/1234',
+        error: 'Unable to delete pool.',
+        testInput: [ '1234' ]
+      },
+      {
         func: 'getMembers',
         method: 'get',
         path: '/api/lbaas/pools/1234/members/',
@@ -175,6 +182,11 @@
     it('supresses the error if instructed for deleteListener', function() {
       spyOn(apiService, 'delete').and.returnValue("promise");
       expect(service.deleteListener("whatever", true)).toBe("promise");
+    });
+
+    it('supresses the error if instructed for deletePool', function() {
+      spyOn(apiService, 'delete').and.returnValue("promise");
+      expect(service.deletePool("whatever", true)).toBe("promise");
     });
 
   });
