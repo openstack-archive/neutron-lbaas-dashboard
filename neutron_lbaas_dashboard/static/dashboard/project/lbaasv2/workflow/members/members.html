@@ -70,7 +70,7 @@
                      class="form-field">
                   <select name="{$ ::row.id $}-subnet" class="form-control input-sm"
                           ng-options="subnet.name for subnet in model.subnets"
-                          ng-model="row.subnet"
+                          ng-model="row.subnet" ng-required="true"
                           ng-disabled="model.context.id && row.allocatedMember">
                   </select>
                 </div>

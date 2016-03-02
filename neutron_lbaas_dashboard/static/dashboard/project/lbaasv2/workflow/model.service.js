@@ -264,7 +264,7 @@
         finalSpec.loadbalancer.subnet = finalSpec.loadbalancer.subnet.id;
       }
 
-      // Cannot edit the subnet
+      // Cannot edit the IP or subnet
       if (context.resource === 'loadbalancer' && context.id) {
         delete finalSpec.subnet;
         delete finalSpec.ip;
@@ -274,10 +274,6 @@
     function cleanFinalSpecListener(finalSpec) {
       if (!finalSpec.listener.protocol || !finalSpec.listener.port) {
         // Listener requires protocol and port
-        delete finalSpec.listener;
-      } else if (finalSpec.listener.protocol === 'TERMINATED_HTTPS' &&
-          finalSpec.certificates.length === 0) {
-        // TERMINATED_HTTPS requires certificates
         delete finalSpec.listener;
       } else if (finalSpec.listener.protocol !== 'TERMINATED_HTTPS') {
         // Remove certificate containers if not using TERMINATED_HTTPS
@@ -292,10 +288,9 @@
     }
 
     function cleanFinalSpecPool(finalSpec) {
-      var resource = model.context.resource;
 
-      // Pool requires method and also the listener
-      if (resource !== 'pool' && !finalSpec.listener || !finalSpec.pool.method) {
+      // Pool requires method
+      if (!finalSpec.pool.method) {
         delete finalSpec.pool;
       } else {
         // The pool protocol must be HTTP if the listener protocol is TERMINATED_HTTPS and
@@ -306,10 +301,7 @@
     }
 
     function cleanFinalSpecMembers(finalSpec) {
-
-      // Members require a pool, address, subnet, and port but the wizard requires the address,
-      // subnet, and port so we can assume those exist here.
-      if (!finalSpec.pool || finalSpec.members.length === 0) {
+      if (finalSpec.members.length === 0) {
         delete finalSpec.members;
         return;
       }
@@ -343,16 +335,16 @@
 
     function cleanFinalSpecMonitor(finalSpec) {
 
-      // Monitor requires a pool, interval, retry count, and timeout
-      if (!finalSpec.pool ||
-          !angular.isNumber(finalSpec.monitor.interval) ||
+      // Monitor requires an interval, retry count, and timeout
+      if (!angular.isNumber(finalSpec.monitor.interval) ||
           !angular.isNumber(finalSpec.monitor.retry) ||
           !angular.isNumber(finalSpec.monitor.timeout)) {
         delete finalSpec.monitor;
+        return;
       }
 
       // Only include necessary monitor properties
-      if (finalSpec.monitor && finalSpec.monitor.type !== 'HTTP') {
+      if (finalSpec.monitor.type !== 'HTTP') {
         delete finalSpec.monitor.method;
         delete finalSpec.monitor.status;
         delete finalSpec.monitor.path;
