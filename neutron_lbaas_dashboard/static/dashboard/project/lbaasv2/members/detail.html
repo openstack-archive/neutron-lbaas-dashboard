@@ -6,17 +6,19 @@
       <li><a href="project/ngloadbalancersv2/{$ ::ctrl.loadbalancer.id $}/listeners/{$ ::ctrl.listener.id $}">{$ ::(ctrl.listener.name || ctrl.listener.id) $}</a></li>
       <li><a href="project/ngloadbalancersv2/{$ ::ctrl.loadbalancer.id $}/listeners/{$ ::ctrl.listener.id $}/pools/{$ ::ctrl.pool.id $}">{$ ::(ctrl.pool.name || ctrl.pool.id) $}</a></li>
       <li class="active">{$ ::(ctrl.member.name || ctrl.member.id) $}</li>
+      <actions allowed="ctrl.actions" type="row" item="ctrl.member"
+               ng-if="ctrl.member" class="actions_column pull-right"></actions>
     </ol>
   </div>
   <div class="row">
     <div class="col-md-6 detail">
       <dl class="dl-horizontal">
-        <dt translate>Protocol Port</dt>
-        <dd>{$ ::ctrl.member.protocol_port $}</dd>
         <dt translate>Address</dt>
         <dd>{$ ::ctrl.member.address $}</dd>
+        <dt translate>Protocol Port</dt>
+        <dd>{$ ::ctrl.member.protocol_port $}</dd>
         <dt translate>Weight</dt>
-        <dd>{$ ::ctrl.member.weight $}</dd>
+        <dd>{$ ctrl.member.weight $}</dd>
         <dt translate>Admin State Up</dt>
         <dd>{$ ctrl.member.admin_state_up | yesno $}</dd>
         <dt translate>Member ID</dt>

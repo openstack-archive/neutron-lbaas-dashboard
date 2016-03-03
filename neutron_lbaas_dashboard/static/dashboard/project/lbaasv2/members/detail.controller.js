@@ -22,6 +22,7 @@
 
   MemberDetailController.$inject = [
     'horizon.app.core.openstack-service-api.lbaasv2',
+    'horizon.dashboard.project.lbaasv2.members.actions.rowActions',
     '$routeParams'
   ];
 
@@ -33,12 +34,15 @@
    * Controller for the LBaaS v2 member detail page.
    *
    * @param api The LBaaS v2 API service.
+   * @param rowActions The pool members row actions service.
    * @param $routeParams The angular $routeParams service.
    * @returns undefined
    */
 
-  function MemberDetailController(api, $routeParams) {
+  function MemberDetailController(api, rowActions, $routeParams) {
     var ctrl = this;
+
+    ctrl.actions = rowActions.init($routeParams.loadbalancerId, $routeParams.poolId, init).actions;
 
     init();
 

@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Member Detail Controller', function() {
-    var lbaasv2API, ctrl;
+    var lbaasv2API, ctrl, actions;
 
     function fakeAPI() {
       return {
@@ -27,20 +27,45 @@
       };
     }
 
+    function loadbalancerAPI() {
+      var loadbalancer = { provisioning_status: 'ACTIVE' };
+      return {
+        success: function(callback) {
+          callback(loadbalancer);
+        },
+        then: function(callback) {
+          callback({ data: loadbalancer });
+        }
+      };
+    }
+
     ///////////////////////
 
-    beforeEach(module('horizon.framework.util.http'));
+    beforeEach(module('horizon.framework.util'));
     beforeEach(module('horizon.framework.widgets.toast'));
     beforeEach(module('horizon.framework.conf'));
     beforeEach(module('horizon.app.core.openstack-service-api'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
+
+    beforeEach(module(function($provide) {
+      $provide.value('$modal', {});
+      $provide.value('horizon.dashboard.project.lbaasv2.members.actions.rowActions', {
+        init: function() {
+          return {
+            actions: 'member-actions'
+          };
+        }
+      });
+    }));
 
     beforeEach(inject(function($injector) {
       lbaasv2API = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
       spyOn(lbaasv2API, 'getMember').and.callFake(fakeAPI);
       spyOn(lbaasv2API, 'getPool').and.callFake(fakeAPI);
       spyOn(lbaasv2API, 'getListener').and.callFake(fakeAPI);
-      spyOn(lbaasv2API, 'getLoadBalancer').and.callFake(fakeAPI);
+      spyOn(lbaasv2API, 'getLoadBalancer').and.callFake(loadbalancerAPI);
+      actions = $injector.get('horizon.dashboard.project.lbaasv2.members.actions.rowActions');
+      spyOn(actions, 'init').and.callThrough();
       var controller = $injector.get('$controller');
       ctrl = controller('MemberDetailController', {
         $routeParams: {
@@ -57,10 +82,15 @@
       expect(lbaasv2API.getPool).toHaveBeenCalledWith('poolId');
       expect(lbaasv2API.getListener).toHaveBeenCalledWith('listenerId');
       expect(lbaasv2API.getLoadBalancer).toHaveBeenCalledWith('loadbalancerId');
-      expect(ctrl.loadbalancer).toBe('foo');
+      expect(ctrl.loadbalancer).toEqual({ provisioning_status: 'ACTIVE' });
       expect(ctrl.listener).toBe('foo');
       expect(ctrl.pool).toBe('foo');
       expect(ctrl.member).toBe('foo');
+    });
+
+    it('should have actions', function() {
+      expect(ctrl.actions).toBe('member-actions');
+      expect(actions.init).toHaveBeenCalledWith('loadbalancerId', 'poolId', jasmine.any(Function));
     });
 
   });

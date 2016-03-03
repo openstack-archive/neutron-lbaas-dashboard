@@ -52,6 +52,7 @@
       deletePool: deletePool,
       getMembers: getMembers,
       getMember: getMember,
+      editMember: editMember,
       getHealthMonitor: getHealthMonitor,
       deleteHealthMonitor: deleteHealthMonitor,
       createHealthMonitor: createHealthMonitor,
@@ -341,6 +342,25 @@
       return apiService.get('/api/lbaas/pools/' + poolId + '/members/' + memberId)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve member.'));
+        });
+    }
+
+    // Health Monitors
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.editMember
+     * @description
+     * Edit a pool member.
+     * @param {string} id
+     * Specifies the id of the member to update.
+     * @param {object} spec
+     * Specifies the data used to update the member.
+     */
+
+    function editMember(poolId, memberId, spec) {
+      return apiService.put('/api/lbaas/pools/' + poolId + '/members/' + memberId, spec)
+        .error(function () {
+          toastService.add('error', gettext('Unable to update member.'));
         });
     }
 

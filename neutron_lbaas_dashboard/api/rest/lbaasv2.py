@@ -667,8 +667,20 @@ class Member(generic.View):
         """Get a specific member belonging to a specific pool.
 
         """
-        lb = neutronclient(request).show_lbaas_member(member_id, pool_id)
-        return lb.get('member')
+        return neutronclient(request).show_lbaas_member(
+            member_id, pool_id).get('member')
+
+    @rest_utils.ajax()
+    def put(self, request, member_id, pool_id):
+        """Edit a pool member.
+
+        """
+        data = request.DATA
+        spec = {
+            'weight': data['weight']
+        }
+        return neutronclient(request).update_lbaas_member(
+            member_id, pool_id, {'member': spec})
 
 
 @urls.register
@@ -700,8 +712,8 @@ class HealthMonitor(generic.View):
         """Get a specific health monitor.
 
         """
-        lb = neutronclient(request).show_lbaas_healthmonitor(healthmonitor_id)
-        return lb.get('healthmonitor')
+        return neutronclient(request).show_lbaas_healthmonitor(
+            healthmonitor_id).get('healthmonitor')
 
     @rest_utils.ajax()
     def delete(self, request, healthmonitor_id):

@@ -128,6 +128,14 @@
         testInput: [ '1234', '5678' ]
       },
       {
+        func: 'editMember',
+        method: 'put',
+        path: '/api/lbaas/pools/1234/members/5678',
+        error: 'Unable to update member.',
+        data: { weight: 2 },
+        testInput: [ '1234', '5678', { weight: 2 } ]
+      },
+      {
         func: 'getHealthMonitor',
         method: 'get',
         path: '/api/lbaas/healthmonitors/1234',

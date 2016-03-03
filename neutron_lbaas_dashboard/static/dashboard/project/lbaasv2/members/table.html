@@ -16,7 +16,7 @@
         Table-batch-actions:
         This is where batch actions like searching, creating, and deleting.
       -->
-      <th colspan="5" class="search-header">
+      <th colspan="6" class="search-header">
         <hz-search-bar icon-classes="fa-search"></hz-search-bar>
       </th>
     </tr>
@@ -37,6 +37,7 @@
       <th class="rsp-p1" st-sort="address" translate>IP Address</th>
       <th class="rsp-p1" st-sort="protocol_port" translate>Protocol Port</th>
       <th class="rsp-p1" st-sort="weight" translate>Weight</th>
+      <th class="actions_column" translate>Actions</th>
     </tr>
   </thead>
 
@@ -60,7 +61,14 @@
       <td class="rsp-p1"><a ng-href="project/ngloadbalancersv2/{$ ::table.loadbalancerId $}/listeners/{$ ::table.listenerId $}/pools/{$ ::table.poolId $}/members/{$ ::item.id $}">{$ ::item.id $}</a></td>
       <td class="rsp-p1">{$ ::item.address $}</td>
       <td class="rsp-p1">{$ ::item.protocol_port $}</td>
-      <td class="rsp-p1">{$ ::item.weight $}</td>
+      <td class="rsp-p1">{$ item.weight $}</td>
+      <td class="actions_column">
+        <!--
+        Table-row-action-column:
+        Actions taken here apply to a single item/row.
+        -->
+        <actions allowed="table.rowActions.actions" type="row" item="item"></actions>
+      </td>
     </tr>
 
   </tbody>
