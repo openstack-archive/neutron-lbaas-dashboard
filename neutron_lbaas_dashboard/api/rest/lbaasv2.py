@@ -561,6 +561,25 @@ class Listener(generic.View):
 
 
 @urls.register
+class Pools(generic.View):
+    """API for load balancer pools.
+
+    """
+    url_regex = r'lbaas/pools/$'
+
+    @rest_utils.ajax()
+    def post(self, request):
+        """Create a new pool.
+
+        Creates a new pool as well as other optional resources such as
+        members and health monitor.
+        """
+        kwargs = {'loadbalancer_id': request.DATA.get('loadbalancer_id'),
+                  'listener_id': request.DATA.get('parentResourceId')}
+        return create_pool(request, **kwargs)
+
+
+@urls.register
 class Pool(generic.View):
     """API for retrieving a single pool.
 

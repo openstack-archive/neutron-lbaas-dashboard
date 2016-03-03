@@ -48,6 +48,7 @@
       deleteListener: deleteListener,
       getPool: getPool,
       deletePool: deletePool,
+      createPool: createPool,
       getMembers: getMembers,
       getMember: getMember,
       getHealthMonitor: getHealthMonitor
@@ -246,6 +247,21 @@
       return apiService.get('/api/lbaas/pools/' + id)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve pool.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.createPool
+     * @description
+     * Create a new pool
+     * @param {object} spec
+     * Specifies the data used to create the new pool.
+     */
+
+    function createPool(spec) {
+      return apiService.post('/api/lbaas/pools/', spec)
+        .error(function () {
+          toastService.add('error', gettext('Unable to create pool.'));
         });
     }
 

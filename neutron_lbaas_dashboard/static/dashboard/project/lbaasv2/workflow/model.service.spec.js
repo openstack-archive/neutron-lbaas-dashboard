@@ -18,6 +18,7 @@
 
   describe('LBaaS v2 Workflow Model Service', function() {
     var model, $q, scope, listenerResources, barbicanEnabled, certificatesError;
+    var includeChildResources = true;
 
     beforeEach(module('horizon.framework.util.i18n'));
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
@@ -111,7 +112,9 @@
         },
         getListener: function() {
           var deferred = $q.defer();
-          deferred.resolve({ data: listenerResources });
+          var listenerData;
+          listenerData = includeChildResources ? listenerResources : listenerResources.listener;
+          deferred.resolve({ data: listenerData });
           return deferred.promise;
         },
         getPool: function() {
@@ -177,6 +180,9 @@
           return spec;
         },
         editListener: function(id, spec) {
+          return spec;
+        },
+        createPool: function(spec) {
           return spec;
         }
       });
@@ -421,6 +427,44 @@
       });
     });
 
+    describe('Post initialize model (create pool)', function() {
+
+      beforeEach(function() {
+        includeChildResources = false;
+        model.initialize('pool', false, '1234', '5678');
+        scope.$apply();
+      });
+
+      it('should initialize model properties', function() {
+        expect(model.initializing).toBe(false);
+        expect(model.initialized).toBe(true);
+        expect(model.subnets.length).toBe(2);
+        expect(model.members.length).toBe(2);
+        expect(model.certificates.length).toBe(0);
+        expect(model.listenerPorts.length).toBe(0);
+        expect(model.spec).toBeDefined();
+        expect(model.spec.loadbalancer_id).toBe('1234');
+        expect(model.spec.parentResourceId).toBe('5678');
+        expect(model.spec.loadbalancer).toBeDefined();
+        expect(model.spec.listener).toBeDefined();
+        expect(model.spec.pool).toBeDefined();
+        expect(model.spec.members.length).toBe(0);
+        expect(model.spec.certificates).toEqual([]);
+        expect(model.spec.monitor).toBeDefined();
+        expect(model.certificatesError).toBe(false);
+      });
+
+      it('should initialize names', function() {
+        expect(model.spec.pool.name).toBe('Pool 1');
+      });
+
+      it('should initialize context properties', function() {
+        expect(model.context.resource).toBe('pool');
+        expect(model.context.id).toBeFalsy();
+        expect(model.context.submit).toBeDefined();
+      });
+    });
+
     describe('Post initialize model (edit loadbalancer)', function() {
 
       beforeEach(function() {
@@ -526,6 +570,7 @@
     describe('Post initialize model (edit listener)', function() {
 
       beforeEach(function() {
+        includeChildResources = true;
         model.initialize('listener', '1234');
         scope.$apply();
       });
@@ -644,7 +689,7 @@
       // This is here to ensure that as people add/change spec properties, they don't forget
       // to implement tests for them.
       it('has the right number of properties', function() {
-        expect(Object.keys(model.spec).length).toBe(7);
+        expect(Object.keys(model.spec).length).toBe(8);
         expect(Object.keys(model.spec.loadbalancer).length).toBe(4);
         expect(Object.keys(model.spec.listener).length).toBe(5);
         expect(Object.keys(model.spec.pool).length).toBe(5);
@@ -652,8 +697,12 @@
         expect(model.spec.members).toEqual([]);
       });
 
-      it('sets load balancer ID to null', function() {
+      it('sets load balancer ID to undefined', function() {
         expect(model.spec.loadbalancer_id).toBeUndefined();
+      });
+
+      it('sets parent resource ID to undefined', function() {
+        expect(model.spec.parentResourceId).toBeUndefined();
       });
 
       it('sets load balancer name to null', function() {
@@ -832,6 +881,7 @@
     describe('context (edit listener)', function() {
 
       beforeEach(function() {
+        includeChildResources = true;
         model.initialize('listener', '1');
         scope.$apply();
       });
@@ -840,6 +890,20 @@
         expect(model.context.resource).toBe('listener');
         expect(model.context.id).toBe('1');
         expect(model.context.submit.name).toBe('editListener');
+      });
+    });
+
+    describe('context (create pool)', function() {
+
+      beforeEach(function() {
+        model.initialize('pool', false, '1234', '5678');
+        scope.$apply();
+      });
+
+      it('should initialize context', function() {
+        expect(model.context.resource).toBe('pool');
+        expect(model.context.id).toBeFalsy();
+        expect(model.context.submit.name).toBe('createPool');
       });
     });
 
@@ -1297,9 +1361,192 @@
       });
     });
 
+    describe('Model submit function (create pool)', function() {
+
+      beforeEach(function() {
+        includeChildResources = false;
+        model.initialize('pool', false, '1234', '5678');
+        scope.$apply();
+      });
+
+      it('should set final spec properties', function() {
+        model.spec.listener.protocol = 'TCP';
+        model.spec.pool.name = 'pool name';
+        model.spec.pool.description = 'pool description';
+        model.spec.pool.method = 'LEAST_CONNECTIONS';
+        model.spec.members = [{
+          address: { ip: '1.2.3.4', subnet: '1' },
+          addresses: [{ ip: '1.2.3.4', subnet: '1' },
+                      { ip: '2.3.4.5', subnet: '2' }],
+          id: '1',
+          name: 'foo',
+          port: 80,
+          weight: 1
+        }, {
+          id: 'external-member-0',
+          address: '2.3.4.5',
+          subnet: null,
+          port: 80,
+          weight: 1
+        }, {
+          id: 'external-member-1',
+          address: null,
+          subnet: null,
+          port: 80,
+          weight: 1
+        }, {
+          id: 'external-member-2',
+          address: '3.4.5.6',
+          subnet: { id: '1' },
+          port: 80,
+          weight: 1
+        }];
+        model.spec.monitor.type = 'PING';
+        model.spec.monitor.interval = 1;
+        model.spec.monitor.retry = 1;
+        model.spec.monitor.timeout = 1;
+        model.spec.certificates = [{
+          id: 'container1',
+          name: 'foo',
+          expiration: '2015-03-26T21:10:45.417835'
+        }];
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.pool.name).toBe('pool name');
+        expect(finalSpec.pool.description).toBe('pool description');
+        expect(finalSpec.pool.protocol).toBe('TCP');
+        expect(finalSpec.pool.method).toBe('LEAST_CONNECTIONS');
+
+        expect(finalSpec.members.length).toBe(3);
+        expect(finalSpec.members[0].address).toBe('1.2.3.4');
+        expect(finalSpec.members[0].subnet).toBe('1');
+        expect(finalSpec.members[0].port).toBe(80);
+        expect(finalSpec.members[0].weight).toBe(1);
+        expect(finalSpec.members[0].id).toBe('1');
+        expect(finalSpec.members[0].addresses).toBeUndefined();
+        expect(finalSpec.members[0].name).toBeUndefined();
+        expect(finalSpec.members[0].allocatedMember).toBeUndefined();
+        expect(finalSpec.members[1].id).toBe('external-member-0');
+        expect(finalSpec.members[1].address).toBe('2.3.4.5');
+        expect(finalSpec.members[1].subnet).toBeUndefined();
+        expect(finalSpec.members[1].port).toBe(80);
+        expect(finalSpec.members[1].weight).toBe(1);
+        expect(finalSpec.members[1].allocatedMember).toBeUndefined();
+        expect(finalSpec.members[2].id).toBe('external-member-2');
+        expect(finalSpec.members[2].address).toBe('3.4.5.6');
+        expect(finalSpec.members[2].subnet).toBe('1');
+        expect(finalSpec.members[2].port).toBe(80);
+        expect(finalSpec.members[2].weight).toBe(1);
+        expect(finalSpec.members[2].allocatedMember).toBeUndefined();
+
+        expect(finalSpec.monitor.type).toBe('PING');
+        expect(finalSpec.monitor.interval).toBe(1);
+        expect(finalSpec.monitor.retry).toBe(1);
+        expect(finalSpec.monitor.timeout).toBe(1);
+        expect(finalSpec.certificates).toBeUndefined();
+      });
+
+      it('should delete listener if any required property is not set', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTP';
+        model.spec.listener.port = '';
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeUndefined();
+        expect(finalSpec.pool).toBeUndefined();
+      });
+
+      it('should delete certificates if not using TERMINATED_HTTPS', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTP';
+        model.spec.listener.port = 80;
+        model.spec.certificates = [{id: '1'}];
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeDefined();
+        expect(finalSpec.certificates).toBeUndefined();
+      });
+
+      it('should delete pool if any required property is not set', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTP';
+        model.spec.listener.port = 80;
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeDefined();
+        expect(finalSpec.pool).toBeUndefined();
+      });
+
+      it('should delete members if none selected', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTP';
+        model.spec.listener.port = 80;
+        model.spec.pool.method = 'LEAST_CONNECTIONS';
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeDefined();
+        expect(finalSpec.pool).toBeDefined();
+        expect(finalSpec.members).toBeUndefined();
+      });
+
+      it('should delete members if no members are valid', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTP';
+        model.spec.listener.port = 80;
+        model.spec.pool.method = 'LEAST_CONNECTIONS';
+        model.spec.members = [{
+          id: 'foo',
+          address: '2.3.4.5',
+          weight: 1
+        }];
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeDefined();
+        expect(finalSpec.pool).toBeDefined();
+        expect(finalSpec.members).toBeUndefined();
+      });
+
+      it('should delete monitor if any required property not set', function() {
+        model.spec.loadbalancer.ip = '1.2.3.4';
+        model.spec.loadbalancer.subnet = model.subnets[0];
+        model.spec.listener.protocol = 'HTTP';
+        model.spec.listener.port = 80;
+        model.spec.pool.method = 'LEAST_CONNECTIONS';
+        model.spec.monitor.type = 'PING';
+        model.spec.monitor.interval = 1;
+        model.spec.monitor.retry = 1;
+        model.spec.monitor.timeout = null;
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer).toBeDefined();
+        expect(finalSpec.listener).toBeDefined();
+        expect(finalSpec.pool).toBeDefined();
+        expect(finalSpec.members).toBeUndefined();
+        expect(finalSpec.monitor).toBeUndefined();
+      });
+    });
+
     describe('Model submit function (edit listener)', function() {
 
       beforeEach(function() {
+        includeChildResources = true;
         model.initialize('listener', '1234');
         scope.$apply();
       });

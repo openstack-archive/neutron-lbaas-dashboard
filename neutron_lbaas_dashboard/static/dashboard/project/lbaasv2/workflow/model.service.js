@@ -117,7 +117,7 @@
      * @param id ID of the resource being edited.
      */
 
-    function initialize(resource, id, loadBalancerId) {
+    function initialize(resource, id, loadBalancerId, parentResourceId) {
       var promise;
 
       model.certificatesError = false;
@@ -133,6 +133,7 @@
 
       model.spec = {
         loadbalancer_id: loadBalancerId,
+        parentResourceId: parentResourceId,
         loadbalancer: {
           name: null,
           description: null,
@@ -206,6 +207,17 @@
           ]).then(initMemberAddresses);
           model.context.submit = createListener;
           break;
+        case 'createpool':
+          //  We get the listener details here because we need to know the listener protocol
+          //  in order to default the new pool's protocol to match.
+          promise = $q.all([
+            lbaasv2API.getListener(model.spec.parentResourceId).then(onGetListener),
+            neutronAPI.getSubnets().then(onGetSubnets),
+            neutronAPI.getPorts().then(onGetPorts),
+            novaAPI.getServers().then(onGetServers)
+          ]).then(initMemberAddresses);
+          model.context.submit = createPool;
+          break;
         case 'editloadbalancer':
           promise = $q.all([
             lbaasv2API.getLoadBalancer(model.context.id).then(onGetLoadBalancer),
@@ -266,6 +278,10 @@
 
     function createListener(spec) {
       return lbaasv2API.createListener(spec);
+    }
+
+    function createPool(spec) {
+      return lbaasv2API.createPool(spec);
     }
 
     function editLoadBalancer(spec) {
@@ -469,36 +485,39 @@
     }
 
     function onGetListener(response) {
-      var resources = response.data;
+      var result = response.data;
 
-      setListenerSpec(resources.listener);
-      model.visibleResources.push('listener');
-      model.spec.loadbalancer_id = resources.listener.loadbalancers[0].id;
+      setListenerSpec(result.listener || result);
 
-      if (resources.listener.protocol === 'TERMINATED_HTTPS') {
-        keymanagerPromise.then(prepareCertificates).then(function addAvailableCertificates() {
-          resources.listener.sni_container_refs.forEach(function addAvailableCertificate(ref) {
-            model.certificates.filter(function matchCertificate(cert) {
-              return cert.id === ref;
-            }).forEach(function addCertificate(cert) {
-              model.spec.certificates.push(cert);
+      if (result.listener) {
+        model.visibleResources.push('listener');
+        model.spec.loadbalancer_id = result.listener.loadbalancers[0].id;
+
+        if (result.listener.protocol === 'TERMINATED_HTTPS') {
+          keymanagerPromise.then(prepareCertificates).then(function addAvailableCertificates() {
+            result.listener.sni_container_refs.forEach(function addAvailableCertificate(ref) {
+              model.certificates.filter(function matchCertificate(cert) {
+                return cert.id === ref;
+              }).forEach(function addCertificate(cert) {
+                model.spec.certificates.push(cert);
+              });
             });
           });
-        });
-        model.visibleResources.push('certificates');
+          model.visibleResources.push('certificates');
+        }
       }
 
-      if (resources.pool) {
-        setPoolSpec(resources.pool);
+      if (result.pool) {
+        setPoolSpec(result.pool);
         model.visibleResources.push('pool');
         model.visibleResources.push('members');
 
-        if (resources.members) {
-          setMembersSpec(resources.members);
+        if (result.members) {
+          setMembersSpec(result.members);
         }
 
-        if (resources.monitor) {
-          setMonitorSpec(resources.monitor);
+        if (result.monitor) {
+          setMonitorSpec(result.monitor);
           model.visibleResources.push('monitor');
         }
       }

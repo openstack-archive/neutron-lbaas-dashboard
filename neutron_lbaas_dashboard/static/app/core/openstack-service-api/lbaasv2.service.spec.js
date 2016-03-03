@@ -163,6 +163,14 @@
         path: '/api/lbaas/listeners/1234',
         error: 'Unable to delete listener.',
         testInput: [ '1234' ]
+      },
+      {
+        func: 'createPool',
+        method: 'post',
+        path: '/api/lbaas/pools/',
+        error: 'Unable to create pool.',
+        data: { name: 'pool-1' },
+        testInput: [ { name: 'pool-1' } ]
       }
     ];
 

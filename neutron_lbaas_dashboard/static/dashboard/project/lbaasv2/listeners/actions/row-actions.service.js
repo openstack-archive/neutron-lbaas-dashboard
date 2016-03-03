@@ -28,7 +28,8 @@
     'horizon.app.core.openstack-service-api.policy',
     'horizon.framework.util.i18n.gettext',
     'horizon.dashboard.project.lbaasv2.loadbalancers.service',
-    'horizon.dashboard.project.lbaasv2.listeners.actions.delete'
+    'horizon.dashboard.project.lbaasv2.listeners.actions.delete',
+    'horizon.dashboard.project.lbaasv2.pools.actions.create'
   ];
 
   /**
@@ -45,11 +46,13 @@
    * @param gettext The horizon gettext function for translation.
    * @param loadBalancersService The LBaaS v2 load balancers service.
    * @param deleteService The LBaaS v2 listeners delete service.
+   * @param createPoolService The LBaaS v2 pools create service.
    * @returns Listeners row actions service object.
    */
 
   function tableRowActions(
-    $q, $route, workflowModal, policy, gettext, loadBalancersService, deleteService
+    $q, $route, workflowModal, policy, gettext, loadBalancersService, deleteService,
+    createPoolService
   ) {
     var loadbalancerId, loadBalancerIsActionable, handler;
 
@@ -81,6 +84,11 @@
         service: edit,
         template: {
           text: gettext('Edit')
+        }
+      },{
+        service: createPoolService.init(loadbalancerId, loadBalancerIsActionable).create,
+        template: {
+          text: gettext('Create Pool')
         }
       },{
         service: deleteService.init(loadbalancerId, loadBalancerIsActionable, handler),
