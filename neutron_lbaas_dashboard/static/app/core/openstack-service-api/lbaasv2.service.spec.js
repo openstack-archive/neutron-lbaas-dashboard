@@ -135,6 +135,14 @@
         testInput: [ '1234' ]
       },
       {
+        func: 'editHealthMonitor',
+        method: 'put',
+        path: '/api/lbaas/healthmonitors/1234',
+        error: 'Unable to update health monitor.',
+        data: { name: 'healthmonitor-1' },
+        testInput: [ '1234', { name: 'healthmonitor-1' } ]
+      },
+      {
         func: 'deleteHealthMonitor',
         method: 'delete',
         path: '/api/lbaas/healthmonitors/1234',

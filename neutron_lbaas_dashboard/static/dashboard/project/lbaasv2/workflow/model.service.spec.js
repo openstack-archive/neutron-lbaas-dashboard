@@ -185,6 +185,9 @@
         },
         createHealthMonitor: function(spec) {
           return spec;
+        },
+        editHealthMonitor: function(id, spec) {
+          return spec;
         }
       });
 
@@ -565,6 +568,42 @@
       it('should initialize listener protocols', function() {
         expect(model.listenerProtocols.length).toBe(3);
         expect(model.listenerProtocols.indexOf('TERMINATED_HTTPS')).toBe(2);
+      });
+    });
+
+    describe('Post initialize model (edit health monitor)', function() {
+
+      beforeEach(function() {
+        model.initialize('monitor', 'healthmonitor1');
+        scope.$apply();
+      });
+
+      it('should initialize model properties', function() {
+        expect(model.initializing).toBe(false);
+        expect(model.initialized).toBe(true);
+        expect(model.subnets.length).toBe(0);
+        expect(model.members.length).toBe(0);
+        expect(model.certificates.length).toBe(0);
+        expect(model.listenerPorts.length).toBe(0);
+        expect(model.spec.loadbalancer_id).toBeUndefined();
+        expect(model.spec.parentResourceId).toBeUndefined();
+        expect(model.spec.members.length).toBe(0);
+        expect(model.spec.certificates).toEqual([]);
+        expect(model.certificatesError).toBe(false);
+        expect(model.spec.monitor.id).toBe('1234');
+        expect(model.spec.monitor.type).toBe('HTTP');
+        expect(model.spec.monitor.interval).toBe(1);
+        expect(model.spec.monitor.timeout).toBe(1);
+        expect(model.spec.monitor.retry).toBe(1);
+        expect(model.spec.monitor.method).toBe('POST');
+        expect(model.spec.monitor.status).toBe('200');
+        expect(model.spec.monitor.path).toBe('/test');
+      });
+
+      it('should initialize context properties', function() {
+        expect(model.context.resource).toBe('monitor');
+        expect(model.context.id).toBe('healthmonitor1');
+        expect(model.context.submit.name).toBe('editHealthMonitor');
       });
     });
 
@@ -1730,6 +1769,7 @@
       });
 
       it('should set final spec properties', function() {
+
         var finalSpec = model.submit();
 
         expect(finalSpec.loadbalancer).toBeUndefined();
@@ -1801,6 +1841,42 @@
       it('should only show pool and monitor details', function() {
         expect(model.visibleResources).toEqual(['pool', 'members']);
       });
+    });
+
+    describe('Model submit function (edit health monitor)', function() {
+
+      beforeEach(function() {
+        model.initialize('monitor', 'healthmonitor1');
+        scope.$apply();
+      });
+
+      it('should set final spec properties', function() {
+        model.spec.monitor.interval = 10;
+        model.spec.monitor.retry = 6;
+        model.spec.monitor.timeout = 8;
+        model.spec.monitor.method = 'GET';
+        model.spec.monitor.status = '200-204';
+        model.spec.monitor.path = '/foo/bar';
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer_id).toBeUndefined();
+        expect(finalSpec.parentResourceId).toBeUndefined();
+        expect(finalSpec.loadbalancer).toBeUndefined();
+        expect(finalSpec.listener).toBeUndefined();
+        expect(finalSpec.pool).toBeUndefined();
+        expect(finalSpec.members).toBeUndefined();
+        expect(finalSpec.certificates).toBeUndefined();
+
+        expect(finalSpec.monitor.type).toBe('HTTP');
+        expect(finalSpec.monitor.interval).toBe(10);
+        expect(finalSpec.monitor.retry).toBe(6);
+        expect(finalSpec.monitor.timeout).toBe(8);
+        expect(finalSpec.monitor.method).toBe('GET');
+        expect(finalSpec.monitor.status).toBe('200-204');
+        expect(finalSpec.monitor.path).toBe('/foo/bar');
+      });
+
     });
 
     describe('Model visible resources (edit listener, no pool)', function() {

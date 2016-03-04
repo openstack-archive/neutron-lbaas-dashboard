@@ -54,7 +54,8 @@
       getMember: getMember,
       getHealthMonitor: getHealthMonitor,
       deleteHealthMonitor: deleteHealthMonitor,
-      createHealthMonitor: createHealthMonitor
+      createHealthMonitor: createHealthMonitor,
+      editHealthMonitor: editHealthMonitor
     };
 
     return service;
@@ -357,6 +358,23 @@
       return apiService.get('/api/lbaas/healthmonitors/' + monitorId)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve health monitor.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.editHealthMonitor
+     * @description
+     * Edit a health monitor
+     * @param {string} id
+     * Specifies the id of the health monitor to update.
+     * @param {object} spec
+     * Specifies the data used to update the health monitor.
+     */
+
+    function editHealthMonitor(id, spec) {
+      return apiService.put('/api/lbaas/healthmonitors/' + id, spec)
+        .error(function () {
+          toastService.add('error', gettext('Unable to update health monitor.'));
         });
     }
 

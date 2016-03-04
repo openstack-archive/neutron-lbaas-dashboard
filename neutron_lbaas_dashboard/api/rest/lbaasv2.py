@@ -710,3 +710,10 @@ class HealthMonitor(generic.View):
         http://localhost/api/lbaas/healthmonitors/cc758c90-3d98-4ea1-af44-aab405c9c915
         """
         neutronclient(request).delete_lbaas_healthmonitor(healthmonitor_id)
+
+    @rest_utils.ajax()
+    def put(self, request, healthmonitor_id):
+        """Edit a health monitor.
+
+        """
+        update_monitor(request)

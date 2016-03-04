@@ -190,7 +190,8 @@
         'createmonitor': initCreateMonitor,
         'editloadbalancer': initEditLoadBalancer,
         'editlistener': initEditListener,
-        'editpool': initEditPool
+        'editpool': initEditPool,
+        'editmonitor': initEditMonitor
       }[type](keymanagerPromise);
 
       return promise.then(onInitSuccess, onInitFail);
@@ -271,6 +272,11 @@
       ]).then(initMemberAddresses);
     }
 
+    function initEditMonitor() {
+      model.context.submit = editHealthMonitor;
+      return lbaasv2API.getHealthMonitor(model.context.id).then(onGetHealthMonitor);
+    }
+
     /**
      * @ngdoc method
      * @name workflowModel.submit
@@ -319,6 +325,10 @@
 
     function editPool(spec) {
       return lbaasv2API.editPool(model.context.id, spec);
+    }
+
+    function editHealthMonitor(spec) {
+      return lbaasv2API.editHealthMonitor(model.context.id, spec);
     }
 
     function cleanFinalSpecLoadBalancer(finalSpec) {
@@ -629,6 +639,10 @@
       spec.method = monitor.http_method;
       spec.status = monitor.expected_codes;
       spec.path = monitor.url_path;
+    }
+
+    function onGetHealthMonitor(response) {
+      setMonitorSpec(response.data);
     }
 
     function prepareCertificates() {

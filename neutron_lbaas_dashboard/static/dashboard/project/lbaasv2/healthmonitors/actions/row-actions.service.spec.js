@@ -35,8 +35,9 @@
     }));
 
     it('should define correct table row actions', function() {
-      expect(actions.length).toBe(1);
-      expect(actions[0].template.text).toBe('Delete Health Monitor');
+      expect(actions.length).toBe(2);
+      expect(actions[0].template.text).toBe('Edit');
+      expect(actions[1].template.text).toBe('Delete Health Monitor');
     });
 
     it('should have the "allowed" and "perform" functions', function() {
