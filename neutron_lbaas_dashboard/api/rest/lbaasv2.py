@@ -136,11 +136,33 @@ def create_pool(request, **kwargs):
                                       'index': 0}}
         thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
     elif data.get('monitor'):
-        args = (request, kwargs['loadbalancer_id'], add_monitor)
+        args = (request, kwargs['loadbalancer_id'], create_health_monitor)
         kwargs = {'callback_kwargs': {'pool_id': pool['id']}}
         thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
 
     return pool
+
+
+def create_health_monitor(request, **kwargs):
+    """Create a new health monitor for a pool.
+
+    """
+    data = request.DATA
+    monitorSpec = {
+        'type': data['monitor']['type'],
+        'delay': data['monitor']['interval'],
+        'timeout': data['monitor']['timeout'],
+        'max_retries': data['monitor']['retry'],
+        'pool_id': kwargs['pool_id']
+    }
+    if data['monitor'].get('method'):
+        monitorSpec['http_method'] = data['monitor']['method']
+    if data['monitor'].get('path'):
+        monitorSpec['url_path'] = data['monitor']['path']
+    if data['monitor'].get('status'):
+        monitorSpec['expected_codes'] = data['monitor']['status']
+    return neutronclient(request).create_lbaas_healthmonitor(
+        {'healthmonitor': monitorSpec}).get('healthmonitor')
 
 
 def add_member(request, **kwargs):
@@ -189,7 +211,7 @@ def add_member(request, **kwargs):
                                       'index': index}}
         thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
     elif data.get('monitor'):
-        args = (request, loadbalancer_id, add_monitor)
+        args = (request, loadbalancer_id, create_health_monitor)
         kwargs = {'callback_kwargs': {'pool_id': pool_id}}
         thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
 
@@ -216,28 +238,6 @@ def remove_member(request, **kwargs):
             'members_to_add': kwargs.get('members_to_add'),
             'members_to_delete': members_to_delete}}
         thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
-
-
-def add_monitor(request, **kwargs):
-    """Create a new health monitor for a pool.
-
-    """
-    data = request.DATA
-    monitorSpec = {
-        'type': data['monitor']['type'],
-        'delay': data['monitor']['interval'],
-        'timeout': data['monitor']['timeout'],
-        'max_retries': data['monitor']['retry'],
-        'pool_id': kwargs['pool_id']
-    }
-    if data['monitor'].get('method'):
-        monitorSpec['http_method'] = data['monitor']['method']
-    if data['monitor'].get('path'):
-        monitorSpec['url_path'] = data['monitor']['path']
-    if data['monitor'].get('status'):
-        monitorSpec['expected_codes'] = data['monitor']['status']
-    return neutronclient(request).create_lbaas_healthmonitor(
-        {'healthmonitor': monitorSpec}).get('healthmonitor')
 
 
 def update_loadbalancer(request, **kwargs):
@@ -669,6 +669,23 @@ class Member(generic.View):
         """
         lb = neutronclient(request).show_lbaas_member(member_id, pool_id)
         return lb.get('member')
+
+
+@urls.register
+class HealthMonitors(generic.View):
+    """API for load balancer pool health monitors.
+
+    """
+    url_regex = r'lbaas/healthmonitors/$'
+
+    @rest_utils.ajax()
+    def post(self, request):
+        """Create a new health monitor.
+
+        """
+        kwargs = {'loadbalancer_id': request.DATA.get('loadbalancer_id'),
+                  'pool_id': request.DATA.get('parentResourceId')}
+        return create_health_monitor(request, **kwargs)
 
 
 @urls.register

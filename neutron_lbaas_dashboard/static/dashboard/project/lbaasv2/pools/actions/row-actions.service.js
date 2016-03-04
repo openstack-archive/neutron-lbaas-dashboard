@@ -25,7 +25,8 @@
     'horizon.framework.util.i18n.gettext',
     'horizon.dashboard.project.lbaasv2.loadbalancers.service',
     'horizon.dashboard.project.lbaasv2.pools.actions.edit',
-    'horizon.dashboard.project.lbaasv2.pools.actions.delete'
+    'horizon.dashboard.project.lbaasv2.pools.actions.delete',
+    'horizon.dashboard.project.lbaasv2.healthmonitors.actions.create'
   ];
 
   /**
@@ -39,10 +40,11 @@
    * @param loadBalancersService The LBaaS v2 load balancers service.
    * @param editService The LBaaS v2 pools delete service.
    * @param deleteService The LBaaS v2 pools delete service.
+   * @param createService The LBaaS v2 health monitor create service.
    * @returns Pool row actions service object.
    */
 
-  function rowActions(gettext, loadBalancersService, editService, deleteService) {
+  function rowActions(gettext, loadBalancersService, editService, deleteService, createService) {
     var loadBalancerIsActionable, loadbalancerId, listenerId;
 
     var service = {
@@ -66,6 +68,11 @@
         service: editService.init(loadBalancerIsActionable).edit,
         template: {
           text: gettext('Edit Pool')
+        }
+      },{
+        service: createService.init(loadbalancerId, listenerId, loadBalancerIsActionable).create,
+        template: {
+          text: gettext('Create Health Monitor')
         }
       },{
         service: deleteService.init(loadbalancerId, listenerId, loadBalancerIsActionable),

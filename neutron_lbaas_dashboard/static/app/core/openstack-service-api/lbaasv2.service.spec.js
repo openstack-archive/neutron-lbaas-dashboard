@@ -195,6 +195,14 @@
         error: 'Unable to update pool.',
         data: { name: 'pool-1' },
         testInput: [ '1234', { name: 'pool-1' } ]
+      },
+      {
+        func: 'createHealthMonitor',
+        method: 'post',
+        path: '/api/lbaas/healthmonitors/',
+        error: 'Unable to create health monitor.',
+        data: { name: 'healthmonitor-1' },
+        testInput: [ { name: 'healthmonitor-1' } ]
       }
     ];
 

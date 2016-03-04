@@ -176,7 +176,6 @@
     }
 
     function initializeResources() {
-      var promise;
       var type = (model.context.id ? 'edit' : 'create') + model.context.resource;
       keymanagerPromise = serviceCatalog.ifTypeEnabled('key-manager');
 
@@ -184,66 +183,15 @@
         keymanagerPromise.then(angular.noop, certificatesNotSupported);
       }
 
-      switch (type) {
-        case 'createloadbalancer':
-          promise = $q.all([
-            lbaasv2API.getLoadBalancers().then(onGetLoadBalancers),
-            neutronAPI.getSubnets().then(onGetSubnets),
-            neutronAPI.getPorts().then(onGetPorts),
-            novaAPI.getServers().then(onGetServers),
-            // The noop errback prevents this from tripping up $q.all since this is a case
-            // where we don't care if it fails, i.e. key-manager service doesn't exist.
-            keymanagerPromise.then(prepareCertificates, angular.noop)
-          ]).then(initMemberAddresses);
-          model.context.submit = createLoadBalancer;
-          break;
-        case 'createlistener':
-          promise = $q.all([
-            lbaasv2API.getListeners(model.spec.loadbalancer_id).then(onGetListeners),
-            neutronAPI.getSubnets().then(onGetSubnets),
-            neutronAPI.getPorts().then(onGetPorts),
-            novaAPI.getServers().then(onGetServers),
-            keymanagerPromise.then(prepareCertificates, angular.noop)
-          ]).then(initMemberAddresses);
-          model.context.submit = createListener;
-          break;
-        case 'createpool':
-          //  We get the listener details here because we need to know the listener protocol
-          //  in order to default the new pool's protocol to match.
-          promise = $q.all([
-            lbaasv2API.getListener(model.spec.parentResourceId).then(onGetListener),
-            neutronAPI.getSubnets().then(onGetSubnets),
-            neutronAPI.getPorts().then(onGetPorts),
-            novaAPI.getServers().then(onGetServers)
-          ]).then(initMemberAddresses);
-          model.context.submit = createPool;
-          break;
-        case 'editloadbalancer':
-          promise = $q.all([
-            lbaasv2API.getLoadBalancer(model.context.id).then(onGetLoadBalancer),
-            neutronAPI.getSubnets().then(onGetSubnets)
-          ]).then(initSubnet);
-          model.context.submit = editLoadBalancer;
-          break;
-        case 'editlistener':
-          promise = $q.all([
-            neutronAPI.getSubnets().then(onGetSubnets).then(getListener).then(onGetListener),
-            neutronAPI.getPorts().then(onGetPorts),
-            novaAPI.getServers().then(onGetServers)
-          ]).then(initMemberAddresses);
-          model.context.submit = editListener;
-          break;
-        case 'editpool':
-          promise = $q.all([
-            neutronAPI.getSubnets().then(onGetSubnets).then(getPool).then(onGetPool),
-            neutronAPI.getPorts().then(onGetPorts),
-            novaAPI.getServers().then(onGetServers)
-          ]).then(initMemberAddresses);
-          model.context.submit = editPool;
-          break;
-        default:
-          throw Error('Invalid resource context: ' + type);
-      }
+      var promise = {
+        'createloadbalancer': initCreateLoadBalancer,
+        'createlistener': initCreateListener,
+        'createpool': initCreatePool,
+        'createmonitor': initCreateMonitor,
+        'editloadbalancer': initEditLoadBalancer,
+        'editlistener': initEditListener,
+        'editpool': initEditPool
+      }[type](keymanagerPromise);
 
       return promise.then(onInitSuccess, onInitFail);
     }
@@ -256,6 +204,71 @@
     function onInitFail() {
       model.initializing = false;
       model.initialized = false;
+    }
+
+    function initCreateLoadBalancer(keymanagerPromise) {
+      model.context.submit = createLoadBalancer;
+      return $q.all([
+        lbaasv2API.getLoadBalancers().then(onGetLoadBalancers),
+        neutronAPI.getSubnets().then(onGetSubnets),
+        neutronAPI.getPorts().then(onGetPorts),
+        novaAPI.getServers().then(onGetServers),
+        keymanagerPromise.then(prepareCertificates, angular.noop)
+      ]).then(initMemberAddresses);
+    }
+
+    function initCreateListener(keymanagerPromise) {
+      model.context.submit = createListener;
+      return $q.all([
+        lbaasv2API.getListeners(model.spec.loadbalancer_id).then(onGetListeners),
+        neutronAPI.getSubnets().then(onGetSubnets),
+        neutronAPI.getPorts().then(onGetPorts),
+        novaAPI.getServers().then(onGetServers),
+        keymanagerPromise.then(prepareCertificates, angular.noop)
+      ]).then(initMemberAddresses);
+    }
+
+    function initCreatePool() {
+      model.context.submit = createPool;
+      //  We get the listener details here because we need to know the listener protocol
+      //  in order to default the new pool's protocol to match.
+      return $q.all([
+        lbaasv2API.getListener(model.spec.parentResourceId).then(onGetListener),
+        neutronAPI.getSubnets().then(onGetSubnets),
+        neutronAPI.getPorts().then(onGetPorts),
+        novaAPI.getServers().then(onGetServers)
+      ]).then(initMemberAddresses);
+    }
+
+    function initCreateMonitor() {
+      model.context.submit = createHealthMonitor;
+      return $q.when();
+    }
+
+    function initEditLoadBalancer() {
+      model.context.submit = editLoadBalancer;
+      return $q.all([
+        lbaasv2API.getLoadBalancer(model.context.id).then(onGetLoadBalancer),
+        neutronAPI.getSubnets().then(onGetSubnets)
+      ]).then(initSubnet);
+    }
+
+    function initEditListener() {
+      model.context.submit = editListener;
+      return $q.all([
+        neutronAPI.getSubnets().then(onGetSubnets).then(getListener).then(onGetListener),
+        neutronAPI.getPorts().then(onGetPorts),
+        novaAPI.getServers().then(onGetServers)
+      ]).then(initMemberAddresses);
+    }
+
+    function initEditPool() {
+      model.context.submit = editPool;
+      return $q.all([
+        neutronAPI.getSubnets().then(onGetSubnets).then(getPool).then(onGetPool),
+        neutronAPI.getPorts().then(onGetPorts),
+        novaAPI.getServers().then(onGetServers)
+      ]).then(initMemberAddresses);
     }
 
     /**
@@ -292,6 +305,10 @@
       return lbaasv2API.createPool(spec);
     }
 
+    function createHealthMonitor(spec) {
+      return lbaasv2API.createHealthMonitor(spec);
+    }
+
     function editLoadBalancer(spec) {
       return lbaasv2API.editLoadBalancer(model.context.id, spec);
     }
@@ -325,6 +342,7 @@
       if (!finalSpec.listener.protocol || !finalSpec.listener.port) {
         // Listener requires protocol and port
         delete finalSpec.listener;
+        delete finalSpec.certificates;
       } else if (finalSpec.listener.protocol !== 'TERMINATED_HTTPS') {
         // Remove certificate containers if not using TERMINATED_HTTPS
         delete finalSpec.certificates;

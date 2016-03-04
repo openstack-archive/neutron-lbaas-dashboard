@@ -53,7 +53,8 @@
       getMembers: getMembers,
       getMember: getMember,
       getHealthMonitor: getHealthMonitor,
-      deleteHealthMonitor: deleteHealthMonitor
+      deleteHealthMonitor: deleteHealthMonitor,
+      createHealthMonitor: createHealthMonitor
     };
 
     return service;
@@ -342,6 +343,8 @@
         });
     }
 
+    // Health Monitors
+
     /**
      * @name horizon.app.core.openstack-service-api.lbaasv2.getHealthMonitor
      * @description
@@ -371,6 +374,21 @@
       return quiet ? promise : promise.error(function () {
         toastService.add('error', gettext('Unable to delete health monitor.'));
       });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.createHealthMonitor
+     * @description
+     * Create a new health monitor
+     * @param {object} spec
+     * Specifies the data used to create the new health monitor.
+     */
+
+    function createHealthMonitor(spec) {
+      return apiService.post('/api/lbaas/healthmonitors/', spec)
+        .error(function () {
+          toastService.add('error', gettext('Unable to create health monitor.'));
+        });
     }
 
   }

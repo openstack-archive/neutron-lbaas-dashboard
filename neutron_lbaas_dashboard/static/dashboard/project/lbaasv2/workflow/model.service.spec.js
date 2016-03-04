@@ -182,6 +182,9 @@
         },
         editPool: function(id, spec) {
           return spec;
+        },
+        createHealthMonitor: function(spec) {
+          return spec;
         }
       });
 
@@ -460,6 +463,34 @@
         expect(model.context.resource).toBe('pool');
         expect(model.context.id).toBeFalsy();
         expect(model.context.submit).toBeDefined();
+      });
+    });
+
+    describe('Post initialize model (create health monitor)', function() {
+
+      beforeEach(function() {
+        model.initialize('monitor', null, 'loadbalancer1', 'pool1');
+        scope.$apply();
+      });
+
+      it('should initialize model properties', function() {
+        expect(model.initializing).toBe(false);
+        expect(model.initialized).toBe(true);
+        expect(model.subnets.length).toBe(0);
+        expect(model.members.length).toBe(0);
+        expect(model.certificates.length).toBe(0);
+        expect(model.listenerPorts.length).toBe(0);
+        expect(model.spec.loadbalancer_id).toBe('loadbalancer1');
+        expect(model.spec.parentResourceId).toBe('pool1');
+        expect(model.spec.members.length).toBe(0);
+        expect(model.spec.certificates).toEqual([]);
+        expect(model.certificatesError).toBe(false);
+      });
+
+      it('should initialize context properties', function() {
+        expect(model.context.resource).toBe('monitor');
+        expect(model.context.id).toBeFalsy();
+        expect(model.context.submit.name).toBe('createHealthMonitor');
       });
     });
 
@@ -893,24 +924,6 @@
         expect(model.initialized).toBe(false);
         expect(model.spec.loadbalancer.name).toBe('Load Balancer 3');
         expect(model.subnets).toEqual([]);
-      });
-    });
-
-    describe('Resource not provided', function() {
-      var initModelNoContext = function() {
-        model.initialize();
-      };
-
-      var initModelNoResource = function() {
-        model.initialize('', 'foo');
-      };
-
-      it('should fail to be initialized - create', function() {
-        expect(initModelNoContext).toThrow(Error('Invalid resource context: createundefined'));
-      });
-
-      it('should fail to be initialized - edit', function() {
-        expect(initModelNoResource).toThrow(Error('Invalid resource context: edit'));
       });
     });
 
@@ -1633,6 +1646,36 @@
         expect(finalSpec.pool).toBeDefined();
         expect(finalSpec.members).toBeUndefined();
         expect(finalSpec.monitor).toBeUndefined();
+      });
+    });
+
+    describe('Model submit function (create health monitor)', function() {
+
+      beforeEach(function() {
+        model.initialize('monitor', null, 'loadbalancer1', 'pool1');
+        scope.$apply();
+      });
+
+      it('should set final spec properties', function() {
+        model.spec.monitor.type = 'HTTP';
+
+        var finalSpec = model.submit();
+
+        expect(finalSpec.loadbalancer_id).toBe('loadbalancer1');
+        expect(finalSpec.parentResourceId).toBe('pool1');
+        expect(finalSpec.loadbalancer).toBeUndefined();
+        expect(finalSpec.listener).toBeUndefined();
+        expect(finalSpec.pool).toBeUndefined();
+        expect(finalSpec.members).toBeUndefined();
+        expect(finalSpec.certificates).toBeUndefined();
+
+        expect(finalSpec.monitor.type).toBe('HTTP');
+        expect(finalSpec.monitor.interval).toBe(5);
+        expect(finalSpec.monitor.retry).toBe(3);
+        expect(finalSpec.monitor.timeout).toBe(5);
+        expect(finalSpec.monitor.method).toBe('GET');
+        expect(finalSpec.monitor.status).toBe('200');
+        expect(finalSpec.monitor.path).toBe('/');
       });
     });
 
