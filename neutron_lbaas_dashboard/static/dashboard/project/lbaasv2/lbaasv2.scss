@@ -14,61 +14,22 @@
  * limitations under the License.
  */
 
-@import "/app/app";
-
-/*
- * TODO(jpomero): This detail page styling should become common with the following patch:
- * https://review.openstack.org/158881
- */
-.detail-page {
-  position: relative;
-
-  p {
-    margin-top: 6px;
-  }
-
-  .detail-statuses {
-    margin-top: 8px;
-    margin-bottom: 12px;
-
-    div {
-      display: inline;
-      margin-right: 20px;
-
-      > b {
-        margin-right: 4px;
-      }
-    }
-  }
-
-  div.tab-pane > dl {
-    margin-top: 12px;
-  }
-
-  actions + dl {
-    clear: both;
-  }
-}
-
 /* Load Balancer Wizard */
 .lbaas-wizard {
+
+  /* Field widths for editable inputs in the members table */
   table {
     .member-weight,
     .member-port {
       width: 6em;
     }
     .member-address {
-      width: 20em;
-    }
-    div.form-field {
-      display: inline-block;
-    }
-    span.invalid {
-      vertical-align: top;
-      margin: 8px 0px 0px 5px;
+      width: 18em;
     }
   }
 
+  /* The IP addresses list displayed when hovering over the IP address in the
+     available instances table. */
   .addresses-popover + .popover {
     ul {
       list-style-type: disc;
@@ -76,10 +37,11 @@
     }
   }
 
-  /* Listeners tab */
-  [ng-form="listenerDetailsForm"] {
-    div.listener-protocol > span.fa-exclamation-triangle {
-      color: #aaaaaa;
+  /* Popover help icons for fields in the wizard */
+  .form-group {
+    span.fa-exclamation-triangle,
+    span.fa-question-circle {
+      color: $gray-light;
     }
   }
 
@@ -97,6 +59,12 @@
       .table-rsp.table-detail.table-striped tbody tr:last-child > td {
         background: none;
       }
+      td {
+        /* So the input fields fit better in the table row */
+        .form-group {
+          margin-bottom: 0px;
+        }
+      }
     }
     .transfer-section:last-child {
       /* Hide the badge on the bottom table with the instance count. */
@@ -105,13 +73,4 @@
       }
     }
   }
-}
-
-/*
-TODO(jpomero): The float property is being set to "none" in _debt.scss apparently
-to work around a known bootstrap bug, but this appears to break the actions menu
-only in angular tables. Setting back to the original value ("left") here for now.
-*/
-td .btn-group.ng-scope > .btn {
-  float: left;
 }

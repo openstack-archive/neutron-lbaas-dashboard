@@ -1,63 +1,54 @@
 <div ng-controller="LoadBalancerDetailsController as ctrl">
-  <h1 translate>Load Balancer Details</h1>
+  <p translate>Provide the details for the load balancer.</p>
 
-  <!--content-->
-  <div class="content">
-    <div translate class="subtitle">Provide the details for the load balancer.</div>
+  <div class="row">
 
-        <div class="row form-group">
-          <div class="col-sm-12 col-md-6">
-            <div class="form-field loadbalancer-name"
-              ng-class="{ 'has-error': loadBalancerDetailsForm['loadbalancer-name'].$invalid && loadBalancerDetailsForm['loadbalancer-name'].$dirty }">
-              <label translate class="on-top" for="loadbalancer-name">Name</label>
-              <input name="loadbalancer-name" id="loadbalancer-name"
-                     type="text" class="form-control input-sm"
-                     ng-model="model.spec.loadbalancer.name">
-            </div>
-          </div>
+    <div class="col-xs-12 col-sm-8 col-md-6">
+      <div class="form-group">
+        <label translate class="control-label" for="name">Name</label>
+        <input name="name" id="name" type="text" class="form-control"
+               ng-model="model.spec.loadbalancer.name">
+      </div>
+    </div>
 
-          <div class="col-sm-12 col-md-6">
-            <div class="form-field loadbalancer-description">
-              <label translate class="on-top" for="loadbalancer-description">Description</label>
-              <input name="loadbalancer-description" id="loadbalancer-description"
-                     type="text" class="form-control input-sm"
-                     ng-model="model.spec.loadbalancer.description">
-            </div>
-          </div>
-
-        </div>
-
-        <div class="row form-group">
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field loadbalancer-ip"
-              ng-class="{ 'has-error': loadBalancerDetailsForm['loadbalancer-ip'].$invalid && loadBalancerDetailsForm['loadbalancer-ip'].$dirty }">
-              <label translate class="on-top" for="loadbalancer-ip">IP Address</label>
-              <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="loadBalancerDetailsForm['loadbalancer-ip'].$invalid && loadBalancerDetailsForm.$dirty"
-                  popover="{$ ::ctrl.ipError $}"
-                  popover-placement="top" popover-append-to-body="true"
-                  popover-trigger="hover"></span>
-              <input name="loadbalancer-ip" id="loadbalancer-ip"
-                     type="text" class="form-control input-sm"
-                     ng-model="model.spec.loadbalancer.ip" ng-pattern="::ctrl.ipPattern"
-                     ng-disabled="model.context.id">
-            </div>
-          </div>
-
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field required loadbalancer-subnet">
-              <label translate class="on-top" for="loadbalancer-subnet">Subnet</label>
-              <select class="form-control input-sm" name="loadbalancer-subnet"
-                      id="loadbalancer-subnet"
-                      ng-options="subnet.name for subnet in model.subnets"
-                      ng-model="model.spec.loadbalancer.subnet" ng-required="true"
-                      ng-disabled="model.context.id">
-              </select>
-            </div>
-          </div>
-
-        </div>
+    <div class="col-xs-12 col-sm-8 col-md-6">
+      <div class="form-group">
+        <label translate class="control-label" for="description">Description</label>
+        <input name="description" id="description" type="text" class="form-control"
+               ng-model="model.spec.loadbalancer.description">
+      </div>
+    </div>
 
   </div>
-  <!-- end content -->
+
+  <div class="row">
+
+    <div class="col-xs-12 col-sm-8 col-md-6">
+      <div class="form-group"
+        ng-class="{ 'has-error': loadBalancerDetailsForm.ip.$invalid && loadBalancerDetailsForm.ip.$dirty }">
+        <label translate class="control-label" for="ip">IP Address</label>
+        <input name="ip" id="ip" type="text" class="form-control"
+               ng-model="model.spec.loadbalancer.ip" ng-pattern="::ctrl.ipPattern"
+               ng-disabled="model.context.id">
+        <span class="help-block" ng-show="loadBalancerDetailsForm.ip.$invalid && loadBalancerDetailsForm.ip.$dirty">
+          {$ ::ctrl.ipError $}
+        </span>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-8 col-md-6">
+      <div class="form-group required">
+        <label translate class="control-label" for="subnet">
+          Subnet
+          <span class="hz-icon-required fa fa-asterisk"></span>
+        </label>
+        <select class="form-control" name="subnet" id="subnet"
+                ng-options="subnet.name for subnet in model.subnets"
+                ng-model="model.spec.loadbalancer.subnet" ng-required="true"
+                ng-disabled="model.context.id">
+        </select>
+      </div>
+    </div>
+
+  </div>
 </div>

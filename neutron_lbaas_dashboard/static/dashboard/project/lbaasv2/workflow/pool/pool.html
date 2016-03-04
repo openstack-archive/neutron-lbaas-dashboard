@@ -1,47 +1,41 @@
 <div>
-  <h1 translate>Pool Details</h1>
+  <p translate>Provide the details for the pool.</p>
 
-  <!--content-->
-  <div class="content">
-    <div translate class="subtitle">Provide the details for the pool.</div>
+  <div class="row">
 
-        <div class="row form-group">
+    <div class="col-xs-12 col-sm-8 col-md-6">
+      <div class="form-group">
+        <label translate class="control-label" for="name">Name</label>
+        <input name="name" id="name" type="text" class="form-control"
+               ng-model="model.spec.pool.name">
+      </div>
+    </div>
 
-          <div class="col-sm-12 col-md-6">
-            <div class="form-field pool-name">
-              <label translate class="on-top" for="pool-name">Name</label>
-              <input name="pool-name" id="pool-name"
-                     type="text" class="form-control input-sm"
-                     ng-model="model.spec.pool.name">
-            </div>
-          </div>
-
-          <div class="col-sm-12 col-md-6">
-            <div class="form-field pool-description">
-              <label translate class="on-top" for="pool-description">Description</label>
-              <input name="pool-description" id="pool-description"
-                     type="text" class="form-control input-sm"
-                     ng-model="model.spec.pool.description">
-            </div>
-          </div>
-
-        </div>
-
-        <div class="row form-group">
-
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field required pool-method">
-              <label translate class="on-top" for="pool-method">Method</label>
-              <select class="form-control input-sm" name="pool-method" id="pool-method"
-                      ng-options="method for method in model.methods"
-                      ng-model="model.spec.pool.method"
-                      ng-disabled="model.context.id" ng-required="true">
-              </select>
-            </div>
-          </div>
-
-        </div>
+    <div class="col-xs-12 col-sm-8 col-md-6">
+      <div class="form-group">
+        <label translate class="control-label" for="description">Description</label>
+        <input name="description" id="description" type="text" class="form-control"
+               ng-model="model.spec.pool.description">
+      </div>
+    </div>
 
   </div>
-  <!-- end content -->
+
+  <div class="row">
+
+    <div class="col-xs-12 col-sm-8 col-md-6">
+      <div class="form-group required">
+        <label translate class="control-label" for="method">
+          Method
+          <span class="hz-icon-required fa fa-asterisk"></span>
+        </label>
+        <select class="form-control" name="method" id="method"
+                ng-options="method for method in model.methods"
+                ng-model="model.spec.pool.method"
+                ng-disabled="model.context.id" ng-required="true">
+        </select>
+      </div>
+    </div>
+
+  </div>
 </div>

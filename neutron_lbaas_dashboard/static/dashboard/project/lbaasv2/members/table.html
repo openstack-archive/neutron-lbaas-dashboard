@@ -4,7 +4,7 @@
        st-safe-src="table.src"
        default-sort="id"
        default-sort-reverse="false"
-       class="table-striped table-rsp table-detail modern">
+       class="table table-striped table-rsp table-detail">
   <!--
     TODO(jpomero): This table pattern does not allow for extensibility and should be revisited
     once horizon implements a better one.
@@ -16,9 +16,8 @@
         Table-batch-actions:
         This is where batch actions like searching, creating, and deleting.
       -->
-      <th colspan="100" class="search-header">
-        <hz-search-bar group-classes="input-group-sm" icon-classes="fa-search">
-        </hz-search-bar>
+      <th colspan="5" class="search-header">
+        <hz-search-bar icon-classes="fa-search"></hz-search-bar>
       </th>
     </tr>
 
@@ -30,7 +29,7 @@
         Include expander if you want to inline details.
         Include action-col if you want to perform actions.
       -->
-      <th class="select-col">
+      <th class="multi_select_column">
         <input type="checkbox" hz-select-all="table.items">
       </th>
 
@@ -53,7 +52,7 @@
     <tr ng-repeat="item in table.items track by item.id"
         ng-class="{'st-selected': checked[item.id]}">
 
-      <td class="select-col">
+      <td class="multi_select_column">
         <input type="checkbox"
                ng-model="tCtrl.selections[item.id].checked"
                hz-select="item">

@@ -1,5 +1,5 @@
-<div class="content" ng-controller="HealthMonitorDetailController as ctrl">
-  <div class='page-header'>
+<div ng-controller="HealthMonitorDetailController as ctrl">
+  <div class="page-header">
     <ol class="breadcrumb">
       <li><a href="project/ngloadbalancersv2/"><translate>Load Balancers</translate></a></li>
       <li><a href="project/ngloadbalancersv2/{$ ::ctrl.loadbalancer.id $}">{$ ::(ctrl.loadbalancer.name || ctrl.loadbalancer.id) $}</a></li>
@@ -8,48 +8,30 @@
       <li class="active">{$ ::(ctrl.healthmonitor.name || ctrl.healthmonitor.id) $}</li>
     </ol>
   </div>
-  <div class="detail-page">
-    <dl class="dl-horizontal">
-      <div>
-        <dt translate>Monitor ID</dt>
-        <dd>{$ ::ctrl.healthmonitor.id $}</dd>
-      </div>
-      <div>
-        <dt translate>Tenant ID</dt>
-        <dd>{$ ::ctrl.healthmonitor.tenant_id $}</dd>
-      </div>
-      <div>
+  <div class="row">
+    <div class="col-md-6 detail">
+      <dl class="dl-horizontal">
         <dt translate>Type</dt>
         <dd>{$ ::ctrl.healthmonitor.type $}</dd>
-      </div>
-      <div>
-        <dt translate>HTTP Method</dt>
-        <dd>{$ ::ctrl.healthmonitor.http_method $}</dd>
-      </div>
-      <div>
-        <dt translate>Admin State Up</dt>
-        <dd>{$ ::ctrl.healthmonitor.admin_state | yesno $}</dd>
-      </div>
-      <div>
-        <dt translate>Expected Codes</dt>
-        <dd>{$ ::ctrl.healthmonitor.expected_codes $}</dd>
-      </div>
-      <div>
-        <dt translate>Max Retries</dt>
-        <dd>{$ ::ctrl.healthmonitor.max_retries $}</dd>
-      </div>
-      <div>
-        <dt translate>Timeout</dt>
-        <dd>{$ ::ctrl.healthmonitor.timeout $}</dd>
-      </div>
-      <div>
         <dt translate>Delay</dt>
         <dd>{$ ::ctrl.healthmonitor.delay $}</dd>
-      </div>
-      <div>
-        <dt translate>URL Path</dt>
-        <dd>{$ ::ctrl.healthmonitor.url_path $}</dd>
-      </div>
-    </dl>
+        <dt translate>Max Retries</dt>
+        <dd>{$ ::ctrl.healthmonitor.max_retries $}</dd>
+        <dt translate>Timeout</dt>
+        <dd>{$ ::ctrl.healthmonitor.timeout $}</dd>
+        <dt translate ng-if="::ctrl.healthmonitor.http_method">HTTP Method</dt>
+        <dd ng-if="::ctrl.healthmonitor.http_method">{$ ::ctrl.healthmonitor.http_method $}</dd>
+        <dt translate ng-if="::ctrl.healthmonitor.expected_codes">Expected Codes</dt>
+        <dd ng-if="::ctrl.healthmonitor.expected_codes">{$ ::ctrl.healthmonitor.expected_codes $}</dd>
+        <dt translate ng-if="::ctrl.healthmonitor.url_path">URL Path</dt>
+        <dd ng-if="::ctrl.healthmonitor.url_path">{$ ::ctrl.healthmonitor.url_path $}</dd>
+        <dt translate>Admin State Up</dt>
+        <dd>{$ ctrl.healthmonitor.admin_state_up | yesno $}</dd>
+        <dt translate>Monitor ID</dt>
+        <dd>{$ ::ctrl.healthmonitor.id $}</dd>
+        <dt translate>Tenant ID</dt>
+        <dd>{$ ::ctrl.healthmonitor.tenant_id $}</dd>
+      </dl>
+    </div>
   </div>
 </div>

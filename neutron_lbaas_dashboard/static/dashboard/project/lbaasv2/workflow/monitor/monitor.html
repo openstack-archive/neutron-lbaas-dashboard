@@ -1,137 +1,124 @@
 <div ng-controller="MonitorDetailsController as ctrl">
-  <h1 translate>Monitor</h1>
+  <p translate>Provide the details for the health monitor.</p>
 
-  <!--content-->
-  <div class="content">
-    <div translate class="subtitle">Provide the details for the health monitor.</div>
+  <div class="row">
 
-        <div class="row form-group">
-
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field required monitor-type">
-              <label translate class="on-top" for="monitor-type">Monitor type</label>
-              <select class="form-control input-sm" name="monitor-type"
-                      id="monitor-type"
-                      ng-options="type for type in model.monitorTypes"
-                      ng-model="model.spec.monitor.type"
-                      ng-disabled="model.context.id" ng-required="true">
-              </select>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="row form-group">
-
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field required monitor-interval"
-              ng-class="{ 'has-error': monitorDetailsForm['monitor-interval'].$invalid && monitorDetailsForm['monitor-interval'].$dirty }">
-              <label translate class="on-top" for="monitor-interval">Health check interval (sec)</label>
-              <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="monitorDetailsForm['monitor-interval'].$invalid && monitorDetailsForm.$dirty"
-                  popover="{$ ::ctrl.intervalError $}"
-                  popover-placement="top" popover-append-to-body="true"
-                  popover-trigger="hover"></span>
-              <span class="fa fa-question-circle pull-right"
-                  popover="{$ ::ctrl.intervalHelp $}"
-                  popover-placement="top" popover-append-to-body="true"
-                  popover-trigger="hover"></span>
-              <input name="monitor-interval" id="monitor-interval"
-                     type="number" class="form-control input-sm"
-                     ng-model="model.spec.monitor.interval" ng-pattern="/^\d+$/"
-                     ng-min="model.spec.monitor.timeout"
-                     ng-required="true">
-            </div>
-          </div>
-
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field required monitor-retry"
-              ng-class="{ 'has-error': monitorDetailsForm['monitor-retry'].$invalid && monitorDetailsForm['monitor-retry'].$dirty }">
-              <label translate class="on-top" for="monitor-retry">Retry count before markdown</label>
-              <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="monitorDetailsForm['monitor-retry'].$invalid && monitorDetailsForm.$dirty"
-                  popover="{$ ::ctrl.retryError $}"
-                  popover-placement="top" popover-append-to-body="true"
-                  popover-trigger="hover"></span>
-              <span class="fa fa-question-circle pull-right"
-                  popover="{$ ::ctrl.retryHelp $}"
-                  popover-placement="top" popover-append-to-body="true"
-                  popover-trigger="hover"></span>
-              <input name="monitor-retry" id="monitor-retry"
-                     type="number" class="form-control input-sm"
-                     ng-model="model.spec.monitor.retry" ng-pattern="/^\d+$/" min="1" max="10"
-                     ng-required="true">
-            </div>
-          </div>
-
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field required monitor-timeout"
-              ng-class="{ 'has-error': monitorDetailsForm['monitor-timeout'].$invalid && monitorDetailsForm['monitor-timeout'].$dirty }">
-              <label translate class="on-top" for="monitor-timeout">Timeout (sec)</label>
-              <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="monitorDetailsForm['monitor-timeout'].$invalid && monitorDetailsForm.$dirty"
-                  popover="{$ ::ctrl.timeoutError $}"
-                  popover-placement="top" popover-append-to-body="true"
-                  popover-trigger="hover"></span>
-              <input name="monitor-timeout" id="monitor-timeout"
-                     type="number" class="form-control input-sm"
-                     ng-model="model.spec.monitor.timeout" ng-pattern="/^\d+$/" min="0"
-                     ng-required="true">
-            </div>
-          </div>
-
-        </div>
-
-        <div class="row form-group" ng-if="model.spec.monitor.type === 'HTTP'">
-
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field monitor-method">
-              <label translate class="on-top" for="monitor-method">HTTP method</label>
-              <select class="form-control input-sm" name="monitor-method"
-                      id="monitor-method"
-                      ng-options="method for method in model.monitorMethods"
-                      ng-model="model.spec.monitor.method">
-              </select>
-            </div>
-          </div>
-
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field monitor-status"
-              ng-class="{ 'has-error': monitorDetailsForm['monitor-status'].$invalid && monitorDetailsForm['monitor-status'].$dirty }">
-              <label translate class="on-top" for="monitor-status">Expected HTTP status code</label>
-              <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="monitorDetailsForm['monitor-status'].$invalid && monitorDetailsForm.$dirty"
-                  popover="{$ ::ctrl.statusError $}"
-                  popover-placement="top" popover-append-to-body="true"
-                  popover-trigger="hover"></span>
-              <span class="fa fa-question-circle pull-right"
-                  popover="{$ ::ctrl.statusHelp $}"
-                  popover-placement="top" popover-append-to-body="true"
-                  popover-trigger="hover"></span>
-              <input name="monitor-status" id="monitor-status"
-                     type="text" class="form-control input-sm"
-                     ng-model="model.spec.monitor.status" ng-pattern="::ctrl.statusPattern"
-                     ng-disabled="model.context.id">
-            </div>
-          </div>
-
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field monitor-path"
-              ng-class="{ 'has-error': monitorDetailsForm['monitor-path'].$invalid && monitorDetailsForm['monitor-path'].$dirty }">
-              <label translate class="on-top" for="monitor-path">URL path</label>
-              <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="monitorDetailsForm['monitor-path'].$invalid && monitorDetailsForm.$dirty"
-                  popover="{$ ::ctrl.pathError $}"
-                  popover-placement="top" popover-append-to-body="true"
-                  popover-trigger="hover"></span>
-              <input name="monitor-path" id="monitor-path"
-                     type="text" class="form-control input-sm"
-                     ng-model="model.spec.monitor.path" ng-pattern="::ctrl.urlPathPattern">
-            </div>
-          </div>
-
-        </div>
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+      <div class="form-group required">
+        <label translate class="control-label" for="type">
+          Monitor type
+          <span class="hz-icon-required fa fa-asterisk"></span>
+        </label>
+        <select class="form-control" name="type" id="type"
+                ng-options="type for type in model.monitorTypes"
+                ng-model="model.spec.monitor.type"
+                ng-disabled="model.context.id" ng-required="true">
+        </select>
+      </div>
+    </div>
 
   </div>
-  <!-- end content -->
+
+  <div class="row">
+
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+      <div class="form-group required"
+           ng-class="{ 'has-error': monitorDetailsForm.interval.$invalid && monitorDetailsForm.interval.$dirty }">
+        <label translate class="control-label" for="interval">
+          Health check interval (sec)
+          <span class="hz-icon-required fa fa-asterisk"></span>
+        </label>
+        <span class="fa fa-question-circle pull-right"
+            popover="{$ ::ctrl.intervalHelp $}"
+            popover-placement="top" popover-append-to-body="true"
+            popover-trigger="hover"></span>
+        <input name="interval" id="interval" type="number" class="form-control"
+               ng-model="model.spec.monitor.interval" ng-pattern="/^\d+$/"
+               ng-min="model.spec.monitor.timeout" ng-required="true">
+        <span class="help-block" ng-show="monitorDetailsForm.interval.$invalid && monitorDetailsForm.interval.$dirty">
+          {$ ::ctrl.intervalError $}
+        </span>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+      <div class="form-group required"
+           ng-class="{ 'has-error': monitorDetailsForm.retry.$invalid && monitorDetailsForm.retry.$dirty }">
+        <label translate class="control-label" for="retry">
+          Retry count before markdown
+          <span class="hz-icon-required fa fa-asterisk"></span>
+        </label>
+        <span class="fa fa-question-circle pull-right"
+            popover="{$ ::ctrl.retryHelp $}"
+            popover-placement="top" popover-append-to-body="true"
+            popover-trigger="hover"></span>
+        <input name="retry" id="retry" type="number" class="form-control"
+               ng-model="model.spec.monitor.retry" ng-pattern="/^\d+$/" min="1" max="10"
+               ng-required="true">
+        <span class="help-block" ng-show="monitorDetailsForm.retry.$invalid && monitorDetailsForm.retry.$dirty">
+          {$ ::ctrl.retryError $}
+        </span>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+      <div class="form-group required"
+           ng-class="{ 'has-error': monitorDetailsForm.timeout.$invalid && monitorDetailsForm.timeout.$dirty }">
+        <label translate class="control-label" for="timeout">
+          Timeout (sec)
+          <span class="hz-icon-required fa fa-asterisk"></span>
+        </label>
+        <input name="timeout" id="timeout" type="number" class="form-control"
+               ng-model="model.spec.monitor.timeout" ng-pattern="/^\d+$/" min="0"
+               ng-required="true">
+        <span class="help-block" ng-show="monitorDetailsForm.timeout.$invalid && monitorDetailsForm.timeout.$dirty">
+          {$ ::ctrl.timeoutError $}
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row" ng-if="model.spec.monitor.type === 'HTTP'">
+
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+      <div class="form-group">
+        <label translate class="control-label" for="method">HTTP method</label>
+        <select class="form-control" name="method" id="method"
+                ng-options="method for method in model.monitorMethods"
+                ng-model="model.spec.monitor.method">
+        </select>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+      <div class="form-group"
+           ng-class="{ 'has-error': monitorDetailsForm.status.$invalid && monitorDetailsForm.status.$dirty }">
+        <label translate class="control-label" for="status">Expected HTTP status code</label>
+        <span class="fa fa-question-circle pull-right"
+            popover="{$ ::ctrl.statusHelp $}"
+            popover-placement="top" popover-append-to-body="true"
+            popover-trigger="hover"></span>
+        <input name="status" id="status" type="text" class="form-control"
+               ng-model="model.spec.monitor.status" ng-pattern="::ctrl.statusPattern"
+               ng-disabled="model.context.id">
+        <span class="help-block" ng-show="monitorDetailsForm.status.$invalid && monitorDetailsForm.status.$dirty">
+          {$ ::ctrl.statusError $}
+        </span>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+      <div class="form-group"
+           ng-class="{ 'has-error': monitorDetailsForm.path.$invalid && monitorDetailsForm.path.$dirty }">
+        <label translate class="control-label" for="path">URL path</label>
+        <input name="path" id="path" type="text" class="form-control"
+               ng-model="model.spec.monitor.path" ng-pattern="::ctrl.urlPathPattern">
+        <span class="help-block" ng-show="monitorDetailsForm.path.$invalid && monitorDetailsForm.path.$dirty">
+          {$ ::ctrl.pathError $}
+        </span>
+      </div>
+    </div>
+
+  </div>
 </div>

@@ -81,9 +81,10 @@
 
       function open(item) {
         var spec = {
+          size: 'lg',
           backdrop: 'static',
           controller: 'ModalContainerController',
-          template: '<wizard class="lbaas-wizard" ng-controller="' +
+          template: '<wizard class="wizard lbaas-wizard" ng-controller="' +
             args.controller + '"></wizard>',
           windowClass: 'modal-dialog-wizard',
           resolve: {

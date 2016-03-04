@@ -1,70 +1,64 @@
 <div ng-controller="ListenerDetailsController as ctrl">
-  <h1 translate>Listener Details</h1>
+  <p translate>Provide the details for the listener.</p>
 
-  <!--content-->
-  <div class="content">
-    <div translate class="subtitle">Provide the details for the listener.</div>
+  <div class="row">
 
-        <div class="row form-group">
+    <div class="col-xs-12 col-sm-8 col-md-6">
+      <div class="form-group">
+        <label translate class="control-label" for="name">Name</label>
+        <input name="name" id="name" type="text" class="form-control"
+               ng-model="model.spec.listener.name">
+      </div>
+    </div>
 
-          <div class="col-sm-12 col-md-6">
-            <div class="form-field listener-name">
-              <label translate class="on-top" for="listener-name">Name</label>
-              <input name="listener-name" id="listener-name"
-                     type="text" class="form-control input-sm"
-                     ng-model="model.spec.listener.name">
-            </div>
-          </div>
-
-          <div class="col-sm-12 col-md-6">
-            <div class="form-field listener-description">
-              <label translate class="on-top" for="listener-description">Description</label>
-              <input name="listener-description" id="listener-description"
-                     type="text" class="form-control input-sm"
-                     ng-model="model.spec.listener.description">
-            </div>
-          </div>
-
-        </div>
-
-        <div class="row form-group">
-
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field required listener-protocol">
-              <label translate class="on-top" for="listener-protocol">Protocol</label>
-              <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="model.certificatesError"
-                  popover="{$ ::ctrl.certificatesError $}"
-                  popover-placement="top" popover-append-to-body="true"
-                  popover-trigger="hover"></span>
-              <select class="form-control input-sm" name="listener-protocol" id="listener-protocol"
-                      ng-model="model.spec.listener.protocol" ng-required="true"
-                      ng-change="ctrl.protocolChange(model.spec.listener.protocol)"
-                      ng-disabled="model.context.id">
-                <option ng-repeat="protocol in model.listenerProtocols" value="{$ protocol $}"
-                        ng-disabled="protocol==='TERMINATED_HTTPS' && model.certificatesError">{$ protocol $}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-sm-6 col-md-3">
-            <div class="form-field required listener-port"
-              ng-class="{ 'has-error': listenerDetailForm['listener-port'].$invalid && listenerDetailForm['listener-port'].$dirty }">
-              <label translate class="on-top" for="listener-port">Port</label>
-              <span class="fa fa-exclamation-triangle invalid"
-                  ng-show="listenerDetailForm['listener-port'].$invalid && listenerDetailForm.$dirty"
-                  popover="{$ ::ctrl.portError $}"
-                  popover-placement="top" popover-append-to-body="true"
-                  popover-trigger="hover"></span>
-              <input name="listener-port" id="listener-port"
-                     type="number" class="form-control input-sm"
-                     ng-model="model.spec.listener.port" ng-pattern="/^\d+$/" min="1" max="65535"
-                     ng-required="true" ng-disabled="model.context.id">
-            </div>
-          </div>
-
-        </div>
+    <div class="col-xs-12 col-sm-8 col-md-6">
+      <div class="form-group">
+        <label translate class="control-label" for="description">Description</label>
+        <input name="description" id="description" type="text" class="form-control"
+               ng-model="model.spec.listener.description">
+      </div>
+    </div>
 
   </div>
-  <!-- end content -->
+
+  <div class="row">
+
+    <div class="col-xs-12 col-sm-8 col-md-6">
+      <div class="form-group required">
+        <label translate class="control-label" for="protocol">
+          Protocol
+          <span class="hz-icon-required fa fa-asterisk"></span>
+        </label>
+        <span class="fa fa-exclamation-triangle invalid"
+            ng-show="model.certificatesError"
+            popover="{$ ::ctrl.certificatesError $}"
+            popover-placement="top" popover-append-to-body="true"
+            popover-trigger="hover"></span>
+        <select class="form-control" name="protocol" id="protocol"
+                ng-model="model.spec.listener.protocol" ng-required="true"
+                ng-change="ctrl.protocolChange(model.spec.listener.protocol)"
+                ng-disabled="model.context.id">
+          <option ng-repeat="protocol in model.listenerProtocols" value="{$ protocol $}"
+                  ng-disabled="protocol==='TERMINATED_HTTPS' && model.certificatesError">{$ protocol $}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-8 col-md-6">
+      <div class="form-group required"
+           ng-class="{ 'has-error': listenerDetailsForm.port.$invalid && listenerDetailsForm.port.$dirty }">
+        <label translate class="control-label" for="port">
+          Port
+          <span class="hz-icon-required fa fa-asterisk"></span>
+        </label>
+        <input name="port" id="port" type="number" class="form-control"
+               ng-model="model.spec.listener.port" ng-pattern="/^\d+$/" min="1" max="65535"
+               ng-required="true" ng-disabled="model.context.id">
+        <span class="help-block" ng-show="listenerDetailsForm.port.$invalid && listenerDetailsForm.port.$dirty">
+          {$ ::ctrl.portError $}
+        </span>
+      </div>
+    </div>
+
+  </div>
 </div>
