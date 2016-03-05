@@ -190,7 +190,9 @@
             neutronAPI.getSubnets().then(onGetSubnets),
             neutronAPI.getPorts().then(onGetPorts),
             novaAPI.getServers().then(onGetServers),
-            keymanagerPromise.then(prepareCertificates)
+            // The noop errback prevents this from tripping up $q.all since this is a case
+            // where we don't care if it fails, i.e. key-manager service doesn't exist.
+            keymanagerPromise.then(prepareCertificates, angular.noop)
           ]).then(initMemberAddresses);
           model.context.submit = createLoadBalancer;
           break;
@@ -200,7 +202,7 @@
             neutronAPI.getSubnets().then(onGetSubnets),
             neutronAPI.getPorts().then(onGetPorts),
             novaAPI.getServers().then(onGetServers),
-            keymanagerPromise.then(prepareCertificates)
+            keymanagerPromise.then(prepareCertificates, angular.noop)
           ]).then(initMemberAddresses);
           model.context.submit = createListener;
           break;
@@ -419,11 +421,14 @@
       model.members.length = 0;
       var members = [];
       angular.forEach(response.data.items, function addMember(server) {
-        members.push({
-          id: server.id,
-          name: server.name,
-          weight: 1
-        });
+        // If the server is in a state where it does not have an IP address then we can't use it
+        if (server.addresses && !angular.equals({}, server.addresses)) {
+          members.push({
+            id: server.id,
+            name: server.name,
+            weight: 1
+          });
+        }
       });
       push.apply(model.members, members);
     }
