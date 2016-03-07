@@ -258,8 +258,9 @@
 
       $provide.value('horizon.app.core.openstack-service-api.nova', {
         getServers: function() {
-          var servers = [ { id: '1', name: 'server-1' },
-                          { id: '2', name: 'server-2' } ];
+          var servers = [ { id: '1', name: 'server-1', addresses: { foo: 'bar' } },
+                          { id: '2', name: 'server-2', addresses: { foo: 'bar' } },
+                          { id: '3', name: 'server-3' }];
 
           var deferred = $q.defer();
           deferred.resolve({ data: { items: servers } });
