@@ -233,6 +233,14 @@
           ]).then(initMemberAddresses);
           model.context.submit = editListener;
           break;
+        case 'editpool':
+          promise = $q.all([
+            neutronAPI.getSubnets().then(onGetSubnets).then(getPool).then(onGetPool),
+            neutronAPI.getPorts().then(onGetPorts),
+            novaAPI.getServers().then(onGetServers)
+          ]).then(initMemberAddresses);
+          model.context.submit = editPool;
+          break;
         default:
           throw Error('Invalid resource context: ' + type);
       }
@@ -292,6 +300,10 @@
       return lbaasv2API.editListener(model.context.id, spec);
     }
 
+    function editPool(spec) {
+      return lbaasv2API.editPool(model.context.id, spec);
+    }
+
     function cleanFinalSpecLoadBalancer(finalSpec) {
       var context = model.context;
 
@@ -333,7 +345,7 @@
       } else {
         // The pool protocol must be HTTP if the listener protocol is TERMINATED_HTTPS and
         // otherwise has to match it.
-        var protocol = finalSpec.listener.protocol;
+        var protocol = finalSpec.listener ? finalSpec.listener.protocol : finalSpec.pool.protocol;
         finalSpec.pool.protocol = protocol === 'TERMINATED_HTTPS' ? 'HTTP' : protocol;
       }
     }
@@ -479,6 +491,10 @@
       return lbaasv2API.getListener(model.context.id, true);
     }
 
+    function getPool() {
+      return lbaasv2API.getPool(model.context.id, true);
+    }
+
     function onGetLoadBalancer(response) {
       var loadbalancer = response.data;
       setLoadBalancerSpec(loadbalancer);
@@ -506,6 +522,25 @@
           model.visibleResources.push('certificates');
         }
       }
+
+      if (result.pool) {
+        setPoolSpec(result.pool);
+        model.visibleResources.push('pool');
+        model.visibleResources.push('members');
+
+        if (result.members) {
+          setMembersSpec(result.members);
+        }
+
+        if (result.monitor) {
+          setMonitorSpec(result.monitor);
+          model.visibleResources.push('monitor');
+        }
+      }
+    }
+
+    function onGetPool(response) {
+      var result = response.data;
 
       if (result.pool) {
         setPoolSpec(result.pool);

@@ -47,8 +47,9 @@
       editListener: editListener,
       deleteListener: deleteListener,
       getPool: getPool,
-      deletePool: deletePool,
       createPool: createPool,
+      editPool: editPool,
+      deletePool: deletePool,
       getMembers: getMembers,
       getMember: getMember,
       getHealthMonitor: getHealthMonitor
@@ -172,7 +173,7 @@
      * @param {string} id
      * Specifies the id of the listener to request.
      * @param {boolean} includeChildResources
-     * If true, all child resources below the listener will be included in the response.
+     * If truthy, all child resources below the listener will be included in the response.
      */
 
     function getListener(id, includeChildResources) {
@@ -241,10 +242,15 @@
      * Get a single Pool by ID.
      * @param {string} id
      * Specifies the id of the pool to request.
+     * @param {boolean} includeChildResources
+     * If truthy, all child resources below the pool will be included in the response.
      */
 
-    function getPool(id) {
-      return apiService.get('/api/lbaas/pools/' + id)
+    function getPool(id, includeChildResources) {
+      var params = includeChildResources
+          ? {'params': {'includeChildResources': includeChildResources}}
+          : {};
+      return apiService.get('/api/lbaas/pools/' + id, params)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve pool.'));
         });
@@ -262,6 +268,23 @@
       return apiService.post('/api/lbaas/pools/', spec)
         .error(function () {
           toastService.add('error', gettext('Unable to create pool.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.editPool
+     * @description
+     * Edit a pool
+     * @param {string} id
+     * Specifies the id of the pool to update.
+     * @param {object} spec
+     * Specifies the data used to update the pool.
+     */
+
+    function editPool(id, spec) {
+      return apiService.put('/api/lbaas/pools/' + id, spec)
+        .error(function () {
+          toastService.add('error', gettext('Unable to update pool.'));
         });
     }
 

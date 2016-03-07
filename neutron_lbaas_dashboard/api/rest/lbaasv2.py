@@ -508,9 +508,9 @@ class Listener(generic.View):
     def get(self, request, listener_id):
         """Get a specific listener.
 
-        If the param 'includeChildResources' is passed in as true, the details
-        of all resources that exist under the listener will be returned along
-        with the listener details.
+        If the param 'includeChildResources' is passed in as a truthy value,
+        the details of all resources that exist under the listener will be
+        returned along with the listener details.
 
         http://localhost/api/lbaas/listeners/cc758c90-3d98-4ea1-af44-aab405c9c915
         """
@@ -590,10 +590,41 @@ class Pool(generic.View):
     def get(self, request, pool_id):
         """Get a specific pool.
 
+        If the param 'includeChildResources' is passed in as a truthy value,
+        the details of all resources that exist under the pool will be
+        returned along with the pool details.
+
         http://localhost/api/lbaas/pools/cc758c90-3d98-4ea1-af44-aab405c9c915
         """
-        lb = neutronclient(request).show_lbaas_pool(pool_id)
-        return lb.get('pool')
+        pool = neutronclient(request).show_lbaas_pool(pool_id).get('pool')
+
+        if request.GET.get('includeChildResources'):
+            resources = {}
+            resources['pool'] = pool
+
+            if pool.get('members'):
+                tenant_id = request.user.project_id
+                members = neutronclient(request).list_lbaas_members(
+                    pool_id, tenant_id=tenant_id).get('members')
+                resources['members'] = members
+
+            if pool.get('healthmonitor_id'):
+                monitor_id = pool['healthmonitor_id']
+                monitor = neutronclient(request).show_lbaas_healthmonitor(
+                    monitor_id).get('healthmonitor')
+                resources['monitor'] = monitor
+
+            return resources
+        else:
+            return pool
+
+    @rest_utils.ajax()
+    def put(self, request, pool_id):
+        """Edit a listener as well as any resources below it.
+
+        """
+        kwargs = {'pool_id': pool_id}
+        update_pool(request, **kwargs)
 
     @rest_utils.ajax()
     def delete(self, request, pool_id):

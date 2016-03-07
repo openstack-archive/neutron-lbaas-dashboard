@@ -94,8 +94,17 @@
         func: 'getPool',
         method: 'get',
         path: '/api/lbaas/pools/1234',
+        data: { params: { includeChildResources: true } },
         error: 'Unable to retrieve pool.',
-        testInput: [ '1234' ]
+        testInput: [ '1234', true ]
+      },
+      {
+        func: 'getPool',
+        method: 'get',
+        path: '/api/lbaas/pools/1234',
+        data: {},
+        error: 'Unable to retrieve pool.',
+        testInput: [ '1234', false ]
       },
       {
         func: 'deletePool',
@@ -171,6 +180,14 @@
         error: 'Unable to create pool.',
         data: { name: 'pool-1' },
         testInput: [ { name: 'pool-1' } ]
+      },
+      {
+        func: 'editPool',
+        method: 'put',
+        path: '/api/lbaas/pools/1234',
+        error: 'Unable to update pool.',
+        data: { name: 'pool-1' },
+        testInput: [ '1234', { name: 'pool-1' } ]
       }
     ];
 
