@@ -48,7 +48,7 @@
     ctrl.loadbalancerId = $routeParams.loadbalancerId;
     ctrl.listenerId = $routeParams.listenerId;
     ctrl.poolId = $routeParams.poolId;
-    ctrl.rowActions = rowActions.init(ctrl.loadbalancerId, ctrl.poolId, init);
+    ctrl.rowActions = rowActions.init(ctrl.loadbalancerId, ctrl.poolId);
 
     init();
 

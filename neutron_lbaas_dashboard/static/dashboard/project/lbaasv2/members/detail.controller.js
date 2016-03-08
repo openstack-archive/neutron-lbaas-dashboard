@@ -42,7 +42,7 @@
   function MemberDetailController(api, rowActions, $routeParams) {
     var ctrl = this;
 
-    ctrl.actions = rowActions.init($routeParams.loadbalancerId, $routeParams.poolId, init).actions;
+    ctrl.actions = rowActions.init($routeParams.loadbalancerId, $routeParams.poolId).actions;
 
     init();
 

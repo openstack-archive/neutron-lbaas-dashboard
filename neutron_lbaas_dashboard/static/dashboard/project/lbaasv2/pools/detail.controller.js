@@ -24,7 +24,9 @@
     'horizon.app.core.openstack-service-api.lbaasv2',
     'horizon.dashboard.project.lbaasv2.pools.actions.rowActions',
     '$routeParams',
-    'horizon.framework.util.i18n.gettext'
+    'horizon.framework.util.i18n.gettext',
+    '$window',
+    '$scope'
   ];
 
   /**
@@ -38,10 +40,12 @@
    * @param rowActions The LBaaS v2 pool row actions service.
    * @param $routeParams The angular $routeParams service.
    * @param gettext The horizon gettext function for translation.
+   * @param $window Angular's reference to the browser window object.
+   * @param $scope The angular scope object.
    * @returns undefined
    */
 
-  function PoolDetailController(api, rowActions, $routeParams, gettext) {
+  function PoolDetailController(api, rowActions, $routeParams, gettext, $window, $scope) {
     var ctrl = this;
 
     ctrl.loadBalancerAlgorithm = {
@@ -49,8 +53,8 @@
       'LEAST_CONNECTIONS': gettext('Least Connections'),
       'SOURCE_IP': gettext('Source IP')
     };
-
     ctrl.actions = rowActions.init($routeParams.loadbalancerId, $routeParams.listenerId).actions;
+    ctrl.membersTabActive = $window.membersTabActive;
 
     init();
 
@@ -67,6 +71,14 @@
         ctrl[property] = value;
       }, property);
     }
+
+    // Save the active state of the members tab in the global window object so it can stay
+    // active after reloading the route following an action.
+    $scope.$watch(function() {
+      return ctrl.membersTabActive;
+    }, function(active) {
+      $window.membersTabActive = active;
+    });
 
   }
 

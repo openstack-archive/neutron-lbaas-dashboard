@@ -24,7 +24,9 @@
     'horizon.app.core.openstack-service-api.lbaasv2',
     'horizon.dashboard.project.lbaasv2.loadbalancers.actions.rowActions',
     'horizon.dashboard.project.lbaasv2.loadbalancers.service',
-    '$routeParams'
+    '$routeParams',
+    '$window',
+    '$scope'
   ];
 
   /**
@@ -38,15 +40,20 @@
    * @param rowActions The load balancer row actions service.
    * @param loadBalancersService The LBaaS v2 load balancers service.
    * @param $routeParams The angular $routeParams service.
+   * @param $window Angular's reference to the browser window object.
+   * @param $scope The angular scope object.
    * @returns undefined
    */
 
-  function LoadBalancerDetailController(api, rowActions, loadBalancersService, $routeParams) {
+  function LoadBalancerDetailController(
+    api, rowActions, loadBalancersService, $routeParams, $window, $scope
+  ) {
     var ctrl = this;
 
     ctrl.actions = rowActions.actions;
     ctrl.operatingStatus = loadBalancersService.operatingStatus;
     ctrl.provisioningStatus = loadBalancersService.provisioningStatus;
+    ctrl.listenersTabActive = $window.listenersTabActive;
 
     init();
 
@@ -59,6 +66,14 @@
     function success(response) {
       ctrl.loadbalancer = response;
     }
+
+    // Save the active state of the listeners tab in the global window object so it can stay
+    // active after reloading the route following an action.
+    $scope.$watch(function() {
+      return ctrl.listenersTabActive;
+    }, function(active) {
+      $window.listenersTabActive = active;
+    });
 
   }
 

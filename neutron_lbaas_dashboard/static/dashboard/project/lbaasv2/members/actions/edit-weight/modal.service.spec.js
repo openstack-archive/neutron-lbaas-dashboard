@@ -105,15 +105,6 @@
       expect($route.reload).toHaveBeenCalled();
     });
 
-    it('should call handler function upon closing modal if provided', function() {
-      var handler = { handler: angular.noop };
-      spyOn(handler, 'handler');
-      service.init('1', fakePromise(), handler.handler);
-      service.perform(member);
-      $scope.$apply();
-      expect(handler.handler).toHaveBeenCalled();
-    });
-
   });
 
 })();

@@ -48,8 +48,8 @@
     ctrl.src = [];
     ctrl.checked = {};
     ctrl.loadbalancerId = $routeParams.loadbalancerId;
-    ctrl.batchActions = batchActions.init(ctrl.loadbalancerId, init);
-    ctrl.rowActions = rowActions.init(ctrl.loadbalancerId, init);
+    ctrl.batchActions = batchActions.init(ctrl.loadbalancerId);
+    ctrl.rowActions = rowActions.init(ctrl.loadbalancerId);
 
     init();
 

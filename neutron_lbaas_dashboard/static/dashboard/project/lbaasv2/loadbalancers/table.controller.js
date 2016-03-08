@@ -47,8 +47,8 @@
     ctrl.items = [];
     ctrl.src = [];
     ctrl.checked = {};
-    ctrl.batchActions = batchActions.init(init);
-    ctrl.rowActions = rowActions.init(init);
+    ctrl.batchActions = batchActions;
+    ctrl.rowActions = rowActions;
     ctrl.operatingStatus = loadBalancersService.operatingStatus;
     ctrl.provisioningStatus = loadBalancersService.provisioningStatus;
 

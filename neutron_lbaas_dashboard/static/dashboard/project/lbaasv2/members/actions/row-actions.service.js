@@ -40,7 +40,7 @@
    */
 
   function rowActions(gettext, loadBalancersService, editWeight) {
-    var loadBalancerIsActionable, poolId, handler;
+    var loadBalancerIsActionable, poolId;
 
     var service = {
       actions: actions,
@@ -51,16 +51,15 @@
 
     ///////////////
 
-    function init(loadbalancerId, _poolId_, _handler_) {
+    function init(loadbalancerId, _poolId_) {
       loadBalancerIsActionable = loadBalancersService.isActionable(loadbalancerId);
       poolId = _poolId_;
-      handler = _handler_;
       return service;
     }
 
     function actions() {
       return [{
-        service: editWeight.init(poolId, loadBalancerIsActionable, handler),
+        service: editWeight.init(poolId, loadBalancerIsActionable),
         template: {
           text: gettext('Update Weight')
         }

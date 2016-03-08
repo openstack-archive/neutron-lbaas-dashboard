@@ -54,8 +54,6 @@
   function deleteService(
     $q, $location, $route, deleteModal, api, policy, toast, qExtensions, gettext
   ) {
-    var handler;
-
     // If a batch delete, then this message is displayed for any selected load balancers not in
     // ACTIVE or ERROR state.
     var notAllowedMessage = gettext('The following load balancers are pending and cannot be ' +
@@ -77,18 +75,12 @@
 
     var service = {
       perform: perform,
-      allowed: allowed,
-      init: init
+      allowed: allowed
     };
 
     return service;
 
     //////////////
-
-    function init(_handler_) {
-      handler = _handler_;
-      return service;
-    }
 
     function perform(items) {
       if (angular.isArray(items)) {
@@ -144,9 +136,7 @@
     }
 
     function actionComplete(eventType) {
-      if (angular.isFunction(handler)) {
-        handler();
-      } else if (eventType === context.failedEvent) {
+      if (eventType === context.failedEvent) {
         // Action failed, reload the page
         $route.reload();
       } else {

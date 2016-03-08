@@ -90,7 +90,7 @@
 
     it('should have actions', function() {
       expect(ctrl.actions).toBe('member-actions');
-      expect(actions.init).toHaveBeenCalledWith('loadbalancerId', 'poolId', jasmine.any(Function));
+      expect(actions.init).toHaveBeenCalledWith('loadbalancerId', 'poolId');
     });
 
   });

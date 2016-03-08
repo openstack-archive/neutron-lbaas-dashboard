@@ -58,7 +58,7 @@
     toastService,
     gettext
   ) {
-    var poolId, statePromise, handler;
+    var poolId, statePromise;
 
     var service = {
       perform: open,
@@ -70,10 +70,9 @@
 
     ////////////
 
-    function init(_poolId_, _statePromise_, _handler_) {
+    function init(_poolId_, _statePromise_) {
       poolId = _poolId_;
       statePromise = _statePromise_;
-      handler = _handler_;
       return service;
     }
 
@@ -116,11 +115,7 @@
 
     function onModalClose() {
       toastService.add('success', gettext('Pool member weight has been updated.'));
-      if (angular.isFunction(handler)) {
-        handler();
-      } else {
-        $route.reload();
-      }
+      $route.reload();
     }
 
   }

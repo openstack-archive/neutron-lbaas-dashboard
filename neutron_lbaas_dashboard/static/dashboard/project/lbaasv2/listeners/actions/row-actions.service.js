@@ -54,7 +54,7 @@
     $q, $route, workflowModal, policy, gettext, loadBalancersService, deleteService,
     createPoolService
   ) {
-    var loadbalancerId, loadBalancerIsActionable, handler;
+    var loadbalancerId, loadBalancerIsActionable;
 
     var edit = workflowModal.init({
       controller: 'EditListenerWizardController',
@@ -72,9 +72,8 @@
 
     ///////////////
 
-    function init(_loadbalancerId_, _handler_) {
+    function init(_loadbalancerId_) {
       loadbalancerId = _loadbalancerId_;
-      handler = _handler_;
       loadBalancerIsActionable = loadBalancersService.isActionable(loadbalancerId);
       return service;
     }
@@ -91,7 +90,7 @@
           text: gettext('Create Pool')
         }
       },{
-        service: deleteService.init(loadbalancerId, loadBalancerIsActionable, handler),
+        service: deleteService.init(loadbalancerId, loadBalancerIsActionable),
         template: {
           text: gettext('Delete Listener'),
           type: 'delete'

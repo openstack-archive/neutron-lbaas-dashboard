@@ -54,7 +54,7 @@
   function deleteService(
     $q, $location, $route, deleteModal, api, policy, toast, qExtensions, gettext
   ) {
-    var loadbalancerId, statePromise, handler;
+    var loadbalancerId, statePromise;
     var context = {
       labels: {
         title: gettext('Confirm Delete Listeners'),
@@ -80,10 +80,9 @@
 
     //////////////
 
-    function init(_loadbalancerId_, _statePromise_, _handler_) {
+    function init(_loadbalancerId_, _statePromise_) {
       loadbalancerId = _loadbalancerId_;
       statePromise = _statePromise_;
-      handler = _handler_;
       return service;
     }
 
@@ -108,9 +107,7 @@
     }
 
     function actionComplete(eventType) {
-      if (angular.isFunction(handler)) {
-        handler();
-      } else if (eventType === context.failedEvent) {
+      if (eventType === context.failedEvent) {
         // Action failed, reload the page
         $route.reload();
       } else {

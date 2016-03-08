@@ -17,12 +17,12 @@
   'use strict';
 
   describe('LBaaS v2 Load Balancer Detail Controller', function() {
-    var controller, lbaasv2API, loadbalancer;
+    var lbaasv2API, ctrl, $scope, $window;
 
     function fakeAPI() {
       return {
         success: function(callback) {
-          callback(loadbalancer);
+          callback({ id: '1234' });
         }
       };
     }
@@ -40,22 +40,31 @@
     }));
 
     beforeEach(inject(function($injector) {
-      loadbalancer = { id: '1234' };
       lbaasv2API = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
-      controller = $injector.get('$controller');
       spyOn(lbaasv2API, 'getLoadBalancer').and.callFake(fakeAPI);
-    }));
-
-    function createController() {
-      return controller('LoadBalancerDetailController', {
-        api: lbaasv2API,
+      $scope = $injector.get('$rootScope').$new();
+      $window = {};
+      var controller = $injector.get('$controller');
+      ctrl = controller('LoadBalancerDetailController', {
+        $scope: $scope,
+        $window: $window,
         $routeParams: { loadbalancerId: '1234' }
       });
-    }
+    }));
 
     it('should invoke lbaasv2 apis', function() {
-      createController();
       expect(lbaasv2API.getLoadBalancer).toHaveBeenCalledWith('1234', true);
+    });
+
+    it('should save changes to listeners tab active state', function() {
+      expect($window.listenersTabActive).toBeUndefined();
+      expect(ctrl.listenersTabActive).toBeUndefined();
+      ctrl.listenersTabActive = true;
+      $scope.$apply();
+      expect($window.listenersTabActive).toBe(true);
+      ctrl.listenersTabActive = false;
+      $scope.$apply();
+      expect($window.listenersTabActive).toBe(false);
     });
 
   });

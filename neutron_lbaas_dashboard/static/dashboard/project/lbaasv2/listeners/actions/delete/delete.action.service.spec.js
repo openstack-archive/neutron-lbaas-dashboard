@@ -157,14 +157,5 @@
       expect(toast.add).toHaveBeenCalledWith('success', 'Deleted listeners: First.');
     });
 
-    it('should call handler function if provided', function() {
-      var handler = { handler: angular.noop };
-      spyOn(handler, 'handler');
-      service.init('1', null, handler.handler);
-      service.perform(items);
-      $scope.$apply();
-      expect(handler.handler).toHaveBeenCalled();
-    });
-
   });
 })();

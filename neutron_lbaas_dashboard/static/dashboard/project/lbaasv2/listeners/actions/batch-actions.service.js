@@ -51,7 +51,7 @@
   function tableBatchActions(
     $q, $location, workflowModal, policy, gettext, loadBalancersService, deleteService
   ) {
-    var loadBalancerIsActionable, loadBalancerId, handler;
+    var loadBalancerIsActionable, loadBalancerId;
 
     var create = workflowModal.init({
       controller: 'CreateListenerWizardController',
@@ -69,9 +69,8 @@
 
     ///////////////
 
-    function init(_loadBalancerId_, _handler_) {
+    function init(_loadBalancerId_) {
       loadBalancerId = _loadBalancerId_;
-      handler = _handler_;
       loadBalancerIsActionable = loadBalancersService.isActionable(loadBalancerId);
       return service;
     }
@@ -84,7 +83,7 @@
           text: gettext('Create Listener')
         }
       },{
-        service: deleteService.init(loadBalancerId, loadBalancerIsActionable, handler),
+        service: deleteService.init(loadBalancerId, loadBalancerIsActionable),
         template: {
           text: gettext('Delete Listeners'),
           type: 'delete-selected'

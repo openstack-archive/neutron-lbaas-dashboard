@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Pool Detail Controller', function() {
-    var lbaasv2API, ctrl;
+    var lbaasv2API, ctrl, $scope, $window;
 
     function fakeAPI() {
       return {
@@ -52,8 +52,12 @@
       spyOn(lbaasv2API, 'getPool').and.callFake(fakeAPI);
       spyOn(lbaasv2API, 'getListener').and.callFake(fakeAPI);
       spyOn(lbaasv2API, 'getLoadBalancer').and.callFake(loadbalancerAPI);
+      $scope = $injector.get('$rootScope').$new();
+      $window = {};
       var controller = $injector.get('$controller');
       ctrl = controller('PoolDetailController', {
+        $scope: $scope,
+        $window: $window,
         $routeParams: {
           loadbalancerId: 'loadbalancerId',
           listenerId: 'listenerId',
@@ -73,6 +77,17 @@
 
     it('should define mapping for the load balancer algorithm', function() {
       expect(ctrl.loadBalancerAlgorithm).toBeDefined();
+    });
+
+    it('should save changes to members tab active state', function() {
+      expect($window.membersTabActive).toBeUndefined();
+      expect(ctrl.membersTabActive).toBeUndefined();
+      ctrl.membersTabActive = true;
+      $scope.$apply();
+      expect($window.membersTabActive).toBe(true);
+      ctrl.membersTabActive = false;
+      $scope.$apply();
+      expect($window.membersTabActive).toBe(false);
     });
 
   });

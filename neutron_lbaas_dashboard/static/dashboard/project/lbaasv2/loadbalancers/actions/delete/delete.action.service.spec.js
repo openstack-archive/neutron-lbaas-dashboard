@@ -173,14 +173,5 @@
       expect(toast.add).toHaveBeenCalledWith('success', 'Deleted load balancers: First.');
     });
 
-    it('should call handler function if provided', function() {
-      var handler = { handler: angular.noop };
-      spyOn(handler, 'handler');
-      service.init(handler.handler);
-      service.perform(items);
-      $scope.$apply();
-      expect(handler.handler).toHaveBeenCalled();
-    });
-
   });
 })();

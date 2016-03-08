@@ -47,7 +47,6 @@
    */
 
   function tableBatchActions($location, workflowModal, basePath, deleteService, policy, gettext) {
-    var handler;
 
     var create = workflowModal.init({
       controller: 'CreateLoadBalancerWizardController',
@@ -57,18 +56,12 @@
     });
 
     var service = {
-      actions: actions,
-      init: init
+      actions: actions
     };
 
     return service;
 
     ///////////////
-
-    function init(_handler_) {
-      handler = _handler_;
-      return service;
-    }
 
     function actions() {
       return [{
@@ -78,7 +71,7 @@
           text: gettext('Create Load Balancer')
         }
       }, {
-        service: deleteService.init(handler),
+        service: deleteService,
         template: {
           type: 'delete-selected',
           text: gettext('Delete Load Balancers')
