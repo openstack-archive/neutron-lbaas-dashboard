@@ -188,6 +188,7 @@
         'createlistener': initCreateListener,
         'createpool': initCreatePool,
         'createmonitor': initCreateMonitor,
+        'createmembers': initUpdateMemberList,
         'editloadbalancer': initEditLoadBalancer,
         'editlistener': initEditListener,
         'editpool': initEditPool,
@@ -244,6 +245,16 @@
     function initCreateMonitor() {
       model.context.submit = createHealthMonitor;
       return $q.when();
+    }
+
+    function initUpdateMemberList() {
+      model.context.submit = updatePoolMemberList;
+      return $q.all([
+        lbaasv2API.getPool(model.spec.parentResourceId).then(onGetPool),
+        neutronAPI.getSubnets().then(onGetSubnets).then(getMembers).then(onGetMembers),
+        neutronAPI.getPorts().then(onGetPorts),
+        novaAPI.getServers().then(onGetServers)
+      ]).then(initMemberAddresses);
     }
 
     function initEditLoadBalancer() {
@@ -329,6 +340,10 @@
 
     function editHealthMonitor(spec) {
       return lbaasv2API.editHealthMonitor(model.context.id, spec);
+    }
+
+    function updatePoolMemberList(spec) {
+      return lbaasv2API.updateMemberList(model.spec.parentResourceId, spec);
     }
 
     function cleanFinalSpecLoadBalancer(finalSpec) {
@@ -493,6 +508,10 @@
       ports = response.data.items;
     }
 
+    function onGetMembers(response) {
+      setMembersSpec(response.data.items);
+    }
+
     function initMemberAddresses() {
       angular.forEach(model.members, function initAddresses(member) {
         var memberPorts = ports.filter(function filterPortByDevice(port) {
@@ -521,6 +540,10 @@
 
     function getPool() {
       return lbaasv2API.getPool(model.context.id, true);
+    }
+
+    function getMembers() {
+      return lbaasv2API.getMembers(model.spec.parentResourceId);
     }
 
     function onGetLoadBalancer(response) {
@@ -570,8 +593,9 @@
     function onGetPool(response) {
       var result = response.data;
 
+      setPoolSpec(result.pool || result);
+
       if (result.pool) {
-        setPoolSpec(result.pool);
         model.visibleResources.push('pool');
         model.visibleResources.push('members');
 

@@ -47,7 +47,13 @@
     }));
 
     function createController() {
-      return controller('MembersTableController', { $scope: scope });
+      return controller('MembersTableController', {
+        $scope: scope,
+        $routeParams: {
+          loadbalancerId: 'loadbaancerId',
+          listenerId: 'listenerId',
+          poolId: 'poolId'
+        }});
     }
 
     it('should initialize correctly', function() {
@@ -55,6 +61,10 @@
       expect(ctrl.items).toEqual([]);
       expect(ctrl.src).toEqual(items);
       expect(ctrl.checked).toEqual({});
+      expect(ctrl.loadbalancerId).toBeDefined();
+      expect(ctrl.listenerId).toBeDefined();
+      expect(ctrl.poolId).toBeDefined();
+      expect(ctrl.batchActions).toBeDefined();
     });
 
     it('should invoke lbaasv2 apis', function() {

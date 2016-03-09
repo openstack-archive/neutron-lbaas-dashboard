@@ -56,7 +56,8 @@
       getHealthMonitor: getHealthMonitor,
       deleteHealthMonitor: deleteHealthMonitor,
       createHealthMonitor: createHealthMonitor,
-      editHealthMonitor: editHealthMonitor
+      editHealthMonitor: editHealthMonitor,
+      updateMemberList: updateMemberList
     };
 
     return service;
@@ -345,8 +346,6 @@
         });
     }
 
-    // Health Monitors
-
     /**
      * @name horizon.app.core.openstack-service-api.lbaasv2.editMember
      * @description
@@ -361,6 +360,23 @@
       return apiService.put('/api/lbaas/pools/' + poolId + '/members/' + memberId + '/', spec)
         .error(function () {
           toastService.add('error', gettext('Unable to update member.'));
+        });
+    }
+
+    /**
+     * @name horizon.app.core.openstack-service-api.lbaasv2.updateMemberList
+     * @description
+     * Update the list of pool members by adding or removing the necessary members.
+     * @param {string} poolId
+     * Specifies the id of the pool the members belong to.
+     * @param {object} spec
+     * Specifies the data used to update the member list.
+     */
+
+    function updateMemberList(poolId, spec) {
+      return apiService.put('/api/lbaas/pools/' + poolId + '/members/', spec)
+        .error(function () {
+          toastService.add('error', gettext('Unable to update member list.'));
         });
     }
 

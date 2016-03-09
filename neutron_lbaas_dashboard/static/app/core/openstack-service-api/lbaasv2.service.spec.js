@@ -219,6 +219,14 @@
         error: 'Unable to create health monitor.',
         data: { name: 'healthmonitor-1' },
         testInput: [ { name: 'healthmonitor-1' } ]
+      },
+      {
+        func: 'updateMemberList',
+        method: 'put',
+        path: '/api/lbaas/pools/1234/members/',
+        error: 'Unable to update member list.',
+        data: { name: 'member-1' },
+        testInput: [ '1234', { name: 'member-1' } ]
       }
     ];
 

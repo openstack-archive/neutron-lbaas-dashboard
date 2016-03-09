@@ -23,6 +23,7 @@
   MembersTableController.$inject = [
     'horizon.app.core.openstack-service-api.lbaasv2',
     'horizon.dashboard.project.lbaasv2.members.actions.rowActions',
+    'horizon.dashboard.project.lbaasv2.members.actions.batchActions',
     '$routeParams'
   ];
 
@@ -35,11 +36,12 @@
    *
    * @param api The LBaaS V2 service API.
    * @param rowActions The pool members row actions service.
+   * @param batchActions The members batch actions service.
    * @param $routeParams The angular $routeParams service.
    * @returns undefined
    */
 
-  function MembersTableController(api, rowActions, $routeParams) {
+  function MembersTableController(api, rowActions, batchActions, $routeParams) {
 
     var ctrl = this;
     ctrl.items = [];
@@ -49,6 +51,7 @@
     ctrl.listenerId = $routeParams.listenerId;
     ctrl.poolId = $routeParams.poolId;
     ctrl.rowActions = rowActions.init(ctrl.loadbalancerId, ctrl.poolId);
+    ctrl.batchActions = batchActions.init(ctrl.loadbalancerId);
 
     init();
 

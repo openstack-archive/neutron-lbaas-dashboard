@@ -42,7 +42,7 @@
                    ng-class="{ 'has-error': memberDetailsForm['{$ ::row.id $}-address'].$invalid && memberDetailsForm['{$ ::row.id $}-address'].$dirty }">
                 <input name="{$ ::row.id $}-address" type="text" class="form-control"
                        ng-model="row.address" ng-pattern="::ctrl.ipPattern"
-                       ng-required="true" ng-disabled="model.context.id && row.allocatedMember"
+                       ng-required="true" ng-disabled="row.allocatedMember"
                        popover-placement="top" popover-append-to-body="true"
                        popover-trigger="focus"
                        ng-attr-popover="{$ memberDetailsForm[row.id + '-address'].$invalid && memberDetailsForm[row.id + '-address'].$dirty ? ctrl.ipError : '' $}">
@@ -61,7 +61,7 @@
                 <select name="{$ ::row.id $}-subnet" class="form-control"
                         ng-options="subnet.name for subnet in model.subnets"
                         ng-model="row.subnet" ng-required="true"
-                        ng-disabled="model.context.id && row.allocatedMember">
+                        ng-disabled="row.allocatedMember">
                 </select>
               </div>
               <span ng-if="row.addresses">{$ ctrl.getSubnetName(row) $}</span>
@@ -71,7 +71,7 @@
                    ng-class="{ 'has-error': memberDetailsForm['{$ ::row.id $}-port'].$invalid && memberDetailsForm['{$ ::row.id $}-port'].$dirty }">
                 <input name="{$ ::row.id $}-port" type="number" class="form-control"
                        ng-model="row.port" ng-pattern="/^\d+$/" min="1" max="65535"
-                       ng-required="true" ng-disabled="model.context.id && row.allocatedMember"
+                       ng-required="true" ng-disabled="row.allocatedMember"
                        popover-placement="top" popover-append-to-body="true"
                        popover-trigger="focus"
                        ng-attr-popover="{$ memberDetailsForm[row.id + '-port'].$invalid && memberDetailsForm[row.id + '-port'].$dirty ? ctrl.portError : '' $}">
@@ -82,7 +82,7 @@
                    ng-class="{ 'has-error': memberDetailsForm['{$ ::row.id $}-weight'].$invalid && memberDetailsForm['{$ ::row.id $}-weight'].$dirty }">
                 <input name="{$ ::row.id $}-weight" type="number" class="form-control"
                        ng-model="row.weight" ng-pattern="/^\d+$/" min="1" max="256"
-                       ng-disabled="model.context.id && row.allocatedMember"
+                       ng-disabled="row.allocatedMember"
                        popover-placement="top" popover-append-to-body="true"
                        popover-trigger="focus"
                        ng-attr-popover="{$ memberDetailsForm[row.id + '-weight'].$invalid && memberDetailsForm[row.id + '-weight'].$dirty ? ctrl.weightError : '' $}">

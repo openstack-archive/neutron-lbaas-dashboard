@@ -17,7 +17,9 @@
         This is where batch actions like searching, creating, and deleting.
       -->
       <th colspan="6" class="search-header">
-        <hz-search-bar icon-classes="fa-search"></hz-search-bar>
+        <hz-search-bar icon-classes="fa-search">
+          <actions allowed="table.batchActions.actions" type="batch"></actions>
+        </hz-search-bar>
       </th>
     </tr>
 

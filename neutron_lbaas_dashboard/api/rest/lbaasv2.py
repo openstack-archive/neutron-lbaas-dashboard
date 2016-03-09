@@ -171,16 +171,15 @@ def add_member(request, **kwargs):
     """
     data = request.DATA
     members = data.get('members')
+    pool_id = kwargs.get('pool_id')
 
     if kwargs.get('members_to_add'):
         members_to_add = kwargs['members_to_add']
         index = [members.index(member) for member in members
                  if member['id'] == members_to_add[0]][0]
-        pool_id = data['pool'].get('id')
         loadbalancer_id = data.get('loadbalancer_id')
     else:
         index = kwargs.get('index')
-        pool_id = kwargs.get('pool_id')
         loadbalancer_id = kwargs.get('loadbalancer_id')
 
     member = members[index]
@@ -203,7 +202,8 @@ def add_member(request, **kwargs):
         kwargs = {'callback_kwargs': {
             'existing_members': kwargs.get('existing_members'),
             'members_to_add': members_to_add,
-            'members_to_delete': kwargs.get('members_to_delete')}}
+            'members_to_delete': kwargs.get('members_to_delete'),
+            'pool_id': pool_id}}
         thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
     elif len(members) > index:
         args = (request, loadbalancer_id, add_member)
@@ -224,7 +224,7 @@ def remove_member(request, **kwargs):
     """
     data = request.DATA
     loadbalancer_id = data.get('loadbalancer_id')
-    pool_id = data['pool']['id']
+    pool_id = kwargs.get('pool_id')
 
     if kwargs.get('members_to_delete'):
         members_to_delete = kwargs['members_to_delete']
@@ -299,21 +299,18 @@ def update_pool(request, **kwargs):
 
     # Assemble the lists of member id's to add and remove, if any exist
     tenant_id = request.user.project_id
-    new_members = data.get('members', [])
+    request_member_data = data.get('members', [])
     existing_members = neutronclient(request).list_lbaas_members(
         pool_id, tenant_id=tenant_id).get('members')
-    new_member_ids = [member['id'] for member in new_members]
-    existing_member_ids = [member['id'] for member in existing_members]
-    members_to_add = [member_id for member_id in new_member_ids
-                      if member_id not in existing_member_ids]
-    members_to_delete = [member_id for member_id in existing_member_ids
-                         if member_id not in new_member_ids]
+    (members_to_add, members_to_delete) = get_members_to_add_remove(
+        request_member_data, existing_members)
 
     if members_to_add or members_to_delete:
         args = (request, loadbalancer_id, update_member_list)
         kwargs = {'callback_kwargs': {'existing_members': existing_members,
                                       'members_to_add': members_to_add,
-                                      'members_to_delete': members_to_delete}}
+                                      'members_to_delete': members_to_delete,
+                                      'pool_id': pool_id}}
         thread.start_new_thread(poll_loadbalancer_status, args, kwargs)
     elif data.get('monitor'):
         args = (request, loadbalancer_id, update_monitor)
@@ -355,23 +352,36 @@ def update_member_list(request, **kwargs):
     """
     data = request.DATA
     loadbalancer_id = data.get('loadbalancer_id')
+    pool_id = kwargs.get('pool_id')
     existing_members = kwargs.get('existing_members')
     members_to_add = kwargs.get('members_to_add')
     members_to_delete = kwargs.get('members_to_delete')
 
-    if members_to_add:
+    if members_to_delete:
         kwargs = {'existing_members': existing_members,
                   'members_to_add': members_to_add,
-                  'members_to_delete': members_to_delete}
-        add_member(request, **kwargs)
-    elif members_to_delete:
-        kwargs = {'existing_members': existing_members,
-                  'members_to_add': members_to_add,
-                  'members_to_delete': members_to_delete}
+                  'members_to_delete': members_to_delete,
+                  'pool_id': pool_id}
         remove_member(request, **kwargs)
+    elif members_to_add:
+        kwargs = {'existing_members': existing_members,
+                  'members_to_add': members_to_add,
+                  'members_to_delete': members_to_delete,
+                  'pool_id': pool_id}
+        add_member(request, **kwargs)
     elif data.get('monitor'):
         args = (request, loadbalancer_id, update_monitor)
         thread.start_new_thread(poll_loadbalancer_status, args)
+
+
+def get_members_to_add_remove(request_member_data, existing_members):
+    new_member_ids = [member['id'] for member in request_member_data]
+    existing_member_ids = [member['id'] for member in existing_members]
+    members_to_add = [member_id for member_id in new_member_ids
+                      if member_id not in existing_member_ids]
+    members_to_delete = [member_id for member_id in existing_member_ids
+                         if member_id not in new_member_ids]
+    return members_to_add, members_to_delete
 
 
 def add_floating_ip_info(request, loadbalancers):
@@ -652,6 +662,26 @@ class Members(generic.View):
         result = neutronclient(request).list_lbaas_members(pool_id,
                                                            tenant_id=tenant_id)
         return {'items': result.get('members')}
+
+    @rest_utils.ajax()
+    def put(self, request, pool_id):
+        """Update the list of members for the current project.
+
+        """
+        # Assemble the lists of member id's to add and remove, if any exist
+        tenant_id = request.user.project_id
+        request_member_data = request.DATA.get('members', [])
+        existing_members = neutronclient(request).list_lbaas_members(
+            pool_id, tenant_id=tenant_id).get('members')
+        (members_to_add, members_to_delete) = get_members_to_add_remove(
+            request_member_data, existing_members)
+
+        if members_to_add or members_to_delete:
+            kwargs = {'existing_members': existing_members,
+                      'members_to_add': members_to_add,
+                      'members_to_delete': members_to_delete,
+                      'pool_id': pool_id}
+            update_member_list(request, **kwargs)
 
 
 @urls.register
