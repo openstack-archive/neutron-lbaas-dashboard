@@ -93,7 +93,7 @@
 
     function getLoadBalancer(id, full) {
       var params = { full: full };
-      return apiService.get('/api/lbaas/loadbalancers/' + id, { params: params })
+      return apiService.get('/api/lbaas/loadbalancers/' + id + '/', { params: params })
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve load balancer.'));
         });
@@ -109,7 +109,7 @@
      */
 
     function deleteLoadBalancer(id, quiet) {
-      var promise = apiService.delete('/api/lbaas/loadbalancers/' + id);
+      var promise = apiService.delete('/api/lbaas/loadbalancers/' + id + '/');
       return quiet ? promise : promise.error(function () {
         toastService.add('error', gettext('Unable to delete load balancer.'));
       });
@@ -140,7 +140,7 @@
      */
 
     function editLoadBalancer(id, spec) {
-      return apiService.put('/api/lbaas/loadbalancers/' + id, spec)
+      return apiService.put('/api/lbaas/loadbalancers/' + id + '/', spec)
         .error(function () {
           toastService.add('error', gettext('Unable to update load balancer.'));
         });
@@ -184,7 +184,7 @@
       var params = includeChildResources
           ? {'params': {'includeChildResources': includeChildResources}}
           : {};
-      return apiService.get('/api/lbaas/listeners/' + id, params)
+      return apiService.get('/api/lbaas/listeners/' + id + '/', params)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve listener.'));
         });
@@ -216,7 +216,7 @@
      */
 
     function editListener(id, spec) {
-      return apiService.put('/api/lbaas/listeners/' + id, spec)
+      return apiService.put('/api/lbaas/listeners/' + id + '/', spec)
         .error(function () {
           toastService.add('error', gettext('Unable to update listener.'));
         });
@@ -232,7 +232,7 @@
      */
 
     function deleteListener(id, quiet) {
-      var promise = apiService.delete('/api/lbaas/listeners/' + id);
+      var promise = apiService.delete('/api/lbaas/listeners/' + id + '/');
       return quiet ? promise : promise.error(function () {
         toastService.add('error', gettext('Unable to delete listener.'));
       });
@@ -254,7 +254,7 @@
       var params = includeChildResources
           ? {'params': {'includeChildResources': includeChildResources}}
           : {};
-      return apiService.get('/api/lbaas/pools/' + id, params)
+      return apiService.get('/api/lbaas/pools/' + id + '/', params)
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve pool.'));
         });
@@ -286,7 +286,7 @@
      */
 
     function editPool(id, spec) {
-      return apiService.put('/api/lbaas/pools/' + id, spec)
+      return apiService.put('/api/lbaas/pools/' + id + '/', spec)
         .error(function () {
           toastService.add('error', gettext('Unable to update pool.'));
         });
@@ -302,7 +302,7 @@
      */
 
     function deletePool(id, quiet) {
-      var promise = apiService.delete('/api/lbaas/pools/' + id);
+      var promise = apiService.delete('/api/lbaas/pools/' + id + '/');
       return quiet ? promise : promise.error(function () {
         toastService.add('error', gettext('Unable to delete pool.'));
       });
@@ -339,7 +339,7 @@
      */
 
     function getMember(poolId, memberId) {
-      return apiService.get('/api/lbaas/pools/' + poolId + '/members/' + memberId)
+      return apiService.get('/api/lbaas/pools/' + poolId + '/members/' + memberId + '/')
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve member.'));
         });
@@ -358,7 +358,7 @@
      */
 
     function editMember(poolId, memberId, spec) {
-      return apiService.put('/api/lbaas/pools/' + poolId + '/members/' + memberId, spec)
+      return apiService.put('/api/lbaas/pools/' + poolId + '/members/' + memberId + '/', spec)
         .error(function () {
           toastService.add('error', gettext('Unable to update member.'));
         });
@@ -375,7 +375,7 @@
      */
 
     function getHealthMonitor(monitorId) {
-      return apiService.get('/api/lbaas/healthmonitors/' + monitorId)
+      return apiService.get('/api/lbaas/healthmonitors/' + monitorId + '/')
         .error(function () {
           toastService.add('error', gettext('Unable to retrieve health monitor.'));
         });
@@ -392,7 +392,7 @@
      */
 
     function editHealthMonitor(id, spec) {
-      return apiService.put('/api/lbaas/healthmonitors/' + id, spec)
+      return apiService.put('/api/lbaas/healthmonitors/' + id + '/', spec)
         .error(function () {
           toastService.add('error', gettext('Unable to update health monitor.'));
         });
@@ -408,7 +408,7 @@
      */
 
     function deleteHealthMonitor(id, quiet) {
-      var promise = apiService.delete('/api/lbaas/healthmonitors/' + id);
+      var promise = apiService.delete('/api/lbaas/healthmonitors/' + id + '/');
       return quiet ? promise : promise.error(function () {
         toastService.add('error', gettext('Unable to delete health monitor.'));
       });

@@ -47,7 +47,7 @@
       {
         func: 'getLoadBalancer',
         method: 'get',
-        path: '/api/lbaas/loadbalancers/1234',
+        path: '/api/lbaas/loadbalancers/1234/',
         error: 'Unable to retrieve load balancer.',
         testInput: [ '1234', true ],
         data: { params: { full: true } }
@@ -55,7 +55,7 @@
       {
         func: 'deleteLoadBalancer',
         method: 'delete',
-        path: '/api/lbaas/loadbalancers/1234',
+        path: '/api/lbaas/loadbalancers/1234/',
         error: 'Unable to delete load balancer.',
         testInput: [ '1234' ]
       },
@@ -77,7 +77,7 @@
       {
         func: 'getListener',
         method: 'get',
-        path: '/api/lbaas/listeners/1234',
+        path: '/api/lbaas/listeners/1234/',
         data: { params: { includeChildResources: true } },
         error: 'Unable to retrieve listener.',
         testInput: [ '1234', true ]
@@ -85,7 +85,7 @@
       {
         func: 'getListener',
         method: 'get',
-        path: '/api/lbaas/listeners/1234',
+        path: '/api/lbaas/listeners/1234/',
         data: {},
         error: 'Unable to retrieve listener.',
         testInput: [ '1234', false ]
@@ -93,7 +93,7 @@
       {
         func: 'getPool',
         method: 'get',
-        path: '/api/lbaas/pools/1234',
+        path: '/api/lbaas/pools/1234/',
         data: { params: { includeChildResources: true } },
         error: 'Unable to retrieve pool.',
         testInput: [ '1234', true ]
@@ -101,7 +101,7 @@
       {
         func: 'getPool',
         method: 'get',
-        path: '/api/lbaas/pools/1234',
+        path: '/api/lbaas/pools/1234/',
         data: {},
         error: 'Unable to retrieve pool.',
         testInput: [ '1234', false ]
@@ -109,7 +109,7 @@
       {
         func: 'deletePool',
         method: 'delete',
-        path: '/api/lbaas/pools/1234',
+        path: '/api/lbaas/pools/1234/',
         error: 'Unable to delete pool.',
         testInput: [ '1234' ]
       },
@@ -123,14 +123,14 @@
       {
         func: 'getMember',
         method: 'get',
-        path: '/api/lbaas/pools/1234/members/5678',
+        path: '/api/lbaas/pools/1234/members/5678/',
         error: 'Unable to retrieve member.',
         testInput: [ '1234', '5678' ]
       },
       {
         func: 'editMember',
         method: 'put',
-        path: '/api/lbaas/pools/1234/members/5678',
+        path: '/api/lbaas/pools/1234/members/5678/',
         error: 'Unable to update member.',
         data: { weight: 2 },
         testInput: [ '1234', '5678', { weight: 2 } ]
@@ -138,14 +138,14 @@
       {
         func: 'getHealthMonitor',
         method: 'get',
-        path: '/api/lbaas/healthmonitors/1234',
+        path: '/api/lbaas/healthmonitors/1234/',
         error: 'Unable to retrieve health monitor.',
         testInput: [ '1234' ]
       },
       {
         func: 'editHealthMonitor',
         method: 'put',
-        path: '/api/lbaas/healthmonitors/1234',
+        path: '/api/lbaas/healthmonitors/1234/',
         error: 'Unable to update health monitor.',
         data: { name: 'healthmonitor-1' },
         testInput: [ '1234', { name: 'healthmonitor-1' } ]
@@ -153,7 +153,7 @@
       {
         func: 'deleteHealthMonitor',
         method: 'delete',
-        path: '/api/lbaas/healthmonitors/1234',
+        path: '/api/lbaas/healthmonitors/1234/',
         error: 'Unable to delete health monitor.',
         testInput: [ '1234' ]
       },
@@ -168,7 +168,7 @@
       {
         func: 'editLoadBalancer',
         method: 'put',
-        path: '/api/lbaas/loadbalancers/1234',
+        path: '/api/lbaas/loadbalancers/1234/',
         error: 'Unable to update load balancer.',
         data: { name: 'loadbalancer-1' },
         testInput: [ '1234', { name: 'loadbalancer-1' } ]
@@ -184,7 +184,7 @@
       {
         func: 'editListener',
         method: 'put',
-        path: '/api/lbaas/listeners/1234',
+        path: '/api/lbaas/listeners/1234/',
         error: 'Unable to update listener.',
         data: { name: 'listener-1' },
         testInput: [ '1234', { name: 'listener-1' } ]
@@ -192,7 +192,7 @@
       {
         func: 'deleteListener',
         method: 'delete',
-        path: '/api/lbaas/listeners/1234',
+        path: '/api/lbaas/listeners/1234/',
         error: 'Unable to delete listener.',
         testInput: [ '1234' ]
       },
@@ -207,7 +207,7 @@
       {
         func: 'editPool',
         method: 'put',
-        path: '/api/lbaas/pools/1234',
+        path: '/api/lbaas/pools/1234/',
         error: 'Unable to update pool.',
         data: { name: 'pool-1' },
         testInput: [ '1234', { name: 'pool-1' } ]
