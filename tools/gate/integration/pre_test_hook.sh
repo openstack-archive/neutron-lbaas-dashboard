@@ -3,7 +3,9 @@
 # This script will be executed inside pre_test_hook function in devstack gate
 
 set -ex
-source commons $@
+
+DIR=${BASH_SOURCE%/*}
+source $DIR/commons $@
 
 # Enable LBaaS V2 Neutron plugin
 DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-lbaas https://git.openstack.org/openstack/neutron-lbaas"
