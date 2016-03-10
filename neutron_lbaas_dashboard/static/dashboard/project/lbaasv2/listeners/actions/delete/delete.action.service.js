@@ -48,13 +48,15 @@
    * @param toast The horizon message service.
    * @param qExtensions Horizon extensions to the $q service.
    * @param gettext The horizon gettext function for translation.
-   * @returns The load balancers table delete service.
+   * @returns The listeners table delete service.
    */
 
   function deleteService(
     $q, $location, $route, deleteModal, api, policy, toast, qExtensions, gettext
   ) {
     var loadbalancerId, statePromise;
+    var notAllowedMessage = gettext('The following listeners will not be deleted ' +
+                                    'due to existing pools: %s.');
     var context = {
       labels: {
         title: gettext('Confirm Delete Listeners'),
@@ -87,19 +89,19 @@
     }
 
     function perform(items) {
-      if (!angular.isArray(items)) {
-        items = [items];
+      if (angular.isArray(items)) {
+        qExtensions.allSettled(items.map(checkPermission)).then(afterCheck);
+      } else {
+        deleteModal.open({ $emit: actionComplete }, [items], context);
       }
-      deleteModal.open({ $emit: actionComplete }, items, context);
     }
 
-    function allowed(/*item*/) {
-      return $q.all([
-        statePromise,
-        // This rule is made up and should therefore always pass. I assume at some point there
-        // will be a valid rule similar to this that we will want to use.
-        policy.ifAllowed({ rules: [['neutron', 'delete_listener']] })
-      ]);
+    function allowed(item) {
+      var promises = [policy.ifAllowed({ rules: [['neutron', 'delete_listener']] }), statePromise];
+      if (item) {
+        promises.push(qExtensions.booleanAsPromise(!item.default_pool_id));
+      }
+      return $q.all(promises);
     }
 
     function deleteItem(id) {
@@ -120,6 +122,35 @@
           $location.path('project/ngloadbalancersv2/' + loadbalancerId);
         }
       }
+    }
+
+    function checkPermission(item) {
+      return { promise: canBeDeleted(item), context: item };
+    }
+
+    function afterCheck(result) {
+      if (result.fail.length > 0) {
+        toast.add('error', getMessage(notAllowedMessage, result.fail));
+      }
+      if (result.pass.length > 0) {
+        deleteModal.open({ $emit: actionComplete }, result.pass.map(getEntity), context);
+      }
+    }
+
+    function canBeDeleted(item) {
+      return qExtensions.booleanAsPromise(!item.default_pool_id);
+    }
+
+    function getMessage(message, entities) {
+      return interpolate(message, [entities.map(getName).join(", ")]);
+    }
+
+    function getName(result) {
+      return getEntity(result).name;
+    }
+
+    function getEntity(result) {
+      return result.context;
     }
 
   }
