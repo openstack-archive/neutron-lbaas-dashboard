@@ -12,9 +12,15 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import logging
+
 from django.utils.translation import ugettext_lazy as _
 
 import horizon
+
+from openstack_dashboard.api import neutron
+
+LOG = logging.getLogger(__name__)
 
 
 class NGLoadBalancers(horizon.Panel):
@@ -23,20 +29,16 @@ class NGLoadBalancers(horizon.Panel):
     permissions = ('openstack.services.network',)
 
     def allowed(self, context):
-        # TODO(jpomero) temporarily enabling panel for any user
-        # request = context['request']
-        # if not request.user.has_perms(self.permissions):
-        #     return False
-        # try:
-        #     if not neutron.is_service_enabled(request,
-        #                                       config_name='enable_lb',
-        #                                       ext_name='lbaas'):
-        #         return False
-        # except Exception:
-        #     LOG.error("Call to list enabled services failed. This is likely "
-        #               "due to a problem communicating with the Neutron "
-        #               "endpoint. Load Balancers panel will not be displayed")
-        #     return False
-        # if not super(LoadBalancer, self).allowed(context):
-        #     return False
-        return True
+        request = context['request']
+        try:
+            if not neutron.is_service_enabled(request,
+                                              config_name='enable_lb',
+                                              ext_name='lbaasv2'):
+                return False
+        except Exception:
+            LOG.error("Call to list enabled services failed. This is likely "
+                      "due to a problem communicating with the Neutron "
+                      "endpoint. Load Balancers v2 panel will not be "
+                      "displayed")
+            return False
+        return super(NGLoadBalancers, self).allowed(context)
