@@ -96,9 +96,13 @@
       expect(allowed()).toBe(true);
     });
 
-    it('should not allow deleting listener from load balancer in a PENDING state', function() {
+    it('should not allow deleting a listener from load balancer in a PENDING state', function() {
       service.init('1', makePromise(true));
       expect(allowed()).toBe(false);
+    });
+
+    it('should not allow deleting a listener that has a default pool', function() {
+      expect(allowed({default_pool_id: 'pool1'})).toBe(false);
     });
 
     it('should open the delete modal', function() {
@@ -155,6 +159,19 @@
       $scope.$apply();
       expect($location.path).toHaveBeenCalledWith('project/ngloadbalancersv2/1');
       expect(toast.add).toHaveBeenCalledWith('success', 'Deleted listeners: First.');
+    });
+
+    it('should show message if any selected items do not allow for delete (batch)', function() {
+      spyOn(modal, 'open');
+      spyOn(toast, 'add');
+      items[0].default_pool_id = 'pool1';
+      items[1].default_pool_id = 'pool2';
+      service.perform(items);
+      $scope.$apply();
+      expect(modal.open).not.toHaveBeenCalled();
+      expect(toast.add).toHaveBeenCalledWith('error',
+        'The following listeners will not be deleted ' +
+        'due to existing pools: First, Second.');
     });
 
   });
