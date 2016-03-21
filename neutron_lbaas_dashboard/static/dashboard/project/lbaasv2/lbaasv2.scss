@@ -74,3 +74,15 @@
     }
   }
 }
+
+/* Progress indicator in the table while items are loading */
+[table-status] {
+  .progress {
+    margin: 0px auto;
+    width: 25%;
+    height: $line-height-computed;
+    .progress-bar {
+      width: 100%;
+    }
+  }
+}

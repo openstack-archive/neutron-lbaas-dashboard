@@ -1,0 +1,12 @@
+<td ng-if="table.loading || table.error || table.items.length === 0"
+    colspan="{$ columnCount || 100 $}"
+    ng-class="{ 'no-rows-help': !table.loading && !table.error }">
+  <span translate ng-if="!table.loading && !table.error">No items to display.</span>
+  <div class="progress" ng-if="table.loading || table.error">
+    <div class="progress-bar" role="progressbar"
+         ng-class="{ 'progress-bar-striped active': !table.error, 'progress-bar-danger': table.error }">
+      <span ng-if="!table.error" class="sr-only" translate>Loading</span>
+      <span ng-if="table.error" translate>An error occurred. Please try again later.</span>
+    </div>
+  </div>
+</td>

@@ -18,12 +18,17 @@
 
   describe('LBaaS v2 Members Table Controller', function() {
     var controller, lbaasv2API, scope;
-    var items = [];
+    var items = [{ foo: 'bar' }];
+    var apiFail = false;
 
     function fakeAPI() {
       return {
-        success: function(callback) {
-          callback({ items: items });
+        then: function(success, fail) {
+          if (apiFail && fail) {
+            fail();
+          } else {
+            success({ data: { items: items } });
+          }
         }
       };
     }
@@ -60,6 +65,8 @@
       var ctrl = createController();
       expect(ctrl.items).toEqual([]);
       expect(ctrl.src).toEqual(items);
+      expect(ctrl.loading).toBe(false);
+      expect(ctrl.error).toBe(false);
       expect(ctrl.checked).toEqual({});
       expect(ctrl.loadbalancerId).toBeDefined();
       expect(ctrl.listenerId).toBeDefined();
@@ -68,8 +75,16 @@
     });
 
     it('should invoke lbaasv2 apis', function() {
-      createController();
+      var ctrl = createController();
       expect(lbaasv2API.getMembers).toHaveBeenCalled();
+      expect(ctrl.src.length).toBe(1);
+    });
+
+    it('should show error if loading fails', function() {
+      apiFail = true;
+      var ctrl = createController();
+      expect(ctrl.src.length).toBe(0);
+      expect(ctrl.error).toBe(true);
     });
 
   });
