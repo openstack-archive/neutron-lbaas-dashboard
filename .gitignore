@@ -30,6 +30,7 @@ nosetests.xml
 .venv
 node_modules
 coverage*
+test-shim.js
 
 # Translations
 *.mo

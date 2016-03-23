@@ -21,6 +21,7 @@
     "phantomjs": "1.9.17"
   },
   "scripts": {
+    "postinstall": "neutron_lbaas_dashboard/post_install.sh",
     "test": "karma start neutron_lbaas_dashboard/karma.conf.js --single-run",
     "lint": "eslint --no-color neutron_lbaas_dashboard/static"
   },
