@@ -460,7 +460,7 @@
         existingNames[lb.name] = 1;
       });
       var name;
-      var index = 0;
+      var index = response.data.items.length;
       do {
         index += 1;
         name = interpolate(gettext('Load Balancer %(index)s'), { index: index }, true);
@@ -475,7 +475,7 @@
         model.listenerPorts.push(listener.protocol_port);
       });
       var name;
-      var index = 0;
+      var index = response.data.items.length;
       do {
         index += 1;
         name = interpolate(gettext('Listener %(index)s'), { index: index }, true);

@@ -77,7 +77,8 @@
         getLoadBalancers: function() {
           var loadbalancers = [
             { id: '1234', name: 'Load Balancer 1' },
-            { id: '5678', name: 'Load Balancer 2' }
+            { id: '5678', name: 'Load Balancer 2' },
+            { id: '9012', name: 'myLoadBalancer3' }
           ];
 
           var deferred = $q.defer();
@@ -102,7 +103,8 @@
         getListeners: function() {
           var listeners = [
             { id: '1234', name: 'Listener 1', protocol_port: 80 },
-            { id: '5678', name: 'Listener 2', protocol_port: 81 }
+            { id: '5678', name: 'Listener 2', protocol_port: 81 },
+            { id: '9012', name: 'myListener3', protocol_port: 82 }
           ];
 
           var deferred = $q.defer();
@@ -385,7 +387,7 @@
       });
 
       it('should initialize names', function() {
-        expect(model.spec.loadbalancer.name).toBe('Load Balancer 3');
+        expect(model.spec.loadbalancer.name).toBe('Load Balancer 4');
         expect(model.spec.listener.name).toBe('Listener 1');
         expect(model.spec.pool.name).toBe('Pool 1');
       });
@@ -410,7 +412,7 @@
         expect(model.subnets.length).toBe(2);
         expect(model.members.length).toBe(2);
         expect(model.certificates.length).toBe(2);
-        expect(model.listenerPorts.length).toBe(2);
+        expect(model.listenerPorts.length).toBe(3);
         expect(model.spec).toBeDefined();
         expect(model.spec.loadbalancer_id).toBe('1234');
         expect(model.spec.loadbalancer).toBeDefined();
@@ -423,7 +425,7 @@
       });
 
       it('should initialize names', function() {
-        expect(model.spec.listener.name).toBe('Listener 3');
+        expect(model.spec.listener.name).toBe('Listener 4');
         expect(model.spec.pool.name).toBe('Pool 1');
       });
 
@@ -1045,7 +1047,7 @@
       it('should fail to be initialized on subnets error', function() {
         expect(model.initializing).toBe(false);
         expect(model.initialized).toBe(false);
-        expect(model.spec.loadbalancer.name).toBe('Load Balancer 3');
+        expect(model.spec.loadbalancer.name).toBe('Load Balancer 4');
         expect(model.subnets).toEqual([]);
       });
     });
@@ -1204,7 +1206,7 @@
 
         var finalSpec = model.submit();
 
-        expect(finalSpec.loadbalancer.name).toBe('Load Balancer 3');
+        expect(finalSpec.loadbalancer.name).toBe('Load Balancer 4');
         expect(finalSpec.loadbalancer.description).toBeUndefined();
         expect(finalSpec.loadbalancer.ip).toBe('1.2.3.4');
         expect(finalSpec.loadbalancer.subnet).toBe(model.subnets[0].id);
@@ -1262,7 +1264,7 @@
 
         var finalSpec = model.submit();
 
-        expect(finalSpec.loadbalancer.name).toBe('Load Balancer 3');
+        expect(finalSpec.loadbalancer.name).toBe('Load Balancer 4');
         expect(finalSpec.loadbalancer.description).toBeUndefined();
         expect(finalSpec.loadbalancer.ip).toBe('1.2.3.4');
         expect(finalSpec.loadbalancer.subnet).toBe(model.subnets[0].id);
@@ -1448,7 +1450,7 @@
 
         var finalSpec = model.submit();
 
-        expect(finalSpec.listener.name).toBe('Listener 3');
+        expect(finalSpec.listener.name).toBe('Listener 4');
         expect(finalSpec.listener.description).toBeUndefined();
         expect(finalSpec.listener.protocol).toBe('TCP');
         expect(finalSpec.listener.port).toBe(80);
@@ -1501,7 +1503,7 @@
 
         var finalSpec = model.submit();
 
-        expect(finalSpec.listener.name).toBe('Listener 3');
+        expect(finalSpec.listener.name).toBe('Listener 4');
         expect(finalSpec.listener.description).toBeUndefined();
         expect(finalSpec.listener.protocol).toBe('TERMINATED_HTTPS');
         expect(finalSpec.listener.port).toBe(443);
