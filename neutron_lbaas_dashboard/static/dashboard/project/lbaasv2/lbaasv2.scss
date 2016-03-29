@@ -29,19 +29,12 @@
   }
 
   /* The IP addresses list displayed when hovering over the IP address in the
-     available instances table. */
-  .addresses-popover + .popover {
+     available instances table, and any lists in the help panels. */
+  .addresses-popover + .popover,
+  #help-panel {
     ul {
       list-style-type: disc;
       padding-left: 10px;
-    }
-  }
-
-  /* Popover help icons for fields in the wizard */
-  .form-group {
-    span.fa-exclamation-triangle,
-    span.fa-question-circle {
-      color: $gray-light;
     }
   }
 

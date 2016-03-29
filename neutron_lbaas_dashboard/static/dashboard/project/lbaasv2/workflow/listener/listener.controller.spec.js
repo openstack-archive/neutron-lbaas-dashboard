@@ -52,7 +52,6 @@
       it('should define error messages for invalid fields', function() {
         expect(ctrl.portNumberError).toBeDefined();
         expect(ctrl.portUniqueError).toBeDefined();
-        expect(ctrl.certificatesError).toBeDefined();
       });
 
       it('should show certificates step if selecting TERMINATED_HTTPS', function() {

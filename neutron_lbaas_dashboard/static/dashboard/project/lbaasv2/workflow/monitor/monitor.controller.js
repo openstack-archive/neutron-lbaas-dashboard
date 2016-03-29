@@ -49,16 +49,6 @@
     ctrl.statusError = gettext('The expected status code is not valid.');
     ctrl.pathError = gettext('The URL path is not valid.');
 
-    // Field level help text
-    ctrl.statusHelp = gettext('Must be one of a single value, a comma separated list, or a range.');
-    ctrl.intervalHelp = gettext('The delay between health check calls.');
-    ctrl.retryHelp = interpolate(
-      /* eslint-disable max-len */
-      gettext('The number of allowed connection failures before changing the status of the member to %(state)s.'),
-      /* eslint-enable max-len */
-      { state: gettext('Inactive') },
-      true);
-
     // HTTP status codes validation pattern
     ctrl.statusPattern = patterns.httpStatusCodes;
     ctrl.urlPathPattern = patterns.urlPath;
