@@ -20,24 +20,8 @@ var fs = require('fs');
 var path = require('path');
 
 module.exports = function (config) {
-  var xstaticPath;
-  var basePaths = [
-    '../horizon/.venv'
-  ];
-
-  for (var i = 0; i < basePaths.length; i++) {
-    var basePath = path.resolve(basePaths[i]);
-
-    if (fs.existsSync(basePath)) {
-      xstaticPath = basePath + '/lib/python2.7/site-packages/xstatic/pkg/';
-      break;
-    }
-  }
-
-  if (!xstaticPath) {
-    console.error('xStatic libraries not found, please set up venv');
-    process.exit(1);
-  }
+  // This tox venv is setup in the post-install npm step
+  var toxPath = '../.tox/py27/lib/python2.7/site-packages/';
 
   config.set({
     preprocessors: {
@@ -54,7 +38,6 @@ module.exports = function (config) {
       moduleName: 'templates'
     },
 
-    // Assumes you're in the top-level horizon directory.
     basePath: './',
 
     // Contains both source and test files.
@@ -64,38 +47,38 @@ module.exports = function (config) {
        * Contains expected items not provided elsewhere (dynamically by
        * Django or via jasmine template.
        */
-      '../../horizon/test-shim.js',
+      '../test-shim.js',
 
       // from jasmine.html
-      xstaticPath + 'jquery/data/jquery.js',
-      xstaticPath + 'angular/data/angular.js',
-      xstaticPath + 'angular/data/angular-route.js',
-      xstaticPath + 'angular/data/angular-mocks.js',
-      xstaticPath + 'angular/data/angular-cookies.js',
-      xstaticPath + 'angular_bootstrap/data/angular-bootstrap.js',
-      xstaticPath + 'angular_gettext/data/angular-gettext.js',
-      xstaticPath + 'angular/data/angular-sanitize.js',
-      xstaticPath + 'd3/data/d3.js',
-      xstaticPath + 'rickshaw/data/rickshaw.js',
-      xstaticPath + 'angular_smart_table/data/smart-table.js',
-      xstaticPath + 'angular_lrdragndrop/data/lrdragndrop.js',
-      xstaticPath + 'spin/data/spin.js',
-      xstaticPath + 'spin/data/spin.jquery.js',
+      toxPath + 'xstatic/pkg/jquery/data/jquery.js',
+      toxPath + 'xstatic/pkg/angular/data/angular.js',
+      toxPath + 'xstatic/pkg/angular/data/angular-route.js',
+      toxPath + 'xstatic/pkg/angular/data/angular-mocks.js',
+      toxPath + 'xstatic/pkg/angular/data/angular-cookies.js',
+      toxPath + 'xstatic/pkg/angular_bootstrap/data/angular-bootstrap.js',
+      toxPath + 'xstatic/pkg/angular_gettext/data/angular-gettext.js',
+      toxPath + 'xstatic/pkg/angular/data/angular-sanitize.js',
+      toxPath + 'xstatic/pkg/d3/data/d3.js',
+      toxPath + 'xstatic/pkg/rickshaw/data/rickshaw.js',
+      toxPath + 'xstatic/pkg/angular_smart_table/data/smart-table.js',
+      toxPath + 'xstatic/pkg/angular_lrdragndrop/data/lrdragndrop.js',
+      toxPath + 'xstatic/pkg/spin/data/spin.js',
+      toxPath + 'xstatic/pkg/spin/data/spin.jquery.js',
 
       // TODO: These should be mocked.
-      '../../horizon/horizon/static/horizon/js/horizon.js',
+      toxPath + '/horizon/static/horizon/js/horizon.js',
 
       /**
        * Include framework source code from horizon that we need.
        * Otherwise, karma will not be able to find them when testing.
        * These files should be mocked in the foreseeable future.
        */
-      '../../horizon/horizon/static/framework/**/*.module.js',
-      '../../horizon/horizon/static/framework/**/!(*.spec|*.mock).js',
-      '../../horizon/openstack_dashboard/static/**/*.module.js',
-      '../../horizon/openstack_dashboard/static/**/!(*.spec|*.mock).js',
-      '../../horizon/openstack_dashboard/dashboards/**/static/**/*.module.js',
-      '../../horizon/openstack_dashboard/dashboards/**/static/**/!(*.spec|*.mock).js',
+      toxPath + 'horizon/static/framework/**/*.module.js',
+      toxPath + 'horizon/static/framework/**/!(*.spec|*.mock).js',
+      toxPath + 'openstack_dashboard/static/**/*.module.js',
+      toxPath + 'openstack_dashboard/static/**/!(*.spec|*.mock).js',
+      toxPath + 'openstack_dashboard/dashboards/**/static/**/*.module.js',
+      toxPath + 'openstack_dashboard/dashboards/**/static/**/!(*.spec|*.mock).js',
 
       /**
        * First, list all the files that defines application's angular modules.
@@ -116,7 +99,7 @@ module.exports = function (config) {
        * Then, list files for mocks with `mock.js` extension. The order
        * among them should not be significant.
        */
-      '../../horizon/openstack_dashboard/static/**/*.mock.js',
+      toxPath + 'openstack_dashboard/static/**/*.mock.js',
       //'./static/**/*.mock.js',
 
       /**
