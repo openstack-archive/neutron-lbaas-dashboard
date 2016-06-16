@@ -23,6 +23,7 @@ from keystoneclient import session
 
 from horizon.utils.memoized import memoized  # noqa
 
+from openstack_dashboard.api import base
 from openstack_dashboard.api import keystone
 from openstack_dashboard.api.rest import urls
 from openstack_dashboard.api.rest import utils as rest_utils
@@ -31,6 +32,8 @@ from openstack_dashboard.api.rest import utils as rest_utils
 @memoized
 def barbicanclient(request):
     project_id = request.user.project_id
+    region = request.user.services_region
+    endpoint = base.url_for(request, 'key-manager')
     if keystone.get_version() < 3:
         auth = auth_v2.Token(settings.OPENSTACK_KEYSTONE_URL,
                              request.user.token.id,
@@ -41,7 +44,9 @@ def barbicanclient(request):
                              request.user.token.id,
                              project_id=project_id,
                              project_domain_id=domain_id)
-    return barbican_client.Client(session=session.Session(auth=auth))
+    return barbican_client.Client(session=session.Session(auth=auth),
+                                  endpoint=endpoint,
+                                  region_name=region)
 
 
 @urls.register
