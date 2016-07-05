@@ -3,7 +3,7 @@ function neutron_lbaas_dashboard_install {
 }
 
 function neutron_lbaas_dashboard_configure {
-    cp $NEUTRON_LBAAS_DASHBOARD_ENABLE_FILE \
+    cp $NEUTRON_LBAAS_DASHBOARD_ENABLE_FILE_PATH \
         $HORIZON_DIR/openstack_dashboard/local/enabled/
 }
 
@@ -31,5 +31,5 @@ if [[ "$1" == "clean" ]]; then
     # Remember clean.sh first calls unstack.sh
 
     # Remove lbaas-dashboard enabled file and pyc
-    rm -f ${NEUTRON_LBAAS_DASHBOARD_ENABLE_FILE}*
+    rm -f "$HORIZON_DIR"/openstack_dashboard/local/enabled/"$NEUTRON_LBAAS_DASHBOARD_ENABLE_FILE_NAME"*
 fi
