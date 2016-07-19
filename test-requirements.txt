@@ -8,7 +8,7 @@ http://tarballs.openstack.org/horizon/horizon-master.tar.gz#egg=horizon
 coverage>=3.6 # Apache-2.0
 ddt>=1.0.1 # MIT
 discover # BSD
-django-nose>=1.2 # BSD
+django-nose>=1.4.4 # BSD
 python-subunit>=0.0.18 # Apache-2.0/BSD
 nose-exclude # LGPL
 selenium>=2.50.1 # Apache-2.0
