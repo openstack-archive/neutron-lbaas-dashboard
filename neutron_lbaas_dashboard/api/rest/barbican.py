@@ -44,7 +44,13 @@ def barbicanclient(request):
                              request.user.token.id,
                              project_id=project_id,
                              project_domain_id=domain_id)
-    return barbican_client.Client(session=session.Session(auth=auth),
+    insecure = getattr(settings, 'OPENSTACK_SSL_NO_VERIFY', False)
+    cacert = getattr(settings, 'OPENSTACK_SSL_CACERT', None)
+    # If 'insecure' is True, 'verify' is False in all cases; otherwise
+    # pass the cacert path if it is present, or True if no cacert.
+    verify = not insecure and (cacert or True)
+    return barbican_client.Client(session=session.Session(auth=auth,
+                                                          verify=verify),
                                   endpoint=endpoint,
                                   region_name=region)
 
