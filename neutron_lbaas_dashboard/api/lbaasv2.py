@@ -334,6 +334,8 @@ def list_loadbalancers(request, **kwargs):
     vips = neutronclient(request).list_loadbalancers(**kwargs)
     vips = [] if not vips else vips
     vips = vips.get('loadbalancers')
+    lbaas_list = []
+
     for vip in vips:
         listeners = vip.get('listeners')
         listeners = [] if not listeners else listeners
@@ -356,15 +358,16 @@ def list_loadbalancers(request, **kwargs):
                         show_lbaas_healthmonitor(pool.get('healthmonitor_id'),
                                                  **kwargs)
                     health_monitor = health_monitor.get('healthmonitor')
-
+                else:
+                    health_monitor = None
                 members = neutronclient(request).\
                     list_lbaas_members(listener.get('default_pool_id'),
                                        **kwargs)
-
+                lbaas_list.append(LBDetails(vip, listener, pool,
+                                            members, health_monitor))
             except Exception:
                 raise Exception(_("Could not get load balancer list."))
-    return [LBDetails(v, listener, pool, members, health_monitor)
-            for v in vips]
+    return lbaas_list
 
 
 def show_loadbalancer(request, lbaas_loadbalancer, **kwargs):
