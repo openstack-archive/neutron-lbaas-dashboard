@@ -12,7 +12,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import logging
 
 from django.utils.translation import ugettext_lazy as _
 from horizon import exceptions
@@ -23,7 +22,6 @@ from openstack_dashboard.api import nova
 
 from neutron_lbaas_dashboard import api
 
-LOG = logging.getLogger(__name__)
 __create_new__ = "Create New"
 
 

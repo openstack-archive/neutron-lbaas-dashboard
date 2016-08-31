@@ -12,7 +12,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import logging
 
 import re
 
@@ -24,9 +23,6 @@ from django.utils.translation import ugettext_lazy as _
 from horizon import tables
 
 from neutron_lbaas_dashboard import api
-
-
-LOG = logging.getLogger(__name__)
 
 
 class TerminateLoadBalancer(tables.BatchAction):
