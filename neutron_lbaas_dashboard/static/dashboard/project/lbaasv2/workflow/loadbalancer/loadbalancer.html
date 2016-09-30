@@ -43,7 +43,7 @@
           <span class="hz-icon-required fa fa-asterisk"></span>
         </label>
         <select class="form-control" name="subnet" id="subnet"
-                ng-options="subnet.name for subnet in model.subnets"
+                ng-options="subnet.name || subnet.id for subnet in model.subnets"
                 ng-model="model.spec.loadbalancer.subnet" ng-required="true"
                 ng-disabled="model.context.id">
         </select>
