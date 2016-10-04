@@ -1,5 +1,33 @@
 <p translate>
   The health monitor is used to determine the health of your pool members. Health checks
   routinely run against each member within the pool and the result of the health check is used
-  to determine if the member receives new connections.
+  to determine if the member receives new connections. Each pool can only have one health
+  monitor.
+</p>
+<p translate>
+  <strong>Interval:</strong>
+  The interval between health checks. Must be greater than or equal to the timeout.
+</p>
+<p translate>
+  <strong>Retries:</strong>
+  The number of allowed connection failures before marking the member as inactive. Must be a
+  number from 1 to 10.
+</p>
+<p translate>
+  <strong>Timeout:</strong>
+  The time after which a health check times out. Must be a number greater than or equal to 0
+  and less than or equal to the interval.
+</p>
+<p translate>
+  <strong>HTTP method:</strong>
+  The HTTP method used to perform the health check.
+</p>
+<p translate>
+  <strong>Expected status codes:</strong>
+  The expected HTTP status codes to get from a successful health check. Must be a single number,
+  a comma separated list of numbers, or a range (two numbers separated by a hyphen).
+</p>
+<p translate>
+  <strong>URL path:</strong>
+  The target of the health check HTTP request to the member. Must be a valid URL path.
 </p>

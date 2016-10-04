@@ -1,8 +1,28 @@
 <p translate>
-  The Available Instances table contains existing instances that can be added as members of
-  the pool. Use the "Add external member" button to add a member not found in the Available
+  Members are the actual IP addresses that will receive traffic from the load balancer. Each
+  member must have a unique combination of IP address and port.
+</p>
+<p translate>
+  The Available Instances table contains existing compute instances that can be added as members
+  of the pool. Use the "Add external member" button to add a member not found in the Available
   Instances table.
 </p>
 <p translate>
-  Each member must have a unique combination of IP address and port.
+  <strong>IP address:</strong>
+  The IP address of the member to receive traffic from the load balancer. Must be a well-formed
+  IPv4 or IPv6 address.
+</p>
+<p translate>
+  <strong>Subnet:</strong>
+  The network which contains the IP address of the member.
+</p>
+<p translate>
+  <strong>Port:</strong>
+  The port on which the member listens for traffic. Must be a number from 1 to 65535.
+</p>
+<p translate>
+  <strong>Weight:</strong>
+  The weight of a member determines the portion of requests or connections it services compared
+  to the other members of the pool. A higher weight means it will receive more traffic. Must be
+  a number from 1 to 256.
 </p>

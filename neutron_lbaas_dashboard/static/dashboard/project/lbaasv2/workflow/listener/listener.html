@@ -29,11 +29,6 @@
           Protocol
           <span class="hz-icon-required fa fa-asterisk"></span>
         </label>
-        <span class="fa fa-exclamation-triangle invalid"
-            ng-show="model.certificatesError"
-            popover="{$ ::ctrl.certificatesError $}"
-            popover-placement="top" popover-append-to-body="true"
-            popover-trigger="hover"></span>
         <select class="form-control" name="protocol" id="protocol"
                 ng-model="model.spec.listener.protocol" ng-required="true"
                 ng-change="ctrl.protocolChange(model.spec.listener.protocol)"

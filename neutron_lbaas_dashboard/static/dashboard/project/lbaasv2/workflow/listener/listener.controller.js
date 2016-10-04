@@ -44,8 +44,6 @@
     ctrl.portNumberError = gettext('The port must be a number between 1 and 65535.');
     ctrl.portUniqueError = gettext(
         'The port must be unique among all listeners attached to this load balancer.');
-    ctrl.certificatesError = gettext('There was an error obtaining certificates from the ' +
-      'key-manager service. The TERMINATED_HTTPS protocol is unavailable.');
 
     ////////////
 

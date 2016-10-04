@@ -26,7 +26,7 @@
     <div class="col-xs-12 col-sm-8 col-md-6">
       <div class="form-group"
         ng-class="{ 'has-error': loadBalancerDetailsForm.ip.$invalid && loadBalancerDetailsForm.ip.$dirty }">
-        <label translate class="control-label" for="ip">IP Address</label>
+        <label translate class="control-label" for="ip">IP address</label>
         <input name="ip" id="ip" type="text" class="form-control"
                ng-model="model.spec.loadbalancer.ip" ng-pattern="::ctrl.ipPattern"
                ng-disabled="model.context.id">

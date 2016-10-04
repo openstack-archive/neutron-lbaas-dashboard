@@ -36,12 +36,6 @@
         expect(ctrl.pathError).toBeDefined();
       });
 
-      it('should define field level help messages', function() {
-        expect(ctrl.statusHelp).toBeDefined();
-        expect(ctrl.intervalHelp).toBeDefined();
-        expect(ctrl.retryHelp).toBeDefined();
-      });
-
       it('should define patterns for field validation', function() {
         expect(ctrl.statusPattern).toBeDefined();
         expect(ctrl.urlPathPattern).toBeDefined();

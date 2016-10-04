@@ -25,13 +25,9 @@
       <div class="form-group required"
            ng-class="{ 'has-error': monitorDetailsForm.interval.$invalid && monitorDetailsForm.interval.$dirty }">
         <label translate class="control-label" for="interval">
-          Health check interval (sec)
+          Interval (sec)
           <span class="hz-icon-required fa fa-asterisk"></span>
         </label>
-        <span class="fa fa-question-circle pull-right"
-            popover="{$ ::ctrl.intervalHelp $}"
-            popover-placement="top" popover-append-to-body="true"
-            popover-trigger="hover"></span>
         <input name="interval" id="interval" type="number" class="form-control"
                ng-model="model.spec.monitor.interval" ng-pattern="/^\d+$/"
                ng-min="model.spec.monitor.timeout" ng-required="true">
@@ -45,13 +41,9 @@
       <div class="form-group required"
            ng-class="{ 'has-error': monitorDetailsForm.retry.$invalid && monitorDetailsForm.retry.$dirty }">
         <label translate class="control-label" for="retry">
-          Retry count before markdown
+          Retries
           <span class="hz-icon-required fa fa-asterisk"></span>
         </label>
-        <span class="fa fa-question-circle pull-right"
-            popover="{$ ::ctrl.retryHelp $}"
-            popover-placement="top" popover-append-to-body="true"
-            popover-trigger="hover"></span>
         <input name="retry" id="retry" type="number" class="form-control"
                ng-model="model.spec.monitor.retry" ng-pattern="/^\d+$/" min="1" max="10"
                ng-required="true">
@@ -94,11 +86,7 @@
     <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
       <div class="form-group"
            ng-class="{ 'has-error': monitorDetailsForm.status.$invalid && monitorDetailsForm.status.$dirty }">
-        <label translate class="control-label" for="status">Expected HTTP status code</label>
-        <span class="fa fa-question-circle pull-right"
-            popover="{$ ::ctrl.statusHelp $}"
-            popover-placement="top" popover-append-to-body="true"
-            popover-trigger="hover"></span>
+        <label translate class="control-label" for="status">Expected status codes</label>
         <input name="status" id="status" type="text" class="form-control"
                ng-model="model.spec.monitor.status" ng-pattern="::ctrl.statusPattern"
                ng-disabled="model.context.id">
