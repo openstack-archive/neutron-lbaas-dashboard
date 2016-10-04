@@ -18,12 +18,17 @@
 
   describe('LBaaS v2 Listeners Table Controller', function() {
     var controller, lbaasv2API, rowActions, batchActions;
-    var items = [];
+    var items = [{ foo: 'bar' }];
+    var apiFail = false;
 
     function fakeAPI() {
       return {
-        success: function(callback) {
-          callback({ items: items });
+        then: function(success, fail) {
+          if (apiFail && fail) {
+            fail();
+          } else {
+            success({ data: { items: items } });
+          }
         }
       };
     }
@@ -64,6 +69,8 @@
       var ctrl = createController();
       expect(ctrl.items).toEqual([]);
       expect(ctrl.src).toEqual(items);
+      expect(ctrl.loading).toBe(false);
+      expect(ctrl.error).toBe(false);
       expect(ctrl.checked).toEqual({});
       expect(ctrl.loadbalancerId).toEqual('1234');
       expect(rowActions.init).toHaveBeenCalledWith(ctrl.loadbalancerId);
@@ -74,13 +81,16 @@
     });
 
     it('should invoke lbaasv2 apis', function() {
-      createController();
+      var ctrl = createController();
       expect(lbaasv2API.getListeners).toHaveBeenCalled();
+      expect(ctrl.src.length).toBe(1);
     });
 
-    it('should init the rowactions', function() {
-      createController();
-      expect(lbaasv2API.getListeners).toHaveBeenCalled();
+    it('should show error if loading fails', function() {
+      apiFail = true;
+      var ctrl = createController();
+      expect(ctrl.src.length).toBe(0);
+      expect(ctrl.error).toBe(true);
     });
 
   });

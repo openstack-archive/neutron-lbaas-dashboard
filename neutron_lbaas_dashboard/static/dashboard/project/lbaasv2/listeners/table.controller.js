@@ -46,6 +46,8 @@
     var ctrl = this;
     ctrl.items = [];
     ctrl.src = [];
+    ctrl.loading = true;
+    ctrl.error = false;
     ctrl.checked = {};
     ctrl.loadbalancerId = $routeParams.loadbalancerId;
     ctrl.batchActions = batchActions.init(ctrl.loadbalancerId);
@@ -56,11 +58,21 @@
     ////////////////////////////////
 
     function init() {
-      api.getListeners(ctrl.loadbalancerId).success(success);
+      ctrl.src = [];
+      ctrl.loading = true;
+      ctrl.error = false;
+      api.getListeners(ctrl.loadbalancerId).then(success, fail);
     }
 
     function success(response) {
-      ctrl.src = response.items;
+      ctrl.src = response.data.items;
+      ctrl.loading = false;
+    }
+
+    function fail(/*response*/) {
+      ctrl.src = [];
+      ctrl.loading = false;
+      ctrl.error = true;
     }
 
   }

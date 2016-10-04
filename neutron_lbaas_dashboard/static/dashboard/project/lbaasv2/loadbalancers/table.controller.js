@@ -46,6 +46,8 @@
     var ctrl = this;
     ctrl.items = [];
     ctrl.src = [];
+    ctrl.loading = true;
+    ctrl.error = false;
     ctrl.checked = {};
     ctrl.batchActions = batchActions;
     ctrl.rowActions = rowActions;
@@ -57,11 +59,20 @@
     ////////////////////////////////
 
     function init() {
-      api.getLoadBalancers(true).success(success);
+      ctrl.src = [];
+      ctrl.loading = true;
+      api.getLoadBalancers(true).then(success, fail);
     }
 
     function success(response) {
-      ctrl.src = response.items;
+      ctrl.src = response.data.items;
+      ctrl.loading = false;
+    }
+
+    function fail(/*response*/) {
+      ctrl.src = [];
+      ctrl.error = true;
+      ctrl.loading = false;
     }
 
   }
