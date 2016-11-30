@@ -12,8 +12,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from django.views import generic
+from horizon.views import HorizonTemplateView
 
 
-class IndexView(generic.TemplateView):
+class IndexView(HorizonTemplateView):
     template_name = 'project/ngloadbalancersv2/index.html'
+    page_title = 'Load Balancers'
