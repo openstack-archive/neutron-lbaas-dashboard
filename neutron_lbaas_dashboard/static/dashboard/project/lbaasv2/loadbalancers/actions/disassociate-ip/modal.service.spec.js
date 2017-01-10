@@ -50,7 +50,7 @@
           func();
         }
       };
-      $provide.value('$modal', {
+      $provide.value('$uibModal', {
         open: function() {
           return {
             result: fakePromise

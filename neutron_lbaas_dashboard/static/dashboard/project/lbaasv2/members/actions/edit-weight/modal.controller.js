@@ -21,10 +21,10 @@
     .controller('EditWeightModalController', EditWeightModalController);
 
   EditWeightModalController.$inject = [
-    '$modalInstance',
+    '$uibModalInstance',
     'horizon.app.core.openstack-service-api.lbaasv2',
     'horizon.framework.util.i18n.gettext',
-    // Dependencies injected with resolve by $modal.open
+    // Dependencies injected with resolve by $uibModal.open
     'poolId',
     'member'
   ];
@@ -35,7 +35,7 @@
    * @description
    * Controller used by the modal service for editing the weight of a pool member.
    *
-   * @param $modalInstance The angular bootstrap $modalInstance service.
+   * @param $uibModalInstance The angular bootstrap $uibModalInstance service.
    * @param api The LBaaS v2 API service.
    * @param gettext The horizon gettext function for translation.
    * @param poolId The pool ID.
@@ -44,7 +44,7 @@
    * @returns The Edit Weight modal controller.
    */
 
-  function EditWeightModalController($modalInstance, api, gettext, poolId, member) {
+  function EditWeightModalController($uibModalInstance, api, gettext, poolId, member) {
     var ctrl = this;
 
     ctrl.weight = member.weight;
@@ -60,11 +60,11 @@
     }
 
     function cancel() {
-      $modalInstance.dismiss('cancel');
+      $uibModalInstance.dismiss('cancel');
     }
 
     function onSuccess() {
-      $modalInstance.close();
+      $uibModalInstance.close();
     }
 
     function onFailure() {
