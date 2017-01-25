@@ -2,15 +2,16 @@
 # Alexander <ainikitenkov@gmail.com>, 2016. #zanata
 # Andrew <apapsujko@gmail.com>, 2016. #zanata
 # Artem <amikhalev90@gmail.com>, 2016. #zanata
+# Artem <amikhalev90@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: neutron-lbaas-dashboard 1.0.1.dev43\n"
+"Project-Id-Version: neutron-lbaas-dashboard 1.0.1.dev46\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2016-12-28 16:55+0000\n"
+"POT-Creation-Date: 2017-01-24 21:31+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-12-28 03:06+0000\n"
+"PO-Revision-Date: 2017-01-24 01:17+0000\n"
 "Last-Translator: Artem <amikhalev90@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -69,6 +70,70 @@ msgstr ""
 " IPv4 или IPv6."
 
 msgid ""
+"<strong>Interval:</strong>\n"
+"  The interval between health checks. Must be greater than or equal to the "
+"timeout."
+msgstr ""
+"<strong>Интервал:</strong>\n"
+" Интервал между проверками работоспособности. Должен быть не меньше времени "
+"ожидания."
+
+msgid ""
+"<strong>Method:</strong>\n"
+"  The load balancer algorithm that distributes traffic to the pool members.\n"
+"  <ul>\n"
+"    <li>\n"
+"      LEAST_CONNECTIONS: Allocates requests to the instance with the least "
+"number of active\n"
+"      connections.\n"
+"    </li>\n"
+"    <li>\n"
+"      ROUND_ROBIN: Rotates requests evenly between multiple instances.\n"
+"    </li>\n"
+"    <li>\n"
+"      SOURCE_IP: Requests from a unique source IP address are consistently "
+"directed to the same instance.\n"
+"    </li>\n"
+"  </ul>"
+msgstr ""
+"<strong>Алгоритм:</strong>\n"
+"  Алгоритм балансировки, используемый для распределения трафика среди "
+"участников пула.\n"
+"  <ul>\n"
+"    <li>\n"
+"      LEAST_CONNECTIONS: Направляет запросы инстансу с наименьшим "
+"количеством соединений.\n"
+"    </li>\n"
+"    <li>\n"
+"      ROUND_ROBIN: Равномерно распределяет запросы между инстансами.\n"
+"    </li>\n"
+"    <li>\n"
+"      SOURCE_IP: Запросы от одинаковых IP адресов последовательно "
+"направляются на один и тот же инстанс.\n"
+"    </li>\n"
+"  </ul>"
+
+msgid ""
+"<strong>Port:</strong>\n"
+"  The port on which the member listens for traffic. Must be a number from 1 "
+"to 65535."
+msgstr ""
+"<strong>Порт:</strong>\n"
+" Порт, через который участник пула ожидает трафик. Должен быть в диапазоне "
+"между 1 и 65535."
+
+msgid ""
+"<strong>Retries:</strong>\n"
+"  The number of allowed connection failures before marking the member as "
+"inactive. Must be a\n"
+"  number from 1 to 10."
+msgstr ""
+"<strong>Повторы:</strong>\n"
+" Количество допустимых ошибок соединения перед изменением состояния "
+"участника на неактивное. Значение должно\n"
+" быть в диапазоне между 1 и 10."
+
+msgid ""
 "<strong>Subnet:</strong>\n"
 "  The network on which to allocate the load balancer's IP address."
 msgstr ""
@@ -82,6 +147,20 @@ msgstr ""
 "<strong>Подсеть:</strong>\n"
 "  Сеть содержащая IP адрес участников."
 
+msgid ""
+"<strong>Weight:</strong>\n"
+"  The weight of a member determines the portion of requests or connections "
+"it services compared\n"
+"  to the other members of the pool. A higher weight means it will receive "
+"more traffic. Must be\n"
+"  a number from 1 to 256."
+msgstr ""
+"<strong>Вес:</strong>\n"
+" Вес участника определяет долю обслуживаемых запросов или соединений по "
+"отношению к другим участникам пула.\n"
+" Больший вес означает, что участник пула получит больше трафика. Должен быть "
+"в диапазоне между 1 и 256."
+
 msgid "A new health monitor is being created."
 msgstr "Новый монитор работоспособности создается."
 
@@ -93,6 +172,13 @@ msgstr "Новый балансировщик нагрузки создаетс�
 
 msgid "A new pool is being created."
 msgstr "Новый пул создается."
+
+msgid ""
+"A pool represents a group of members over which the load balancing will be "
+"applied."
+msgstr ""
+"Пул представляет собой группу участников, среди которых распределяется "
+"нагрузка."
 
 msgid "Actions"
 msgstr "Действия"
@@ -266,6 +352,9 @@ msgstr "Метод HTTP"
 
 msgid "HTTP method"
 msgstr "Метод HTTP"
+
+msgid "Health Monitor ID"
+msgstr "ИД Монитора Работоспособности"
 
 msgid "ID"
 msgstr "ID"
@@ -481,6 +570,9 @@ msgstr "Предоставить детали для слушателя."
 msgid "Provide the details for the load balancer."
 msgstr "Предоставить детали для балансировщика нагрузки."
 
+msgid "Provide the details for the pool."
+msgstr "Предоставить детали для пула."
+
 msgid "Provider"
 msgstr "Провайдер"
 
@@ -516,6 +608,9 @@ msgstr "Выберите сертификаты из числа доступны
 msgid "Select one or more SSL certificates for the listener."
 msgstr "Выберите один или более SSL сертификатов для службы отчётов."
 
+msgid "Session Persistence"
+msgstr "Постоянство сессии"
+
 msgid "Source IP"
 msgstr "IP-адрес источника"
 
@@ -534,6 +629,12 @@ msgstr "ИД арендатора"
 
 msgid "The IP address is not valid."
 msgstr "IP адрес не действителен."
+
+msgid "The URL path is not valid."
+msgstr "URL не является действительным."
+
+msgid "The expected status code is not valid."
+msgstr "Ожидаемый код состояния невалиден."
 
 #, python-format
 msgid "The following health monitor could not be deleted: %s."
@@ -569,6 +670,10 @@ msgstr ""
 msgid "The following pool could not be deleted: %s."
 msgstr "Данный пул не может быть удален: %s."
 
+msgid "The health check interval must be greater than or equal to the timeout."
+msgstr ""
+"Интервал проверки работоспособности должен быть не меньше времени ожидания."
+
 msgid "The health monitor has been updated."
 msgstr "Монитор работоспособности был обновлен."
 
@@ -577,6 +682,13 @@ msgstr "Получатель был обновлен."
 
 msgid "The load balancer has been updated."
 msgstr "Балансировщик нагрузки был обновлен."
+
+msgid ""
+"The load balancer occupies a neutron network port and has an IP address "
+"assigned from a subnet."
+msgstr ""
+"Балансировщик нагрузки занимает порт в сети Neutron и имеет IP адрес, "
+"выделенный из подсети"
 
 msgid "The max retry count must be a number between 1 and 10."
 msgstr "Количество попыток должно быть в диапазон между 1 и 10."
@@ -590,14 +702,34 @@ msgstr "Элементы пула были изменены."
 msgid "The port must be a number between 1 and 65535."
 msgstr "Значение для порта должно быть в диапозоне между 1 и 65535."
 
+msgid ""
+"The port must be unique among all listeners attached to this load balancer."
+msgstr ""
+"Порт должен быть уникален среди приемников, присоединенных к балансировщику "
+"нагрузки."
+
 msgid "The timeout must be a number greater than or equal to 0."
 msgstr "Значение таймаута должно быть больше или рано 0."
 
 msgid "The weight must be a number between 1 and 256."
 msgstr "Значение веса должно быть в диапозоне между 1 и 256."
 
+msgid ""
+"The weight of a member determines the portion of requests or connections it "
+"services compared to the other members of the pool."
+msgstr ""
+"Вес участника определяет долю обслуживаемых запросов или соединений по "
+"отношению к другим участникам пула."
+
 msgid "Timeout"
 msgstr "Таймаут"
+
+msgid ""
+"Timeout (sec)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Таймаут (сек)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
 
 msgid "Type"
 msgstr "Тип"
@@ -631,6 +763,11 @@ msgstr "Не удалось удалить балансировщик нагру
 
 msgid "Unable to delete pool."
 msgstr "Не удалось удалить пул."
+
+#, python-format
+msgid "Unable to disassociate floating IP address from load balancer: %s."
+msgstr ""
+"Не удаётся отвязать назначаемый IP адрес от балансировщика нагрузки: %s."
 
 msgid "Unable to retrieve SSL certificates."
 msgstr "Не удалось получить SSL сертификаты."
