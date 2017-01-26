@@ -21,10 +21,10 @@
     .controller('AssociateFloatingIpModalController', AssociateFloatingIpModalController);
 
   AssociateFloatingIpModalController.$inject = [
-    '$modalInstance',
+    '$uibModalInstance',
     'horizon.app.core.openstack-service-api.network',
     'horizon.framework.util.i18n.gettext',
-    // Dependencies injected with resolve by $modal.open
+    // Dependencies injected with resolve by $uibModal.open
     'loadbalancer',
     'floatingIps',
     'floatingIpPools'
@@ -37,7 +37,7 @@
    * Controller used by the modal service for associating a floating IP address to a
    * load balancer.
    *
-   * @param $modalInstance The angular bootstrap $modalInstance service.
+   * @param $uibModalInstance The angular bootstrap $uibModalInstance service.
    * @param api The horizon network API service.
    * @param gettext The horizon gettext function for translation.
    * @param loadbalancer The load balancer to associate the floating IP with.
@@ -48,7 +48,7 @@
    */
 
   function AssociateFloatingIpModalController(
-    $modalInstance, api, gettext, loadbalancer, floatingIps, floatingIpPools
+    $uibModalInstance, api, gettext, loadbalancer, floatingIps, floatingIpPools
   ) {
     var ctrl = this;
     var port = loadbalancer.vip_port_id + '_' + loadbalancer.vip_address;
@@ -69,11 +69,11 @@
     }
 
     function cancel() {
-      $modalInstance.dismiss('cancel');
+      $uibModalInstance.dismiss('cancel');
     }
 
     function onSuccess() {
-      $modalInstance.close();
+      $uibModalInstance.close();
     }
 
     function onFailure() {

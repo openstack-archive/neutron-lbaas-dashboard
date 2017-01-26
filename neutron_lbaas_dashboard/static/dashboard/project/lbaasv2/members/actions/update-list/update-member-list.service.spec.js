@@ -56,7 +56,7 @@
           };
         }
       };
-      $provide.value('$modal', modal);
+      $provide.value('$uibModal', modal);
     }));
 
     beforeEach(inject(function ($injector) {

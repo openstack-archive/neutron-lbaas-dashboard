@@ -42,7 +42,7 @@
           };
         }
       };
-      $provide.value('$modal', modal);
+      $provide.value('$uibModal', modal);
       $provide.value('horizon.dashboard.project.lbaasv2.loadbalancers.service', {
         isActionable: function() {
           return $q.when();

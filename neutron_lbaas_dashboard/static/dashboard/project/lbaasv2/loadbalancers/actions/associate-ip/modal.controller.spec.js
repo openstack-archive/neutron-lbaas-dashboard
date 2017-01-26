@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Load Balancers Table Associate IP Controller', function() {
-    var ctrl, network, floatingIps, floatingIpPools, $controller, $modalInstance;
+    var ctrl, network, floatingIps, floatingIpPools, $controller, $uibModalInstance;
     var associateFail = false;
 
     beforeEach(module('horizon.framework.util.i18n'));
@@ -41,7 +41,7 @@
           }
         };
       };
-      $provide.value('$modalInstance', {
+      $provide.value('$uibModalInstance', {
         close: angular.noop,
         dismiss: angular.noop
       });
@@ -64,7 +64,7 @@
     beforeEach(inject(function ($injector) {
       network = $injector.get('horizon.app.core.openstack-service-api.network');
       $controller = $injector.get('$controller');
-      $modalInstance = $injector.get('$modalInstance');
+      $uibModalInstance = $injector.get('$uibModalInstance');
     }));
 
     it('should define controller properties', function() {
@@ -107,11 +107,11 @@
       ctrl = $controller('AssociateFloatingIpModalController');
       ctrl.selected = ctrl.options[0];
       spyOn(network, 'associateFloatingIp').and.callThrough();
-      spyOn($modalInstance, 'close');
+      spyOn($uibModalInstance, 'close');
       ctrl.save();
       expect(ctrl.saving).toBe(true);
       expect(network.associateFloatingIp).toHaveBeenCalledWith('ip2', 'port_address');
-      expect($modalInstance.close).toHaveBeenCalled();
+      expect($uibModalInstance.close).toHaveBeenCalled();
     });
 
     it('should allocate floating IP if floating IP pool selected', function() {
@@ -119,28 +119,28 @@
       ctrl.selected = ctrl.options[1];
       spyOn(network, 'allocateFloatingIp').and.callThrough();
       spyOn(network, 'associateFloatingIp').and.callThrough();
-      spyOn($modalInstance, 'close');
+      spyOn($uibModalInstance, 'close');
       ctrl.save();
       expect(ctrl.saving).toBe(true);
       expect(network.allocateFloatingIp).toHaveBeenCalledWith('pool1');
       expect(network.associateFloatingIp).toHaveBeenCalledWith('foo', 'port_address');
-      expect($modalInstance.close).toHaveBeenCalled();
+      expect($uibModalInstance.close).toHaveBeenCalled();
     });
 
     it('should dismiss modal if cancel clicked', function() {
       ctrl = $controller('AssociateFloatingIpModalController');
-      spyOn($modalInstance, 'dismiss');
+      spyOn($uibModalInstance, 'dismiss');
       ctrl.cancel();
-      expect($modalInstance.dismiss).toHaveBeenCalledWith('cancel');
+      expect($uibModalInstance.dismiss).toHaveBeenCalledWith('cancel');
     });
 
     it('should not dismiss modal if save fails', function() {
       ctrl = $controller('AssociateFloatingIpModalController');
       ctrl.selected = ctrl.options[0];
       associateFail = true;
-      spyOn($modalInstance, 'dismiss');
+      spyOn($uibModalInstance, 'dismiss');
       ctrl.save();
-      expect($modalInstance.dismiss).not.toHaveBeenCalled();
+      expect($uibModalInstance.dismiss).not.toHaveBeenCalled();
       expect(ctrl.saving).toBe(false);
     });
 

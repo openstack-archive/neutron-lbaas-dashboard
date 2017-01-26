@@ -48,7 +48,7 @@
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(module(function($provide) {
-      $provide.value('$modal', {});
+      $provide.value('$uibModal', {});
     }));
 
     beforeEach(inject(function($injector) {

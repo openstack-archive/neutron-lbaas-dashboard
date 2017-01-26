@@ -21,7 +21,7 @@
     .factory('horizon.dashboard.project.lbaasv2.workflow.modal', modalService);
 
   modalService.$inject = [
-    '$modal',
+    '$uibModal',
     'horizon.framework.widgets.toast.service'
   ];
 
@@ -32,12 +32,12 @@
    * @description
    * Provides the service for opening the LBaaS create / edit modal.
    *
-   * @param $modal The angular bootstrap $modal service.
+   * @param $uibModal The angular bootstrap $uibModal service.
    * @param toastService The horizon toast service.
    * @returns The modal service for the LBaaS workflow.
    */
 
-  function modalService($modal, toastService) {
+  function modalService($uibModal, toastService) {
 
     var service = {
       init: init
@@ -93,7 +93,7 @@
             }
           }
         };
-        $modal.open(spec).result.then(onModalClose);
+        $uibModal.open(spec).result.then(onModalClose);
       }
 
       function onModalClose(response) {

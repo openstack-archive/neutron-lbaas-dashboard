@@ -48,7 +48,7 @@
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(module(function($provide) {
-      $provide.value('$modal', {});
+      $provide.value('$uibModal', {});
       $provide.value('horizon.dashboard.project.lbaasv2.members.actions.rowActions', {
         init: function() {
           return {

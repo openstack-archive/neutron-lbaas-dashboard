@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Member Edit Weight Service', function() {
-    var service, policy, $scope, $route, $modal, toast;
+    var service, policy, $scope, $route, $uibModal, toast;
     var member = { id: 'member1' };
 
     var fakePromise = function(response) {
@@ -49,7 +49,7 @@
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(module(function($provide) {
-      $provide.value('$modal', {
+      $provide.value('$uibModal', {
         open: function() {
           return {
             result: fakePromise()
@@ -63,7 +63,7 @@
       toast = $injector.get('horizon.framework.widgets.toast.service');
       $scope = $injector.get('$rootScope').$new();
       $route = $injector.get('$route');
-      $modal = $injector.get('$modal');
+      $uibModal = $injector.get('$uibModal');
       service = $injector.get(
         'horizon.dashboard.project.lbaasv2.members.actions.edit-weight.modal.service');
       service.init('pool1', fakePromise());
@@ -79,18 +79,18 @@
     });
 
     it('should open the modal', function() {
-      spyOn($modal, 'open').and.callThrough();
+      spyOn($uibModal, 'open').and.callThrough();
       service.perform(member);
       $scope.$apply();
-      expect($modal.open.calls.count()).toBe(1);
+      expect($uibModal.open.calls.count()).toBe(1);
     });
 
     it('should resolve data for passing into the modal', function() {
-      spyOn($modal, 'open').and.callThrough();
+      spyOn($uibModal, 'open').and.callThrough();
       service.perform(member);
       $scope.$apply();
 
-      var resolve = $modal.open.calls.argsFor(0)[0].resolve;
+      var resolve = $uibModal.open.calls.argsFor(0)[0].resolve;
       expect(resolve).toBeDefined();
       expect(resolve.poolId()).toBe('pool1');
       expect(resolve.member()).toBe(member);

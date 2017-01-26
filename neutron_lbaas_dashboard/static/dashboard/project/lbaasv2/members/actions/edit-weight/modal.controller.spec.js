@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Member Edit Weight Controller', function() {
-    var ctrl, api, $controller, $modalInstance, $scope, $q;
+    var ctrl, api, $controller, $uibModalInstance, $scope, $q;
     var fail = false;
 
     function makePromise(reject) {
@@ -30,7 +30,7 @@
     beforeEach(module('horizon.dashboard.project.lbaasv2'));
 
     beforeEach(module(function($provide) {
-      $provide.value('$modalInstance', {
+      $provide.value('$uibModalInstance', {
         close: angular.noop,
         dismiss: angular.noop
       });
@@ -49,7 +49,7 @@
     beforeEach(inject(function ($injector) {
       api = $injector.get('horizon.app.core.openstack-service-api.lbaasv2');
       $controller = $injector.get('$controller');
-      $modalInstance = $injector.get('$modalInstance');
+      $uibModalInstance = $injector.get('$uibModalInstance');
       $scope = $injector.get('$rootScope').$new();
       $q = $injector.get('$q');
       ctrl = $controller('EditWeightModalController');
@@ -65,26 +65,26 @@
 
     it('should edit member weight', function() {
       spyOn(api, 'editMember').and.callThrough();
-      spyOn($modalInstance, 'close');
+      spyOn($uibModalInstance, 'close');
       ctrl.save();
       $scope.$apply();
       expect(ctrl.saving).toBe(true);
       expect(api.editMember).toHaveBeenCalledWith('pool1', 'member1', { weight: 1 });
-      expect($modalInstance.close).toHaveBeenCalled();
+      expect($uibModalInstance.close).toHaveBeenCalled();
     });
 
     it('should dismiss modal if cancel clicked', function() {
-      spyOn($modalInstance, 'dismiss');
+      spyOn($uibModalInstance, 'dismiss');
       ctrl.cancel();
-      expect($modalInstance.dismiss).toHaveBeenCalledWith('cancel');
+      expect($uibModalInstance.dismiss).toHaveBeenCalledWith('cancel');
     });
 
     it('should not dismiss modal if save fails', function() {
       fail = true;
-      spyOn($modalInstance, 'dismiss');
+      spyOn($uibModalInstance, 'dismiss');
       ctrl.save();
       $scope.$apply();
-      expect($modalInstance.dismiss).not.toHaveBeenCalled();
+      expect($uibModalInstance.dismiss).not.toHaveBeenCalled();
       expect(ctrl.saving).toBe(false);
     });
 

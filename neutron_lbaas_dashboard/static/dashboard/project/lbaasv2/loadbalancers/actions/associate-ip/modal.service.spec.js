@@ -17,7 +17,7 @@
   'use strict';
 
   describe('LBaaS v2 Load Balancers Table Associate IP Service', function() {
-    var service, policy, $scope, $route, item, $modal, toast;
+    var service, policy, $scope, $route, item, $uibModal, toast;
 
     function allowed(item) {
       spyOn(policy, 'ifAllowed').and.returnValue(true);
@@ -52,7 +52,7 @@
           }
         };
       };
-      $provide.value('$modal', {
+      $provide.value('$uibModal', {
         open: function() {
           return {
             result: fakePromise()
@@ -74,7 +74,7 @@
       toast = $injector.get('horizon.framework.widgets.toast.service');
       $scope = $injector.get('$rootScope').$new();
       $route = $injector.get('$route');
-      $modal = $injector.get('$modal');
+      $uibModal = $injector.get('$uibModal');
       service = $injector.get(
         'horizon.dashboard.project.lbaasv2.loadbalancers.actions.associate-ip.modal.service');
     }));
@@ -94,18 +94,18 @@
     });
 
     it('should open the modal', function() {
-      spyOn($modal, 'open').and.callThrough();
+      spyOn($uibModal, 'open').and.callThrough();
       service.perform(item);
       $scope.$apply();
-      expect($modal.open.calls.count()).toBe(1);
+      expect($uibModal.open.calls.count()).toBe(1);
     });
 
     it('should resolve data for passing into the modal', function() {
-      spyOn($modal, 'open').and.callThrough();
+      spyOn($uibModal, 'open').and.callThrough();
       service.perform(item);
       $scope.$apply();
 
-      var resolve = $modal.open.calls.argsFor(0)[0].resolve;
+      var resolve = $uibModal.open.calls.argsFor(0)[0].resolve;
       expect(resolve).toBeDefined();
       expect(resolve.loadbalancer).toBeDefined();
       expect(resolve.loadbalancer()).toEqual(item);

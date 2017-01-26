@@ -59,7 +59,7 @@
     });
 
     beforeEach(module(function($provide) {
-      $provide.value('$modal', {
+      $provide.value('$uibModal', {
         open: function() {
           return {
             result: makePromise()

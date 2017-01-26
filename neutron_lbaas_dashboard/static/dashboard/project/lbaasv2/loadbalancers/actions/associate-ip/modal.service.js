@@ -23,7 +23,7 @@
 
   modalService.$inject = [
     '$q',
-    '$modal',
+    '$uibModal',
     '$route',
     'horizon.dashboard.project.lbaasv2.basePath',
     'horizon.app.core.openstack-service-api.policy',
@@ -41,7 +41,7 @@
    * Provides the service for the Load Balancer Associate Floating IP action.
    *
    * @param $q The angular service for promises.
-   * @param $modal The angular bootstrap $modal service.
+   * @param $uibModal The angular bootstrap $uibModal service.
    * @param $route The angular $route service.
    * @param basePath The LBaaS v2 module base path.
    * @param policy The horizon policy service.
@@ -55,7 +55,7 @@
 
   function modalService(
     $q,
-    $modal,
+    $uibModal,
     $route,
     basePath,
     policy,
@@ -110,7 +110,7 @@
           }
         }
       };
-      $modal.open(spec).result.then(onModalClose);
+      $uibModal.open(spec).result.then(onModalClose);
     }
 
     function onModalClose() {
