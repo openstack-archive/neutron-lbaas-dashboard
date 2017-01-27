@@ -73,3 +73,6 @@ latex_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 #intersphinx_mapping = {'http://docs.python.org/': None}
+
+# A list of ignored prefixes for module index sorting.
+modindex_common_prefix = ['neutron-lbaas-dashboard.']
