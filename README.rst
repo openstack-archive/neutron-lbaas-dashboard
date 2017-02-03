@@ -16,7 +16,7 @@ Horizon panels for Neutron LBaaS v2
 * Free software: Apache license
 * Documentation: http://docs.openstack.org/developer/neutron-lbaas-dashboard
 * Source: http://git.openstack.org/cgit/openstack/neutron-lbaas-dashboard
-* Bugs: http://bugs.launchpad.net/neutron
+* Bugs: http://bugs.launchpad.net/octavia
 
 Features
 --------
