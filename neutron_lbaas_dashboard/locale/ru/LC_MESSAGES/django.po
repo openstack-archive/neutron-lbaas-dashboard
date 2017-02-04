@@ -1,14 +1,15 @@
 # Artem <amikhalev90@gmail.com>, 2016. #zanata
+# Fedor Tarasenko <feodor.tarasenko@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: neutron-lbaas-dashboard 1.0.1.dev43\n"
+"Project-Id-Version: neutron-lbaas-dashboard 1.0.1.dev55\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2016-12-28 16:56+0000\n"
+"POT-Creation-Date: 2017-02-03 18:54+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-12-28 02:43+0000\n"
-"Last-Translator: Artem <amikhalev90@gmail.com>\n"
+"PO-Revision-Date: 2017-02-03 08:54+0000\n"
+"Last-Translator: Fedor Tarasenko <feodor.tarasenko@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
 "X-Generator: Zanata 3.7.3\n"
@@ -18,6 +19,9 @@ msgstr ""
 #, python-format
 msgid "%s loadbalancers"
 msgstr "%s балансировщики нагрузки"
+
+msgid "Admin Status"
+msgstr "Статус"
 
 msgid "All Instances"
 msgstr "Все инстансы"
@@ -31,17 +35,26 @@ msgstr "Цепочка сертификатов (Необязательно)"
 msgid "Certificate Name"
 msgstr "Имя сертификата"
 
+msgid "Could not create full loadbalancer."
+msgstr "Невозможно создать полноценный балансировщик нагрузки."
+
 msgid "Could not get load balancer list."
 msgstr "Невозможно получить список балансировщиков нагрузки."
 
 msgid "Disable"
 msgstr "Выключить"
 
+msgid "Disabled LB"
+msgstr "Отключённые балансировщики"
+
 msgid "Edit Load Balancer"
 msgstr "Редактировать балансировщик нагрузки"
 
 msgid "Enable"
 msgstr "Включить"
+
+msgid "Enabled LB"
+msgstr "Включённые балансировщики"
 
 msgid "HTTP"
 msgstr "HTTP"
@@ -58,14 +71,23 @@ msgstr "IP-адрес"
 msgid "Instance Port"
 msgstr "Порт инстанса"
 
+msgid "Instance Port on which service is running."
+msgstr "Порт инстанса на котором запущена служба"
+
 msgid "Instances"
 msgstr "Инстансы"
 
+msgid "Intermediate Chain Certificates"
+msgstr "Цепочка промежуточных сертификатов"
+
 msgid "LB Details"
-msgstr "Детали балансировки"
+msgstr "Детали балансировщика"
 
 msgid "LB Port"
 msgstr "Порт балансировки"
+
+msgid "LB Port on which LB is listening."
+msgstr "Порт балансировщика для обработки входящих подключений"
 
 msgid "LB Protocol"
 msgstr "Протокол балансировки"
@@ -79,6 +101,12 @@ msgstr "Запустить балансировщик нагрузки"
 #, python-format
 msgid "Launched %(count)s named \"%(name)s\"."
 msgstr "Запущено %(count)s  \"%(name)s\"."
+
+msgid "Least Connection"
+msgstr "Минимум соединений"
+
+msgid "Least Sessions"
+msgstr "Минимум сессий"
 
 msgid "Load Balancer"
 msgstr "Балансировщик нагрузки"
@@ -113,6 +141,11 @@ msgstr "Нет разрешенных участников."
 msgid "Not available"
 msgstr "Недоступно"
 
+msgid ""
+"Number of times health check should be attempted before marking down a member"
+msgstr ""
+"Количество проверок доступности перед тем, как пометить участника недоступным"
+
 msgid "Operating Status"
 msgstr "Рабочее состояние"
 
@@ -122,8 +155,22 @@ msgstr "Обзор"
 msgid "PING"
 msgstr "PING"
 
+msgid "Please provide all certificate parameters."
+msgstr "Предоставьте все параметры сертификата."
+
 msgid "Please provide instance port"
 msgstr "Укажите порт инстанса"
+
+msgid ""
+"Please select a list of instances that should handle traffic for this target "
+"load balancer. All instances must reside in the same Project as the target "
+"load balancer."
+msgstr ""
+"Выберите инстансы, обрабатывающие трафик целевого балансировщика нагрузки. "
+"Все инстансы должны находиться в том же проекте, что и балансировщик."
+
+msgid "Please select an option for the load balancing method."
+msgstr "Выберите метод балансировки нагрузки."
 
 msgid "Please select at least one member"
 msgstr "Выберите как минимум одного участника"
@@ -140,9 +187,15 @@ msgstr "Предоставьте описание балансировщика �
 msgid "Provisioning Status"
 msgstr "Статус развертывания"
 
+msgid "Receive String"
+msgstr "Строка ответа"
+
 #, python-format
 msgid "Requested IP and port combination already exists %s "
 msgstr "Запрошенная комбинация IP и порта уже существует %s"
+
+msgid "Retry count before markdown"
+msgstr "Количество попыток перед отключением"
 
 msgid "Round Robin"
 msgstr "Циклический"
@@ -156,8 +209,14 @@ msgstr " SSL сертификат"
 msgid "Scheduled termination of"
 msgstr "Запланировано удаление"
 
+msgid "Select from existing VIP IPs"
+msgstr "Выберите из существующих VIP адресов"
+
 msgid "Selected Instances"
 msgstr "Выбранные инстансы"
+
+msgid "Send String"
+msgstr "Строка запроса"
 
 msgid "TCP"
 msgstr "TCP"
@@ -206,8 +265,15 @@ msgstr "Не удалось получить список участников. 
 msgid "Unable to retrieve pools list."
 msgstr "Не удалось получить список пулов."
 
+msgid "Unable to retrieve vips."
+msgstr "Невозможно получить список VIP"
+
 msgid "Update"
 msgstr "Обновить"
+
+#, python-format
+msgid "Updated load balancer \"%s\"."
+msgstr "Обновлён балансировщик \"%s\"."
 
 msgid "loadbalancer"
 msgstr "балансировщик нагрузки"
