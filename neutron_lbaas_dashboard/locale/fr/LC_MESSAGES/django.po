@@ -1,18 +1,19 @@
 # Gérald LONLAS <g.lonlas@gmail.com>, 2016. #zanata
 # Corinne Verheyde <cverheyd@gmail.com>, 2017. #zanata
+# JF Taltavull <jftalta@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: neutron-lbaas-dashboard 1.0.1.dev52\n"
+"Project-Id-Version: neutron-lbaas-dashboard 2.0.1.dev8\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2017-01-26 23:11+0000\n"
+"POT-Creation-Date: 2017-04-07 17:06+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-01-29 11:01+0000\n"
-"Last-Translator: Corinne Verheyde <cverheyd@gmail.com>\n"
+"PO-Revision-Date: 2017-03-23 08:09+0000\n"
+"Last-Translator: JF Taltavull <jftalta@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"X-Generator: Zanata 3.7.3\n"
+"X-Generator: Zanata 3.9.6\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #, python-format
@@ -28,11 +29,14 @@ msgstr "Toutes les instances"
 msgid "Certificate"
 msgstr "Certificat"
 
+msgid "Certificate Chain (Optional)"
+msgstr "Chaîne de certificats (facultatif)"
+
 msgid "Certificate Name"
 msgstr "Nom du certificat"
 
 msgid "Could not create full loadbalancer."
-msgstr "Impossible de créer un répartiteurs de charge complet"
+msgstr "Impossible de créer un répartiteur de charge complet"
 
 msgid "Could not get load balancer list."
 msgstr "Impossible de charger la liste des répartiteurs de charge"
@@ -41,7 +45,7 @@ msgid "Disable"
 msgstr "Désactiver"
 
 msgid "Disabled LB"
-msgstr "Désactiver le LB"
+msgstr "LB désactivés"
 
 msgid "Edit Load Balancer"
 msgstr "Éditer le répartiteur de charge"
@@ -50,7 +54,7 @@ msgid "Enable"
 msgstr "Activer"
 
 msgid "Enabled LB"
-msgstr "Activer le LB"
+msgstr "LB activés"
 
 msgid "HTTP"
 msgstr "HTTP"
@@ -59,7 +63,7 @@ msgid "HTTPS"
 msgstr "HTTPS"
 
 msgid "Health Check Interval (in seconds)"
-msgstr "Interval (en secondes) de l'état de santé"
+msgstr "Intervalle de test de l'état de santé (en secondes)"
 
 msgid "IP"
 msgstr "IP"
@@ -73,6 +77,9 @@ msgstr "Port de l'instance sur lequel le service tourne."
 msgid "Instances"
 msgstr "Instances"
 
+msgid "Intermediate Chain Certificates"
+msgstr "Certificats intermédiaires de la chaîne"
+
 msgid "LB Details"
 msgstr "Détails du LB"
 
@@ -83,7 +90,7 @@ msgid "LB Port on which LB is listening."
 msgstr "Port sur lequel le LB écoute"
 
 msgid "LB Protocol"
-msgstr "Protocole du LB"
+msgstr "Protocole de LB"
 
 msgid "Launch"
 msgstr "Démarrer"
@@ -94,6 +101,12 @@ msgstr "Démarrer le répartiteur de charge"
 #, python-format
 msgid "Launched %(count)s named \"%(name)s\"."
 msgstr "%(count)s instance(s) nommée(s) \"%(name)s\" ont été lancée(s)."
+
+msgid "Least Connection"
+msgstr "Moins de connexions"
+
+msgid "Least Sessions"
+msgstr "Moins de sessions"
 
 msgid "Load Balancer"
 msgstr "Répartiteur de charge"
@@ -108,7 +121,7 @@ msgid "Load Balancers V2"
 msgstr "Répartiteurs de charge V2"
 
 msgid "Load Balancing Method"
-msgstr "Méthode d'équilibrage de charge"
+msgstr "Méthode de répartition de charge"
 
 msgid "Method"
 msgstr "Méthode"
@@ -131,8 +144,8 @@ msgstr "Non disponible"
 msgid ""
 "Number of times health check should be attempted before marking down a member"
 msgstr ""
-"Nombre de fois où nous devons vérifier l'état de santé avant de marquer le "
-"membre comme mort."
+"Nombre de tentatives de vérification de l'état de santé avant d'exclure un "
+"membre."
 
 msgid "Operating Status"
 msgstr "Statut opérationnel"
@@ -144,16 +157,25 @@ msgid "PING"
 msgstr "PING"
 
 msgid "Please provide all certificate parameters."
-msgstr "Merci de fournir tous les paramètres du certificat."
+msgstr "Fournir tous les paramètres du certificat."
 
 msgid "Please provide instance port"
-msgstr "Merci de fournir le port de l'instance"
+msgstr "Fournir le port de l'instance"
+
+msgid ""
+"Please select a list of instances that should handle traffic for this target "
+"load balancer. All instances must reside in the same Project as the target "
+"load balancer."
+msgstr ""
+"Sélectionner une liste d'instances qui géreront le trafic pour ce "
+"répartiteur de charge. Toutes les instances doivent être localisées dans le "
+"même Projet que le répartiteur de charge."
 
 msgid "Please select an option for the load balancing method."
 msgstr "Sélectionner une option pour la méthode de répartition de charge."
 
 msgid "Please select at least one member"
-msgstr "Merci de sélectionner au moins un membre"
+msgstr "Sélectionner au moins un membre"
 
 msgid "Private Key"
 msgstr "Clé privée"
@@ -162,44 +184,47 @@ msgid "Protocol"
 msgstr "Protocole"
 
 msgid "Provide Load Balancer Description."
-msgstr "Fournir une description pour le répartiteur de charge"
+msgstr "Fournir une description du répartiteur de charge"
 
 msgid "Provisioning Status"
-msgstr "Statut de Déploiement"
+msgstr "Statut du provisioning"
 
 msgid "Receive String"
-msgstr "Chaine de caractères reçue"
+msgstr "Chaîne de caractères à recevoir"
 
-#, fuzzy
+#, python-format
+msgid "Requested IP and port combination already exists %s "
+msgstr "La combinaison IP et port demandée existe déjà %s"
+
 msgid "Retry count before markdown"
-msgstr "Nombre d'essai avant de marquer"
+msgstr "Nombre de tentatives avant d'exclure"
 
 msgid "Round Robin"
 msgstr "Round Robin"
 
 msgid "SSL"
-msgstr "pas de support du ssl"
+msgstr "SSL"
 
 msgid "SSL Certificate"
 msgstr "Certificat SSL"
 
 msgid "Scheduled termination of"
-msgstr "Planification de la fin de"
+msgstr "Fin planifiée de "
 
 msgid "Select from existing VIP IPs"
-msgstr "Sélection depuis les IPs VIP existantes"
+msgstr "Sélectionner parmi les VIP existantes"
 
 msgid "Selected Instances"
 msgstr "Instances selectionnées"
 
 msgid "Send String"
-msgstr "Chaine de caractères envoyée"
+msgstr "Chaîne de caractères à envoyer"
 
 msgid "TCP"
 msgstr "TCP"
 
 msgid "Terminate"
-msgstr "Terminé"
+msgstr "Terminer"
 
 #, python-format
 msgid "Unable to get VIP for pool %(pool)s."

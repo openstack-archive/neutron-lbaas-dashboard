@@ -1,0 +1,699 @@
+# Eunseop Shin <kairos9603@khu.ac.kr>, 2017. #zanata
+# Hyeunjee Kim <beyond.torvalds@gmail.com>, 2017. #zanata
+# Sungjin Kang <gang.sungjin@gmail.com>, 2017. #zanata
+msgid ""
+msgstr ""
+"Project-Id-Version: neutron-lbaas-dashboard 2.0.1.dev8\n"
+"Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
+"POT-Creation-Date: 2017-04-07 17:06+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-02-07 11:47+0000\n"
+"Last-Translator: Sungjin Kang <gang.sungjin@gmail.com>\n"
+"Language-Team: Korean (South Korea)\n"
+"Language: ko-KR\n"
+"X-Generator: Zanata 3.9.6\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+#, python-format
+msgid "%(ip)s..."
+msgstr "%(ip)s..."
+
+msgid "A new health monitor is being created."
+msgstr "새로운 상태 모니터를 생성하고 있습니다."
+
+msgid "A new listener is being created."
+msgstr "새로운 리스너를 생성하고 있습니다."
+
+msgid "A new load balancer is being created."
+msgstr "새로운 로드 밸런서를 생성하고 있습니다."
+
+msgid "A new pool is being created."
+msgstr "새로운 풀이 생성되었습니다."
+
+msgid "Actions"
+msgstr "작업"
+
+msgid "Active"
+msgstr "활성화됨"
+
+msgid "Add"
+msgstr "추가"
+
+msgid "Add external member"
+msgstr "외부 멤버 추가"
+
+msgid "Add members to the load balancer pool."
+msgstr "로드 밸런서 풀에 멤버를 추가합니다."
+
+msgid "Add/Remove Pool Members"
+msgstr "풀 맴버 추가/삭제"
+
+msgid "Address"
+msgstr "주소"
+
+msgid "Admin State Up"
+msgstr "관리자 업 상태"
+
+msgid "Allocated Members"
+msgstr "허용된 멤버"
+
+msgid "An error occurred. Please try again later."
+msgstr "오류가 발생했습니다. 나중에 다시 시도하십시오."
+
+msgid "Associate"
+msgstr "연결"
+
+msgid "Associate Floating IP"
+msgstr "유동 IP 연결"
+
+msgid "Associate Floating IP Address"
+msgstr "유동 IP 주소와 연결"
+
+msgid "Associating floating IP with load balancer."
+msgstr "유동 IP와 로드 밸런서 연결"
+
+msgid "Available Instances"
+msgstr "사용 가능한 인스턴스"
+
+msgid "Cancel"
+msgstr "취소"
+
+msgid "Certificate Name"
+msgstr "인증서 이름"
+
+msgid "Confirm Delete Health Monitor"
+msgstr "상태 모니터 삭제 확인"
+
+msgid "Confirm Delete Listeners"
+msgstr "리스너 삭제 확인"
+
+msgid "Confirm Delete Load Balancers"
+msgstr "로드 밸런서 삭제 확인"
+
+msgid "Confirm Delete Pool"
+msgstr "풀 삭제 확인"
+
+msgid "Confirm Disassociate Floating IP Address"
+msgstr "유동 IP 주소 연결 해제 확인"
+
+msgid "Connection Limit"
+msgstr "연결 제한"
+
+msgid "Create Health Monitor"
+msgstr "상태 모니터 생성"
+
+msgid "Create Listener"
+msgstr "리스너 생성"
+
+msgid "Create Load Balancer"
+msgstr "로드 밸런서 생성"
+
+msgid "Create Pool"
+msgstr "풀 생성"
+
+msgid "Default Pool ID"
+msgstr "기본 풀 ID"
+
+msgid "Degraded"
+msgstr "퇴화한"
+
+msgid "Delay"
+msgstr "지연"
+
+msgid "Delete Health Monitor"
+msgstr "상태 모니터 삭제"
+
+msgid "Delete Listener"
+msgstr "리스너 삭제"
+
+msgid "Delete Listeners"
+msgstr "리스너 삭제"
+
+msgid "Delete Load Balancer"
+msgstr "로드 밸런서 삭제"
+
+msgid "Delete Load Balancers"
+msgstr "로드 밸런서 삭제"
+
+msgid "Delete Pool"
+msgstr "풀 삭제"
+
+#, python-format
+msgid "Deleted health monitor: %s."
+msgstr "상태 모니터 %s를 삭제하였습니다."
+
+#, python-format
+msgid "Deleted listeners: %s."
+msgstr "삭제된 리스너 : %s."
+
+#, python-format
+msgid "Deleted load balancers: %s."
+msgstr "삭제된 로드 밸런서: %s."
+
+#, python-format
+msgid "Deleted pool: %s."
+msgstr "삭제된 풀: %s."
+
+msgid "Description"
+msgstr "설명"
+
+msgid "Disassociate"
+msgstr "연결 해제"
+
+msgid "Disassociate Floating IP"
+msgstr "유동 IP 연결 해제"
+
+#, python-format
+msgid "Disassociated floating IP address from load balancer: %s."
+msgstr "유동 IP 주소를 로드 밸런서에서 연결 해제됨 : %s."
+
+msgid "Edit"
+msgstr "편집"
+
+msgid "Edit Pool"
+msgstr "풀 편집"
+
+msgid "Error"
+msgstr "에러"
+
+msgid "Expected Codes"
+msgstr "예상 코드"
+
+msgid "Expected status codes"
+msgstr "예상된 상태 코드"
+
+msgid "Expiration Date"
+msgstr "만기 일자"
+
+msgid "Floating IP Address"
+msgstr "유동 IP 주소"
+
+msgid ""
+"Floating IP address or pool\n"
+"            <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"유동 IP  주소 또는 풀\n"
+"            <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Floating IP addresses"
+msgstr "유동 IP 주소"
+
+msgid "Floating IP pools"
+msgstr "유동 IP 풀"
+
+msgid "HTTP Method"
+msgstr "HTTP 메서드"
+
+msgid "HTTP method"
+msgstr "HTTP 메서드"
+
+msgid "Health Monitor ID"
+msgstr "상태 모니터 ID"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "IP Address"
+msgstr "IP 주소"
+
+#, python-format
+msgid "IP Addresses (%(count)s)"
+msgstr "IP 주소 (%(count)s)"
+
+msgid "IP address"
+msgstr "IP 주소"
+
+msgid ""
+"Interval (sec)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"인터벌 (초)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Least Connections"
+msgstr "최소 연결"
+
+#, python-format
+msgid "Listener %(index)s"
+msgstr "리스너 %(index)s"
+
+msgid "Listener 1"
+msgstr "리스너 1"
+
+msgid "Listener Details"
+msgstr "리스너 세부정보"
+
+msgid "Listener ID"
+msgstr "리스너 ID"
+
+msgid "Listeners"
+msgstr "리스너 삭제"
+
+#, python-format
+msgid "Load Balancer %(index)s"
+msgstr "로드 밸런서 %(index)s"
+
+msgid "Load Balancer Algorithm"
+msgstr "로드 밸런서 알고리즘"
+
+msgid "Load Balancer Details"
+msgstr "로드 밸런서 세부정보"
+
+msgid "Load Balancer ID"
+msgstr "로드 밸런서 ID"
+
+msgid "Load Balancers"
+msgstr "로드 밸런서들"
+
+msgid "Loading"
+msgstr "불러오는 중"
+
+msgid "Max Retries"
+msgstr "최대 재시도"
+
+msgid "Member ID"
+msgstr "맴버 ID"
+
+msgid "Members"
+msgstr "맴버"
+
+msgid ""
+"Method\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"메소드\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Monitor Details"
+msgstr "모니터 세부정보"
+
+msgid "Monitor ID"
+msgstr "Monitor ID"
+
+msgid ""
+"Monitor type\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"모니터 타입\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Name"
+msgstr "이름"
+
+msgid "No available certificates"
+msgstr "이용 가능한 인증서 없음"
+
+msgid "No available instances"
+msgstr "사용 가능한 인스턴스가 없음"
+
+msgid "No items to display."
+msgstr "표시할 항목이 없습니다."
+
+msgid "None"
+msgstr "None"
+
+msgid "Offline"
+msgstr "오프라인"
+
+msgid "Online"
+msgstr "온라인"
+
+msgid "Operating Status"
+msgstr "운영 상태"
+
+msgid "Overview"
+msgstr "개요"
+
+msgid "Pending Create"
+msgstr "생성 대기중"
+
+msgid "Pending Delete"
+msgstr "삭제 대기중"
+
+msgid "Pending Update"
+msgstr "업데이트 대기중"
+
+msgid "Pool 1"
+msgstr "풀 1"
+
+msgid "Pool Details"
+msgstr "풀 세부정보"
+
+msgid "Pool ID"
+msgstr "풀 ID"
+
+msgid "Pool Members"
+msgstr "풀 맴버"
+
+msgid "Pool member weight has been updated."
+msgstr "풀 멤버의 가중치가 업데이트 되었습니다."
+
+msgid "Port"
+msgstr "포트"
+
+msgid ""
+"Port\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"포트\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Port ID"
+msgstr "포트 ID"
+
+msgid "Protocol"
+msgstr "프로토콜"
+
+msgid ""
+"Protocol\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"프로토콜\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Protocol Port"
+msgstr "프로토콜 포트"
+
+msgid "Provide the details for the listener."
+msgstr "Listener 에 대한 자세한 정보를 작성하십시오."
+
+msgid "Provider"
+msgstr "프로바이더"
+
+msgid "Provisioning Status"
+msgstr "프로비저닝 상태"
+
+msgid "Remove"
+msgstr "제거"
+
+msgid ""
+"Retries\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"재시도\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Round Robin"
+msgstr "Round Robin"
+
+msgid "SSL Certificates"
+msgstr "SSL 인증서"
+
+msgid "Select certificates from the available certificates below"
+msgstr "아래의 이용가능한 인증서 중에서 선택"
+
+msgid "Select one or more SSL certificates for the listener."
+msgstr "Listener 에 대한 하나 이상의 SSL 인증서를 선택하십시오."
+
+msgid "Session Persistence"
+msgstr "세션 지속성"
+
+msgid "Source IP"
+msgstr "소스 IP"
+
+msgid ""
+"Subnet\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"서브넷\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Subnet ID"
+msgstr "서브넷 ID"
+
+msgid "Tenant ID"
+msgstr "Tenant ID"
+
+msgid "The IP address is not valid."
+msgstr "올바른 IP 주소가 아닙니다."
+
+msgid "The URL path is not valid."
+msgstr "URL 경로가 올바르지 않습니다."
+
+#, python-format
+msgid "The following health monitor could not be deleted: %s."
+msgstr "상태 모니터 %s는 삭제할 수 없습니다."
+
+#, python-format
+msgid ""
+"The following listeners could not be deleted, possibly due to existing "
+"pools: %s."
+msgstr "리스너 %s는 존재하는 Pool들 때문에 삭제할 수 없습니다."
+
+#, python-format
+msgid "The following listeners will not be deleted due to existing pools: %s."
+msgstr "리스너 %s는 존재하는 Pool들 때문에 삭제되지 않을 것입니다."
+
+#, python-format
+msgid "The following load balancers are pending and cannot be deleted: %s."
+msgstr "다음 로드 밸런싱는 보류 중이며 삭제할 수 없습니다: %s."
+
+#, python-format
+msgid ""
+"The following load balancers could not be deleted, possibly due to existing "
+"listeners: %s."
+msgstr ""
+"다음 로드 밸런서는 존재하는 다음 리스너들 때문에 삭제 할 수 없습니다: %s."
+
+#, python-format
+msgid "The following pool could not be deleted: %s."
+msgstr "다음 풀은 삭제할 수 없습니다: %s."
+
+msgid "The health monitor has been updated."
+msgstr "상태 모니터가 업데이트 되었습니다."
+
+msgid "The listener has been updated."
+msgstr "리스너가 업데이트 되었습니다."
+
+msgid "The load balancer has been updated."
+msgstr "로드 밸런서가 업데이트 되었습니다."
+
+msgid "The max retry count must be a number between 1 and 10."
+msgstr "최대 재시도 횟수는 1 ~ 10회입니다."
+
+msgid "The pool has been updated."
+msgstr "풀이 업데이트 되었습니다."
+
+msgid "The pool members have been updated."
+msgstr "풀 멤버가 업데이트 되었습니다."
+
+msgid "The port must be a number between 1 and 65535."
+msgstr "포트 번호는 1 ~ 65535 사이 숫자를 사용해야 합니다."
+
+msgid "The timeout must be a number greater than or equal to 0."
+msgstr "타임아웃 시간은 0 이거나 보다 커야됩니다."
+
+msgid "The weight must be a number between 1 and 256."
+msgstr "가중치는 반드시 숫자 1과 256사이여야 합니다."
+
+msgid ""
+"The weight of a member determines the portion of requests or connections it "
+"services compared to the other members of the pool."
+msgstr ""
+"맴버의 가중치는 풀의 다른 맴버와 비교하여 서비스의 요청이나 연결 부분을 결정"
+"합니다."
+
+msgid "Timeout"
+msgstr "제한시간"
+
+msgid ""
+"Timeout (sec)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Timeout (초)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Type"
+msgstr "타입"
+
+msgid "URL Path"
+msgstr "URL 경로"
+
+msgid "URL path"
+msgstr "URL 경로"
+
+msgid "Unable to create health monitor."
+msgstr "상태 모니터를 생성할 수 없습니다."
+
+msgid "Unable to create listener."
+msgstr "리스너를 생성할 수 없습니다."
+
+msgid "Unable to create load balancer."
+msgstr "로드 밸런서를 생성할 수 없습니다."
+
+msgid "Unable to create pool."
+msgstr "풀을 생성할 수 없습니다."
+
+msgid "Unable to delete health monitor."
+msgstr "상태 모니터를 삭제할 수 없습니다."
+
+msgid "Unable to delete listener."
+msgstr "수신 대기자리스너를 삭제할 수 없습니다."
+
+msgid "Unable to delete load balancer."
+msgstr "로드 밸런서를 삭제할 수 없습니다."
+
+msgid "Unable to delete pool."
+msgstr "풀을 삭제할 수 없습니다."
+
+#, python-format
+msgid "Unable to disassociate floating IP address from load balancer: %s."
+msgstr "다음 로드 밸런서에서 유동 IP를 연결 해제 할 수 없습니다: %s"
+
+msgid "Unable to retrieve SSL certificates."
+msgstr "SSL 인증을 찾을 수 없습니다."
+
+msgid "Unable to retrieve health monitor."
+msgstr "상태 모니터를 검색할 수 없습니다."
+
+msgid "Unable to retrieve listener."
+msgstr "리스너를 검색할 수 없습니다."
+
+msgid "Unable to retrieve listeners."
+msgstr "리스너들을 검색할 수 없습니다."
+
+msgid "Unable to retrieve load balancer."
+msgstr "로드 밸런서를 검색할 수 없습니다."
+
+msgid "Unable to retrieve load balancers."
+msgstr "로드 밸런서들을 검색할 수 없습니다."
+
+msgid "Unable to retrieve member."
+msgstr "멤버를 검색할 수 없습니다."
+
+msgid "Unable to retrieve members."
+msgstr "멤버들을 검색할 수 없습니다."
+
+msgid "Unable to retrieve pool."
+msgstr "풀을 검색할 수 없습니다."
+
+msgid "Unable to retrieve secrets."
+msgstr "비밀을 찾을 수 없습니다."
+
+msgid "Unable to update health monitor."
+msgstr "상태 모니터를 업데이트할 수 없습니다."
+
+msgid "Unable to update listener."
+msgstr "리스너를 업데이트할 수 없습니다."
+
+msgid "Unable to update load balancer."
+msgstr "로드 밸런서를 업데이트할 수 없습니다. "
+
+msgid "Unable to update member list."
+msgstr "멤버 목록을 업데이트할 수 없습니다."
+
+msgid "Unable to update member."
+msgstr "멤버를 업데이트할 수 없습니다."
+
+msgid "Unable to update pool."
+msgstr "풀을 업데이트할 수 없습니다."
+
+msgid "Update"
+msgstr "업데이트"
+
+msgid "Update Health Monitor"
+msgstr "상태 모니터 갱신"
+
+msgid "Update Listener"
+msgstr "리스너 업데이트"
+
+msgid "Update Load Balancer"
+msgstr "로드 밸런서 업데이트"
+
+msgid "Update Member Weight"
+msgstr "맴버 가중치 업데이트"
+
+msgid "Update Pool"
+msgstr "풀 업데이트"
+
+msgid "Update Weight"
+msgstr "가중치 업데이트"
+
+msgid ""
+"Use the key-manager service to create any certificate containers before "
+"creating the listener.\n"
+"  The following documentation provides information on how to create a "
+"certificate container:\n"
+"  <ul>\n"
+"    <li>\n"
+"      <a target=\"_blank\" href=\"http://developer.openstack.org/api-guide/"
+"key-manager/containers.html#certificate-containers\">\n"
+"        Key Manager API Guide: Creating a Certificate Container\n"
+"      </a>\n"
+"    </li>\n"
+"    <li>\n"
+"      <a target=\"_blank\" href=\"http://docs.openstack.org/cli-reference/"
+"barbican.html\">\n"
+"        Key Manager Service Command-Line Client\n"
+"      </a>\n"
+"    </li>\n"
+"  </ul>"
+msgstr ""
+"리스너를 생성하기 전에 키 관리자 서비스를 사용하여 인증 컨테이너를 만드세"
+"요.\n"
+"  다음 문서가 어떻게 인증 컨테이너를 만들수 있는지 정보를 제공합니다.\n"
+"  <ul>\n"
+"    <li>\n"
+"      <a target=\"_blank\" href=\"http://developer.openstack.org/api-guide/"
+"key-manager/containers.html#certificate-containers\">\n"
+"        키 관리자 API 가이드: 인증 컨테이너 생성하기\n"
+"      </a>\n"
+"    </li>\n"
+"    <li>\n"
+"      <a target=\"_blank\" href=\"http://docs.openstack.org/cli-reference/"
+"barbican.html\">\n"
+"        키 매니저 서비스 Command-Line Client\n"
+"      </a>\n"
+"    </li>\n"
+"  </ul>"
+
+msgid "Weight"
+msgstr "가충치"
+
+msgid ""
+"Weight\n"
+"            <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"가중치\n"
+"            <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+#, python-format
+msgid ""
+"You are about to disassociate the floating IP address from load balancer \"%s"
+"\". Please confirm."
+msgstr ""
+"유동 IP 주소를 로드 밸런서 \"%s\"에서 연결 해제 하려 했습니다. 확인해주세요. "
+
+#, python-format
+msgid ""
+"You have selected \"%s\". Please confirm your selection. Deleted health "
+"monitors are not recoverable."
+msgstr ""
+"\"%s\"을(를) 선택했습니다. 선택을 확인하십시오. 삭제한 상태 모니터는 복구할 "
+"수 없습니다."
+
+#, python-format
+msgid ""
+"You have selected \"%s\". Please confirm your selection. Deleted listeners "
+"are not recoverable."
+msgstr ""
+"\"%s\"을(를) 선택했습니다. 선택을 확인하십시오. 삭제한 리스너는 복구할 수 없"
+"습니다."
+
+#, python-format
+msgid ""
+"You have selected \"%s\". Please confirm your selection. Deleted load "
+"balancers are not recoverable."
+msgstr ""
+"\"%s\"를 선택했습니다. 선택을 확인하십시오. 삭제한 로드 밸런서는 복구되지 않"
+"습니다."
+
+#, python-format
+msgid ""
+"You have selected \"%s\". Please confirm your selection. Deleted pools are "
+"not recoverable."
+msgstr ""
+"\"%s\"을(를) 선택했습니다. 선택을 확인하십시오. 삭제한 풀은 복구할 수 없습니"
+"다."
