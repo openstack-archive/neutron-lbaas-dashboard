@@ -1,0 +1,1017 @@
+# Andreas Jaeger <jaegerandi@gmail.com>, 2017. #zanata
+# işbaran akçayır <isbaran@gmail.com>, 2017. #zanata
+msgid ""
+msgstr ""
+"Project-Id-Version: neutron-lbaas-dashboard 3.0.0.0b2.dev5\n"
+"Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
+"POT-Creation-Date: 2017-05-17 11:48+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-06-19 11:58+0000\n"
+"Last-Translator: Andreas Jaeger <jaegerandi@gmail.com>\n"
+"Language-Team: Turkish (Turkey)\n"
+"Language: tr-TR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Zanata 3.9.6\n"
+"X-POOTLE-MTIME: 1495542946.000000\n"
+
+#, python-format
+msgid "%(ip)s..."
+msgstr "%(ip)s..."
+
+msgid ""
+"<strong>Expected status codes:</strong>\n"
+"  The expected HTTP status codes to get from a successful health check. Must "
+"be a single number,\n"
+"  a comma separated list of numbers, or a range (two numbers separated by a "
+"hyphen)."
+msgstr ""
+"<strong>Beklenen durum kodu:</strong>\n"
+"  Başarılı bir sağlık kontrolünden sonra alınması beklenen HTTP durum "
+"kodları. Tek bir say,\n"
+"  virgülle ayrılmış sayılar listesi, veya bir aralık olabilir (tire ile "
+"ayrılmış iki sayı)."
+
+msgid ""
+"<strong>HTTP method:</strong>\n"
+"  The HTTP method used to perform the health check."
+msgstr ""
+"<strong>HTTP yöntemi:</strong>\n"
+"  Sağlık kontrolü yapılırken kullanılacak HTTP yöntemi."
+
+msgid ""
+"<strong>IP address:</strong>\n"
+"  If an IP address is provided it must be a well-formed IPv4 or IPv6 "
+"address. The system will\n"
+"  attempt to assign the provided IP address to the load balancer. If an IP "
+"address is not provided\n"
+"  then one will be allocated for you."
+msgstr ""
+"<strong>IP adresi:</strong>\n"
+"  Bir IP adresi sağlanmışsa iyi biçimlenmiş bir IPv4 veya IPv6 adresi "
+"olmalıdır. Sistem sağlanan IP\n"
+"  adresini yük dengeleyiciye atamaya çalışacaktır. IP adresi sağlanmamışsa "
+"sizin için bir tane\n"
+"  ayrılır."
+
+msgid ""
+"<strong>IP address:</strong>\n"
+"  The IP address of the member to receive traffic from the load balancer. "
+"Must be a well-formed\n"
+"  IPv4 or IPv6 address."
+msgstr ""
+"<strong>IP adresi:</strong>\n"
+"  Yük dengeleyiciden trafiği alacak üyenin IP adresi. İyi biçimlendirilmiş "
+"IPv4 veya IPv6 adresi olmalıdır."
+
+msgid ""
+"<strong>Interval:</strong>\n"
+"  The interval between health checks. Must be greater than or equal to the "
+"timeout."
+msgstr ""
+"<strong>Aralık:</strong>\n"
+"  Sağlık kontrolleri arasındaki aralık. Zaman aşımına eşit ya da zaman "
+"aşımından büyük olmalı."
+
+msgid ""
+"<strong>Method:</strong>\n"
+"  The load balancer algorithm that distributes traffic to the pool members.\n"
+"  <ul>\n"
+"    <li>\n"
+"      LEAST_CONNECTIONS: Allocates requests to the instance with the least "
+"number of active\n"
+"      connections.\n"
+"    </li>\n"
+"    <li>\n"
+"      ROUND_ROBIN: Rotates requests evenly between multiple instances.\n"
+"    </li>\n"
+"    <li>\n"
+"      SOURCE_IP: Requests from a unique source IP address are consistently "
+"directed to the same instance.\n"
+"    </li>\n"
+"  </ul>"
+msgstr ""
+"<strong>Yöntem:</strong>\n"
+"  Trafiği havuz üyelerine dağıtan yük dengeleme algoritması.\n"
+"  <ul>\n"
+"    <li>\n"
+"      EN_AZ_BAĞLANTI: İsteği en az etkin bağlantıya sahip sunucuya ayırır.\n"
+"    </li>\n"
+"    <li>\n"
+"      HEPSİNİ_SIRAYLA: İstekleri birden fazla sunucu arasında eşit şekilde "
+"döndürür.\n"
+"    </li>\n"
+"    <li>\n"
+"      KAYNAK_IP: Aynı IP adresi kaynaklı istekler sürekli aynı sunucuya "
+"yönlendirilir.\n"
+"    </li>\n"
+"  </ul>"
+
+msgid ""
+"<strong>Port:</strong>\n"
+"  The port on which the front end listens. Must be an integer from 1 to "
+"65535."
+msgstr ""
+"<strong>Bağlantı Noktası:</strong>\n"
+"  Ön ucun dinleyeceği bağlantı noktası. 1 ve 65535 arasında tam sayı "
+"olmalıdır."
+
+msgid ""
+"<strong>Port:</strong>\n"
+"  The port on which the member listens for traffic. Must be a number from 1 "
+"to 65535."
+msgstr ""
+"<strong>Bağlantı Noktası:</strong>\n"
+"  Üyenin trafik dinleyeceği bağlantı noktası. 1 ve 65535 arasında bir sayı "
+"olmalı."
+
+msgid ""
+"<strong>Protocol:</strong>\n"
+"  The protocol for which the front end listens. The TERMINATED_HTTPS "
+"protocol is only available if\n"
+"  the key-manager service is enabled and you have authority to list "
+"certificate containers and\n"
+"  secrets."
+msgstr ""
+"<strong>İletişim Kuralı:</strong>\n"
+"  Ön ucun dinleyeceği iletişim kuralı. TERMINATED_HTTPS iletişim kuralı "
+"yalnızca anahtar-yönetici servisi\n"
+"  etkinse ve sertifika kapsayıcıları ve gizleri listeleme yetkiniz varsa "
+"kullanılabilir."
+
+msgid ""
+"<strong>Retries:</strong>\n"
+"  The number of allowed connection failures before marking the member as "
+"inactive. Must be a\n"
+"  number from 1 to 10."
+msgstr ""
+"<strong>Yeniden deneme:</strong>\n"
+"  Üyeyi pasif olarak işaretlemeden önce izin verilen başarısız bağlantı "
+"sayısı. 1 ve 10 arasında bir sayı olmalıdır."
+
+msgid ""
+"<strong>Subnet:</strong>\n"
+"  The network on which to allocate the load balancer's IP address."
+msgstr ""
+"<strong>Alt ağ:</strong>\n"
+"  Yük dengeleyicinin IP adresinin ayrılacağı ağ."
+
+msgid ""
+"<strong>Subnet:</strong>\n"
+"  The network which contains the IP address of the member."
+msgstr ""
+"<strong>Alt ağ:</strong>\n"
+"  Üyenin IP adresini içeren ağ."
+
+msgid ""
+"<strong>Timeout:</strong>\n"
+"  The time after which a health check times out. Must be a number greater "
+"than or equal to 0\n"
+"  and less than or equal to the interval."
+msgstr ""
+"<strong>Zaman aşımı:</strong>\n"
+"  Bir sağlık kontrolünün zaman aşımına uğrama zamanı. 0 veya 0'dan büyük, "
+"aralığa eşit ya da\n"
+"  aralıktan küçük bir sayı olmalıdır."
+
+msgid ""
+"<strong>URL path:</strong>\n"
+"  The target of the health check HTTP request to the member. Must be a valid "
+"URL path."
+msgstr ""
+"<strong>URL yolu:</strong>\n"
+"  Üyeye yapılan sağlık kontrolü HTTP isteğinin hedefi. Geçerli bir URL yolu "
+"olmalı."
+
+msgid ""
+"<strong>Weight:</strong>\n"
+"  The weight of a member determines the portion of requests or connections "
+"it services compared\n"
+"  to the other members of the pool. A higher weight means it will receive "
+"more traffic. Must be\n"
+"  a number from 1 to 256."
+msgstr ""
+"<strong>Ağırlık:</strong>\n"
+"  Bir üyenin ağırlığı havuzun diğer üyelerine oranla ne kadar bağlantı ya da "
+"istek servis edeceğini\n"
+"  belirler. Daha yüksek ağırlık daha çok trafik alacak demektir. 1 ve 256 "
+"arasında bir sayı olmalıdır."
+
+msgid "A new health monitor is being created."
+msgstr "Yeni bir sağlık izleyici oluşturuluyor."
+
+msgid "A new listener is being created."
+msgstr "Yeni bir dinleyici oluşturuluyor."
+
+msgid "A new load balancer is being created."
+msgstr "Yeni bir yük dengeleyici oluşturuluyor."
+
+msgid "A new pool is being created."
+msgstr "Yeni bir havuz oluşturuluyor."
+
+msgid ""
+"A pool represents a group of members over which the load balancing will be "
+"applied."
+msgstr "Havuz yük dengelemenin uygulanacağı bir grup üyeyi temsil eder."
+
+msgid "Actions"
+msgstr "Eylemler"
+
+msgid "Active"
+msgstr "Etkin"
+
+msgid "Add"
+msgstr "Ekle"
+
+msgid "Add external member"
+msgstr "Harici üye ekle"
+
+msgid "Add members to the load balancer pool."
+msgstr "Üyeleri yük dengeleyici havuzuna ekle."
+
+msgid "Add/Remove Pool Members"
+msgstr "Havuz Üyeleri Ekle/Çıkar"
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Admin State Up"
+msgstr "Yönetici Durumu Açık"
+
+msgid "Allocated Members"
+msgstr "Ayrılmış Üyeler"
+
+msgid "An error occurred. Please try again later."
+msgstr "Bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+
+msgid "Associate"
+msgstr "İlişkilendir"
+
+msgid "Associate Floating IP"
+msgstr "Değişken IP Ata"
+
+msgid "Associate Floating IP Address"
+msgstr "Değişken IP Adresleri ile İlişkilendir"
+
+msgid "Associating floating IP with load balancer."
+msgstr "Yük dengeleyiciye değişken IP ilişkilendirme."
+
+msgid "Available Instances"
+msgstr "Kullanılabilir Sunucular"
+
+msgid "Cancel"
+msgstr "İptal"
+
+msgid "Certificate Name"
+msgstr "Sertifika İsmi"
+
+msgid "Confirm Delete Health Monitor"
+msgstr "Sağlık İzleyici Silmeyi Onayla"
+
+msgid "Confirm Delete Listeners"
+msgstr "Dinleyici Silmeyi Onayla"
+
+msgid "Confirm Delete Load Balancers"
+msgstr "Yük Dengeleyicileri Silmeyi Onayla"
+
+msgid "Confirm Delete Pool"
+msgstr "Havuzu Silmeyi Onayla"
+
+msgid "Confirm Disassociate Floating IP Address"
+msgstr "Değişken IP Adresi İlişkisini Kaldırmayı Onaylayın"
+
+msgid "Connection Limit"
+msgstr "Bağlantı Sınırı"
+
+msgid "Create Health Monitor"
+msgstr "Sağlık İzleyici Oluştur"
+
+msgid "Create Listener"
+msgstr "Dinleyici Oluştur"
+
+msgid "Create Load Balancer"
+msgstr "Yük Dengeleyici Oluştur"
+
+msgid "Create Pool"
+msgstr "Havuz Oluştur"
+
+msgid "Default Pool ID"
+msgstr "Öntanımlı Havuz Kimliği"
+
+msgid "Degraded"
+msgstr "Alçaltılmış"
+
+msgid "Delay"
+msgstr "Gecikme"
+
+msgid "Delete Health Monitor"
+msgstr "Sağlık İzleyiciyi Sil"
+
+msgid "Delete Listener"
+msgstr "Dinleyiciyi Sil"
+
+msgid "Delete Listeners"
+msgstr "Dinleyicileri Sil"
+
+msgid "Delete Load Balancer"
+msgstr "Yük Dengeleyiciyi Sil"
+
+msgid "Delete Load Balancers"
+msgstr "Yük Dengeleyicileri Sil"
+
+msgid "Delete Pool"
+msgstr "Havuzu Sil"
+
+#, python-format
+msgid "Deleted health monitor: %s."
+msgstr "Sağlık izleyici silindi: %s."
+
+#, python-format
+msgid "Deleted listeners: %s."
+msgstr "Dinleyiciler silindi: %s."
+
+#, python-format
+msgid "Deleted load balancers: %s."
+msgstr "Yük dengeleyici silindi: %s."
+
+#, python-format
+msgid "Deleted pool: %s."
+msgstr "Havuz silindi: %s."
+
+msgid "Description"
+msgstr "Tanım"
+
+msgid "Disassociate"
+msgstr "İlişkiyi Kaldır"
+
+msgid "Disassociate Floating IP"
+msgstr "Değişken IP İlişiğini Kes"
+
+#, python-format
+msgid "Disassociated floating IP address from load balancer: %s."
+msgstr "Değişken IP adresi yük dengeleyiciden ayrılıyor: %s."
+
+msgid ""
+"Each port that listens for traffic on a particular load balancer is "
+"configured separately and\n"
+"  tied to the load balancer. Multiple listeners can be associated with the "
+"same load balancer but\n"
+"  each must use a unique port."
+msgstr ""
+"Bir yük dengeleyici üzerinde trafik dinleyen her bağlantı noktası ayrıca "
+"yapılandırılır ve\n"
+"  yük dengeleyiciye bağlanır. Birden çok dinleyici aynı yük dengeleyici ile "
+"ilişkilendirilebilir ama\n"
+"  her biri benzersiz bir bağlantı noktası kullanmalıdır."
+
+msgid "Edit"
+msgstr "Düzenle"
+
+msgid "Edit Pool"
+msgstr "Havuzu Düzenle"
+
+msgid "Error"
+msgstr "Hata"
+
+msgid "Expected Codes"
+msgstr "Beklenen Kodlar"
+
+msgid "Expected status codes"
+msgstr "Beklenen durum kodları"
+
+msgid "Expiration Date"
+msgstr "Son Kullanma Tarihi"
+
+msgid "Floating IP Address"
+msgstr "Değişken IP Adresi"
+
+msgid ""
+"Floating IP address or pool\n"
+"            <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Değişken IP adresi veya havuzu\n"
+"<span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Floating IP addresses"
+msgstr "Değişken IP adresleri"
+
+msgid "Floating IP pools"
+msgstr "Değişken IP havuzları"
+
+msgid "HTTP Method"
+msgstr "HTTP Yöntemi"
+
+msgid "HTTP method"
+msgstr "HTTP yöntemi"
+
+msgid "Health Monitor ID"
+msgstr "Sağlık İzleyici Kimliği"
+
+msgid "ID"
+msgstr "Kimlik"
+
+msgid "IP Address"
+msgstr "IP Adresi"
+
+msgid ""
+"IP Address\n"
+"              <span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl."
+"tableData.displayedAllocated.length > 0\">\n"
+"            </span>\n"
+"            \n"
+"              Subnet\n"
+"              <span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl."
+"tableData.displayedAllocated.length > 0\">\n"
+"            </span>\n"
+"            <th class=\"rsp-p1\">\n"
+"              Port\n"
+"              <span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl."
+"tableData.displayedAllocated.length > 0\">\n"
+"            </span>\n"
+"            Weight</th>\n"
+"            <th class=\"actions_column\"></th>"
+msgstr ""
+"IP Adresi\n"
+"<span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl.tableData."
+"displayedAllocated.length > 0\">\n"
+"</span>\n"
+"\n"
+"Alt Ağ\n"
+"<span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl.tableData."
+"displayedAllocated.length > 0\">\n"
+"</span>\n"
+"<th class=\"rsp-p1\">\n"
+"Bağlantı Noktası\n"
+"<span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl.tableData."
+"displayedAllocated.length > 0\">\n"
+"</span>\n"
+"Ağırlık</th>\n"
+"<th class=\"actions_column\"></th>"
+
+#, python-format
+msgid "IP Addresses (%(count)s)"
+msgstr "IP Adresleri (%(count)s)"
+
+msgid "IP address"
+msgstr "IP adresi"
+
+msgid ""
+"If the listener uses the TERMINATED_HTTPS protocol, then one or more SSL "
+"certificates must\n"
+"  be selected. The first certificate will be the default."
+msgstr ""
+"Dinleyici TERMINATED_HTTPS iletişim kuralını kullanıyorsa, bir ya da fazla "
+"SSL sertifikası seçilmelidir.\n"
+"  İlk sertifika ön tanımlı olur."
+
+msgid ""
+"Interval (sec)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Aralık (sn)\n"
+"<span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Least Connections"
+msgstr "En Az Bağlantı"
+
+#, python-format
+msgid "Listener %(index)s"
+msgstr "Dinleyici %(index)s"
+
+msgid "Listener 1"
+msgstr "Dinleyici 1"
+
+msgid "Listener Details"
+msgstr "Dinleyici Ayrıntıları"
+
+msgid "Listener ID"
+msgstr "Dinleyici Kimliği"
+
+msgid "Listeners"
+msgstr "Dinleyiciler"
+
+#, python-format
+msgid "Load Balancer %(index)s"
+msgstr "Yük Dengeleyici %(index)s"
+
+msgid "Load Balancer Algorithm"
+msgstr "Yük Dengeleme Algoritması"
+
+msgid "Load Balancer Details"
+msgstr "Yük Dengeleyici Ayrıntıları"
+
+msgid "Load Balancer ID"
+msgstr "Yük Dengeleyici Kimliği"
+
+msgid "Load Balancers"
+msgstr "Yük Dengeleyiciler"
+
+msgid "Loading"
+msgstr "Yükleniyor"
+
+msgid "Max Retries"
+msgstr "Azami Deneme"
+
+msgid "Member ID"
+msgstr "Üye Kimliği"
+
+msgid "Members"
+msgstr "Üyeler"
+
+msgid ""
+"Members are the actual IP addresses that will receive traffic from the load "
+"balancer. Each\n"
+"  member must have a unique combination of IP address and port."
+msgstr ""
+"Üyeler yük dengeleyiciden trafiği alacak asıl IP adresleridir. Her üyenin "
+"benzersiz bir\n"
+"  IP adresi ve bağlantı noktası bileşimi olmalıdır."
+
+msgid ""
+"Method\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Yöntem\n"
+"<span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Monitor Details"
+msgstr "İzleyici Ayrıntıları"
+
+msgid "Monitor ID"
+msgstr "İzleyici Kimliği"
+
+msgid ""
+"Monitor type\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"İzleyici türü\n"
+"<span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Name"
+msgstr "İsim"
+
+msgid "No available certificates"
+msgstr "Kullanılabilir sertifika yok"
+
+msgid "No available instances"
+msgstr "Kullanılabilir sunucu yok"
+
+msgid "No items to display."
+msgstr "Gösterilecek öge yok."
+
+msgid "No members have been allocated"
+msgstr "Hiçbir üye ayrılmamış"
+
+msgid "None"
+msgstr "Hiçbiri"
+
+msgid "Offline"
+msgstr "Çevrimdışı"
+
+msgid "Online"
+msgstr "Çevirmiçi"
+
+msgid "Operating Status"
+msgstr "İşletim Durumu"
+
+msgid "Overview"
+msgstr "Genel Görünüm"
+
+msgid "Pending Create"
+msgstr "Oluşturma Bekleniyor"
+
+msgid "Pending Delete"
+msgstr "Silme Bekleniyor"
+
+msgid "Pending Update"
+msgstr "Güncelleme Bekleniyor"
+
+msgid "Pool 1"
+msgstr "Havuz 1"
+
+msgid "Pool Details"
+msgstr "Havuz Ayrıntıları"
+
+msgid "Pool ID"
+msgstr "Havuz Kimliği"
+
+msgid "Pool Members"
+msgstr "Havuz Üyeleri"
+
+msgid "Pool member weight has been updated."
+msgstr "Havuz üye ağırlığı güncellendi."
+
+msgid "Port"
+msgstr "Bağlantı Noktası"
+
+msgid ""
+"Port\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Bağlantı Noktası\n"
+"<span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Port ID"
+msgstr "Bağlantı Noktası Kimliği"
+
+msgid "Protocol"
+msgstr "İletişim Kuralı"
+
+msgid ""
+"Protocol\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"İletişim kuralı\n"
+"<span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Protocol Port"
+msgstr "İletişim Bağlantı Noktası"
+
+msgid "Provide the details for the health monitor."
+msgstr "Sağlık izleyici ile ilgili ayrıntıları girin."
+
+msgid "Provide the details for the listener."
+msgstr "Dinleyici ayrıntılarını girin."
+
+msgid "Provide the details for the load balancer."
+msgstr "Yük dengeleyici için ayrıntıları girin."
+
+msgid "Provide the details for the pool."
+msgstr "Havuz ayrıntılarını girin."
+
+msgid "Provider"
+msgstr "Sağlayıcı"
+
+msgid "Provisioning Status"
+msgstr "Hazırlama Durumu"
+
+msgid "Remove"
+msgstr "Kaldır"
+
+msgid ""
+"Retries\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Yeniden denemeler\n"
+"<span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Round Robin"
+msgstr "Hepsini Sırayla"
+
+msgid "SSL Certificates"
+msgstr "SSL Sertifikaları"
+
+msgid ""
+"Select a floating IP address to associate with the load balancer or a "
+"floating IP pool in which to allocate a new floating IP address."
+msgstr ""
+"Yük dengeleyici ile ilişkilendirmek ve yeni bir değişken IP adresi ayırmak "
+"için bir değişken IP veya değişken IP havuzu seçin."
+
+msgid "Select certificates from the available certificates below"
+msgstr "Aşağıdaki kullanılabilir sertifikalar içinden sertifikaları seçin"
+
+msgid "Select one or more SSL certificates for the listener."
+msgstr "Dinleyici için bir ya da fazla SSL sertifikası seçin."
+
+msgid "Session Persistence"
+msgstr "Oturum Kalıcılığı"
+
+msgid "Source IP"
+msgstr "Kaynak IP"
+
+msgid ""
+"Subnet\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Alt ağ\n"
+"<span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Subnet ID"
+msgstr "Alt Ağ Kimliği"
+
+msgid "Tenant ID"
+msgstr "Kiracı Kimliği"
+
+msgid ""
+"The Available Instances table contains existing compute instances that can "
+"be added as members\n"
+"  of the pool. Use the \"Add external member\" button to add a member not "
+"found in the Available\n"
+"  Instances table."
+msgstr ""
+"Kullanılabilir sunucular tablosu havuzun üyeleri olarak eklenebilecek mevcut "
+"hesaplama sunucularını içerir\n"
+"  Kullanılabilir Sunucular tablosunda bulunmayan bir üye eklemek için "
+"\"Harici üye ekle\" düğmesini kullanın."
+
+msgid "The IP address is not valid."
+msgstr "IP adresi geçerli değil."
+
+msgid "The URL path is not valid."
+msgstr "URL yolu geçerli değil."
+
+msgid "The expected status code is not valid."
+msgstr "Beklenen durum kodu geçerli değil."
+
+#, python-format
+msgid "The following health monitor could not be deleted: %s."
+msgstr "Şu sağlık izleyici silinemedi: %s."
+
+#, python-format
+msgid ""
+"The following listeners could not be deleted, possibly due to existing "
+"pools: %s."
+msgstr "Şu dinleyiciler silinemedi, muhtemelen mevcut havuzlar sebebiyle: %s."
+
+#, python-format
+msgid "The following listeners will not be deleted due to existing pools: %s."
+msgstr "Şu dinleyiciler mevcut havuzlar nedeniyle silinmeyecek: %s."
+
+#, python-format
+msgid "The following load balancers are pending and cannot be deleted: %s."
+msgstr "Bu yük dengeleyiciler bekleme aşamasında ev silinemezler: %s."
+
+#, python-format
+msgid ""
+"The following load balancers could not be deleted, possibly due to existing "
+"listeners: %s."
+msgstr ""
+"Bu yük dengeleyiciler silinemedi, muhtemelen mevcut dinleyiciler yüzünden: "
+"%s."
+
+#, python-format
+msgid "The following pool could not be deleted: %s."
+msgstr "Bu havuz silinemedi: %s."
+
+msgid "The health check interval must be greater than or equal to the timeout."
+msgstr ""
+"Sağlık kontrolü aralığı zaman aşımına eşit ya da zaman aşımından yüksek "
+"olmalı."
+
+msgid "The health monitor has been updated."
+msgstr "Sağlık izleyici güncellendi."
+
+msgid ""
+"The health monitor is used to determine the health of your pool members. "
+"Health checks\n"
+"  routinely run against each member within the pool and the result of the "
+"health check is used\n"
+"  to determine if the member receives new connections. Each pool can only "
+"have one health\n"
+"  monitor."
+msgstr ""
+"Sağlık izleyici havuz üyelerinizin sağlığına karar vermede kullanılır. "
+"Sağlık kontrolleri havuzun her\n"
+"  üyesine aralıklarla yapılır ve sağlık kontrolü sonucuna göre üyenin yeni "
+"bağlantı alıp almayacağına\n"
+"  karar verilir. Her havuzun sadece bir sağlık izleyicisi olabilir."
+
+msgid "The listener has been updated."
+msgstr "Dinleyici güncellendi."
+
+msgid "The load balancer has been updated."
+msgstr "Yük dengeleyici güncellendi."
+
+msgid ""
+"The load balancer occupies a neutron network port and has an IP address "
+"assigned from a subnet."
+msgstr ""
+"Yük dengeleyici bir neutron ağ bağlantı noktası alır ve alt ağdan bir IP "
+"adresi atanır."
+
+msgid "The max retry count must be a number between 1 and 10."
+msgstr "Azami yeniden deneme sayısı 1 ve 10 arasında bir sayı olmalı."
+
+msgid "The pool has been updated."
+msgstr "Havuz güncellendi."
+
+msgid "The pool members have been updated."
+msgstr "Havuz üyeleri güncellendi."
+
+msgid "The port must be a number between 1 and 65535."
+msgstr "Bağlantı noktası 1 ve 65535 arasında bir sayı olmalı."
+
+msgid ""
+"The port must be unique among all listeners attached to this load balancer."
+msgstr ""
+"Bağlantı noktası bu yük dengeleyiciye atanmış tüm dinleyiciler arasında "
+"benzersiz olmalı."
+
+msgid "The timeout must be a number greater than or equal to 0."
+msgstr "Zaman aşımı 0 ya da 0'dan büyük olmalı."
+
+msgid "The weight must be a number between 1 and 256."
+msgstr "Ağırlık 1 ve 256 arasında bir sayı olmalı."
+
+msgid ""
+"The weight of a member determines the portion of requests or connections it "
+"services compared to the other members of the pool."
+msgstr ""
+"Bir üyenin ağırlığı havuzun diğer üyelerine göre servis vereceği istek veya "
+"bağlantı oranını gösterir."
+
+msgid "Timeout"
+msgstr "Zaman aşımı"
+
+msgid ""
+"Timeout (sec)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Zaman aşımı (sn)\n"
+"<span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Type"
+msgstr "Tür"
+
+msgid "URL Path"
+msgstr "URL Yolu"
+
+msgid "URL path"
+msgstr "URL yolu"
+
+msgid "Unable to create health monitor."
+msgstr "Sağlık izleyici oluşturulamadı."
+
+msgid "Unable to create listener."
+msgstr "Dinleyici oluşturulamıyor."
+
+msgid "Unable to create load balancer."
+msgstr "Yük dengeleyici oluşturulamıyor."
+
+msgid "Unable to create pool."
+msgstr "Havuz oluşturulamıyor."
+
+msgid "Unable to delete health monitor."
+msgstr "Sağlık izleyici silinemedi."
+
+msgid "Unable to delete listener."
+msgstr "Dinleyici silinemiyor."
+
+msgid "Unable to delete load balancer."
+msgstr "Yük dengeleyici silinemiyor."
+
+msgid "Unable to delete pool."
+msgstr "Havuz silinemiyor."
+
+#, python-format
+msgid "Unable to disassociate floating IP address from load balancer: %s."
+msgstr "Değişken IP adresi yük dengeleyiciden ayırılamıyor: %s."
+
+msgid "Unable to retrieve SSL certificates."
+msgstr "SSL Sertifikaları alınamıyor."
+
+msgid "Unable to retrieve health monitor."
+msgstr "Sağlık izleyici alınamadı."
+
+msgid "Unable to retrieve listener."
+msgstr "Dinleyici alınamıyor."
+
+msgid "Unable to retrieve listeners."
+msgstr "Dinleyiciler alınamıyor."
+
+msgid "Unable to retrieve load balancer."
+msgstr "Yük dengeleyici alınamıyor."
+
+msgid "Unable to retrieve load balancers."
+msgstr "Yük dengeleyiciler alınamıyor."
+
+msgid "Unable to retrieve member."
+msgstr "Üye alınamıyor."
+
+msgid "Unable to retrieve members."
+msgstr "Üyeler alınamıyor."
+
+msgid "Unable to retrieve pool."
+msgstr "Havuz alınamıyor."
+
+msgid "Unable to retrieve secrets."
+msgstr "Gizler alınamıyor."
+
+msgid "Unable to update health monitor."
+msgstr "Sağlık izleyici güncellenemedi."
+
+msgid "Unable to update listener."
+msgstr "Dinleyici güncellenemiyor."
+
+msgid "Unable to update load balancer."
+msgstr "Yük dengeleyici güncellenemiyor."
+
+msgid "Unable to update member list."
+msgstr "Üye listesi güncellenemiyor."
+
+msgid "Unable to update member."
+msgstr "Üye güncellenemiyor."
+
+msgid "Unable to update pool."
+msgstr "Havuz güncellenemiyor."
+
+msgid "Update"
+msgstr "Güncelle"
+
+msgid "Update Health Monitor"
+msgstr "Sağlık İzleyiciyi Güncelle"
+
+msgid "Update Listener"
+msgstr "Dinleyiciyi Güncelle"
+
+msgid "Update Load Balancer"
+msgstr "Yük Dengeleyiciyi Güncelle"
+
+msgid "Update Member Weight"
+msgstr "Üye Ağırlığını Güncelle"
+
+msgid "Update Pool"
+msgstr "Havuzu Güncelle"
+
+msgid "Update Weight"
+msgstr "Ağırlığı Güncelle"
+
+msgid ""
+"Use the key-manager service to create any certificate containers before "
+"creating the listener.\n"
+"  The following documentation provides information on how to create a "
+"certificate container:\n"
+"  <ul>\n"
+"    <li>\n"
+"      <a target=\"_blank\" href=\"http://developer.openstack.org/api-guide/"
+"key-manager/containers.html#certificate-containers\">\n"
+"        Key Manager API Guide: Creating a Certificate Container\n"
+"      </a>\n"
+"    </li>\n"
+"    <li>\n"
+"      <a target=\"_blank\" href=\"http://docs.openstack.org/cli-reference/"
+"barbican.html\">\n"
+"        Key Manager Service Command-Line Client\n"
+"      </a>\n"
+"    </li>\n"
+"  </ul>"
+msgstr ""
+"Dinleyiciyi oluşturmadan önce sertifika kapsayıcıları oluşturmak için "
+"anahtar-yönetim servisini kullanın.\n"
+"  Aşağıdaki belgeler nasıl sertifika kapsayıcı oluşturulacağını anlatır:\n"
+"  <ul>\n"
+"    <li>\n"
+"      <a target=\"_blank\" href=\"http://developer.openstack.org/api-guide/"
+"key-manager/containers.html#certificate-containers\">\n"
+"        Anahtar Yönetici API Kılavuzu: Sertifika Kapsayıcı Oluşturmak\n"
+"      </a>\n"
+"    </li>\n"
+"    <li>\n"
+"      <a target=\"_blank\" href=\"http://docs.openstack.org/cli-reference/"
+"barbican.html\">\n"
+"        Anahtar Yönetici Servis Komut-Satırı İstemcisi\n"
+"      </a>\n"
+"    </li>\n"
+"  </ul>"
+
+msgid "Weight"
+msgstr "Ağırlık"
+
+msgid ""
+"Weight\n"
+"            <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Ağırlık\n"
+"<span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+#, python-format
+msgid ""
+"You are about to disassociate the floating IP address from load balancer \"%s"
+"\". Please confirm."
+msgstr ""
+"Değişken IP adresini \"%s\" yük dengeleyicisinden ayırmak üzeresiniz. Lütfen "
+"onaylayın."
+
+#, python-format
+msgid ""
+"You have selected \"%s\". Please confirm your selection. Deleted health "
+"monitors are not recoverable."
+msgstr ""
+"\"%s\" seçtiniz. Lütfen seçiminizi onaylayın. Silinen sağlık izleyiciler "
+"geri getirilemez."
+
+#, python-format
+msgid ""
+"You have selected \"%s\". Please confirm your selection. Deleted listeners "
+"are not recoverable."
+msgstr ""
+"\"%s\" seçtiniz. Lütfen seçiminizi onaylayın. Silinen dinleyiciler geri "
+"getirilemez."
+
+#, python-format
+msgid ""
+"You have selected \"%s\". Please confirm your selection. Deleted load "
+"balancers are not recoverable."
+msgstr ""
+"\"%s\" seçtiniz. Lütfen seçiminizi onaylayın. Silinen yük dengeleyiciler "
+"geri getirilemezler."
+
+#, python-format
+msgid ""
+"You have selected \"%s\". Please confirm your selection. Deleted pools are "
+"not recoverable."
+msgstr ""
+"\"%s\" seçtiniz. Lütfen seçiminizi onaylayın. Silinen havuzlar geri "
+"getirilemez."
