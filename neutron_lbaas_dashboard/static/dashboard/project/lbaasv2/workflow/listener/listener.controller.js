@@ -48,7 +48,7 @@
     ////////////
 
     function protocolChange(protocol) {
-      var defaultPort = { HTTP: 80, TERMINATED_HTTPS: 443 }[protocol];
+      var defaultPort = { HTTP: 80, TERMINATED_HTTPS: 443, HTTPS: 443 }[protocol];
       while (listenerPortExists(defaultPort)) {
         defaultPort += 1;
       }
@@ -56,7 +56,7 @@
 
       var members = $scope.model.members.concat($scope.model.spec.members);
       members.forEach(function setMemberPort(member) {
-        member.port = { HTTP: 80, TERMINATED_HTTPS: 80 }[protocol];
+        member.port = { HTTP: 80, TERMINATED_HTTPS: 80, HTTPS: 443 }[protocol];
       });
 
       var workflow = $scope.workflow;

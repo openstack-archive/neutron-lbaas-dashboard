@@ -333,7 +333,7 @@
       });
 
       it('has array of listener protocols', function() {
-        expect(model.listenerProtocols).toEqual(['HTTP', 'TCP', 'TERMINATED_HTTPS']);
+        expect(model.listenerProtocols).toEqual(['HTTP', 'TCP', 'TERMINATED_HTTPS', 'HTTPS']);
       });
 
       it('has array of pool methods', function() {
