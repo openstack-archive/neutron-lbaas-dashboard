@@ -85,7 +85,7 @@
       visibleResources: [],
       subnets: [],
       members: [],
-      listenerProtocols: ['HTTP', 'TCP', 'TERMINATED_HTTPS'],
+      listenerProtocols: ['HTTP', 'TCP', 'TERMINATED_HTTPS', 'HTTPS'],
       methods: ['LEAST_CONNECTIONS', 'ROUND_ROBIN', 'SOURCE_IP'],
       monitorTypes: ['HTTP', 'PING', 'TCP'],
       monitorMethods: ['GET', 'HEAD'],
