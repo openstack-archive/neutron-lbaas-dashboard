@@ -1,17 +1,17 @@
 # suhartono <cloudsuhartono@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: neutron-lbaas-dashboard 1.0.1.dev45\n"
+"Project-Id-Version: neutron-lbaas-dashboard 3.0.0.0b4.dev2\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2017-01-17 14:12+0000\n"
+"POT-Creation-Date: 2017-08-07 16:14+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-01-17 01:42+0000\n"
+"PO-Revision-Date: 2017-08-09 03:20+0000\n"
 "Last-Translator: suhartono <cloudsuhartono@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "Language: id\n"
-"X-Generator: Zanata 3.7.3\n"
+"X-Generator: Zanata 3.9.6\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #, python-format
@@ -265,6 +265,9 @@ msgstr "Pengkaitan IP mengambang dengan beban penyeimbang."
 msgid "Available Instances"
 msgstr "Instance yang tersedia"
 
+msgid "Back"
+msgstr "Back"
+
 msgid "Cancel"
 msgstr "Cancel (batalkan)"
 
@@ -469,6 +472,9 @@ msgstr ""
 "Jika pendengar menggunakan protokol TERMINATED_HTTPS, maka satu atau lebih "
 "sertifikat SSL harus\n"
 "   dipilih. Sertifikat pertama akan menjadi default."
+
+msgid "Inactive"
+msgstr "Inactive"
 
 msgid ""
 "Interval (sec)\n"
@@ -879,6 +885,9 @@ msgstr "Tidak dapat mengambil pendengar."
 
 msgid "Unable to retrieve listeners."
 msgstr "Tidak dapat mengambil pendengar."
+
+msgid "Unable to retrieve load balancer status tree."
+msgstr "Tidak dapat mengambil status pohon penyeimbang beban."
 
 msgid "Unable to retrieve load balancer."
 msgstr "Tidak dapat mengambil penyeimbang beban."
