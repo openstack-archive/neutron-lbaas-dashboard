@@ -2,19 +2,20 @@
 # Yukinori Yagisawa <yukky37@gmail.com>, 2016. #zanata
 # Yusuke Higashino <yusuke_higashino@adoc.co.jp>, 2016. #zanata
 # 小羽根 陸 <riku_kobane@adoc.co.jp>, 2016. #zanata
+# Kyohei Moriyama <flogofrein@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: neutron-lbaas-dashboard 1.0.1.dev41\n"
+"Project-Id-Version: neutron-lbaas-dashboard 3.0.0.0b4.dev3\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2016-11-30 19:41+0000\n"
+"POT-Creation-Date: 2017-08-11 03:11+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-12-01 02:55+0000\n"
-"Last-Translator: 小羽根 陸 <riku_kobane@adoc.co.jp>\n"
+"PO-Revision-Date: 2017-09-14 05:42+0000\n"
+"Last-Translator: Kyohei Moriyama <flogofrein@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"X-Generator: Zanata 3.7.3\n"
+"X-Generator: Zanata 3.9.6\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #, python-format
@@ -114,6 +115,9 @@ msgstr "ロードバランサーのFloating IP アドレスの割り当て"
 
 msgid "Available Instances"
 msgstr "有効なインスタンス"
+
+msgid "Back"
+msgstr "戻る"
 
 msgid "Cancel"
 msgstr "取り消し"
@@ -262,6 +266,9 @@ msgstr "IP アドレス(%(count)s)"
 
 msgid "IP address"
 msgstr "IP アドレス"
+
+msgid "Inactive"
+msgstr "非稼働"
 
 msgid ""
 "Interval (sec)\n"
@@ -429,6 +436,14 @@ msgstr "ラウンドロビン"
 msgid "SSL Certificates"
 msgstr "SSL認証"
 
+msgid ""
+"Select a floating IP address to associate with the load balancer or a "
+"floating IP pool in which to allocate a new floating IP address."
+msgstr ""
+"ロードバランサを設定するためにフローティングIPアドレス、もしくは、新しいフ"
+"ローティングIPアドレス配置するためのフローティングIPアドレスプールを選択して"
+"ください"
+
 msgid "Select certificates from the available certificates below"
 msgstr "以下の利用可能な認証から、認証を選択してください。"
 
@@ -574,6 +589,9 @@ msgstr "リスナーの取得ができません。"
 
 msgid "Unable to retrieve listeners."
 msgstr "リスター一覧の取得ができません。"
+
+msgid "Unable to retrieve load balancer status tree."
+msgstr "ロードバランサのステータスツリーを取得できません"
 
 msgid "Unable to retrieve load balancer."
 msgstr "ロードバランサーの取得ができません。"
