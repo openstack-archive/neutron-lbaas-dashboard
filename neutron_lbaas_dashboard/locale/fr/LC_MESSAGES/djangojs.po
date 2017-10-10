@@ -1,0 +1,760 @@
+# Cedric Savignan <liced@liced.fr>, 2017. #zanata
+# Corinne Verheyde <cverheyd@gmail.com>, 2017. #zanata
+# Loic Nicolle <loic.nicolle@orange.com>, 2017. #zanata
+msgid ""
+msgstr ""
+"Project-Id-Version: neutron-lbaas-dashboard 3.0.1.dev6\n"
+"Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
+"POT-Creation-Date: 2017-09-28 01:36+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-10-05 02:15+0000\n"
+"Last-Translator: Cedric Savignan <liced@liced.fr>\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"X-Generator: Zanata 3.9.6\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+
+#, python-format
+msgid "%(ip)s..."
+msgstr "%(ip)s..."
+
+msgid ""
+"<strong>HTTP method:</strong>\n"
+"  The HTTP method used to perform the health check."
+msgstr ""
+"<strong>HTTP method:</strong>\n"
+"  Méthode HTTP utilisée pour vérifier l'état de santé."
+
+msgid ""
+"<strong>IP address:</strong>\n"
+"  If an IP address is provided it must be a well-formed IPv4 or IPv6 "
+"address. The system will\n"
+"  attempt to assign the provided IP address to the load balancer. If an IP "
+"address is not provided\n"
+"  then one will be allocated for you."
+msgstr ""
+"<strong>Adresse IP:</strong>\n"
+"Si une adresse IP est fournie, elle doit être une adresse IPv4 ou IPv6 au "
+"bon format. Le système tentera d’attribuer l’adresse IP fournie au "
+"répartiteur de charge. Si une adresse IP n’est pas fournie alors il en sera "
+"alloué une pour vous."
+
+msgid ""
+"<strong>IP address:</strong>\n"
+"  The IP address of the member to receive traffic from the load balancer. "
+"Must be a well-formed\n"
+"  IPv4 or IPv6 address."
+msgstr ""
+"<strong>Adresse IP:</strong>\n"
+"  L'adresse IP du membre recevant du trafic du répartiteur de charge. Doit "
+"être une adresse IPv4 ou IPv6\n"
+"  au bon format."
+
+msgid ""
+"<strong>Interval:</strong>\n"
+"  The interval between health checks. Must be greater than or equal to the "
+"timeout."
+msgstr ""
+"<strong>Intervalle:</strong>\n"
+"L'intervalle entre chaque diagnostic d'intégrité. Doit être supérieur ou "
+"égal au délai d'attente."
+
+msgid ""
+"<strong>Method:</strong>\n"
+"  The load balancer algorithm that distributes traffic to the pool members.\n"
+"  <ul>\n"
+"    <li>\n"
+"      LEAST_CONNECTIONS: Allocates requests to the instance with the least "
+"number of active\n"
+"      connections.\n"
+"    </li>\n"
+"    <li>\n"
+"      ROUND_ROBIN: Rotates requests evenly between multiple instances.\n"
+"    </li>\n"
+"    <li>\n"
+"      SOURCE_IP: Requests from a unique source IP address are consistently "
+"directed to the same instance.\n"
+"    </li>\n"
+"  </ul>"
+msgstr ""
+"<strong>Méthode:</strong>\n"
+"  L'algorithme du répartiteur de charge distribuant le trafic aux membres du "
+"pool.\n"
+"  <ul>\n"
+"    <li>\n"
+"      LEAST_CONNECTIONS: LEAST_CONNECTIONS: Allocation des requêtes à "
+"l'instance \n"
+"      possédant le moins de connexions actives. .\n"
+"    </li>\n"
+"    <li>\n"
+"      ROUND_ROBIN: Rotation des requêtes alternativement entre les "
+"différentes instances.\n"
+"    </li>\n"
+"    <li>\n"
+"      SOURCE_IP: Requêtes d'une même adresse IP source sont toujours "
+"dirigées vers la même instance.\n"
+"    </li>\n"
+"  </ul>"
+
+msgid ""
+"<strong>Port:</strong>\n"
+"  The port on which the front end listens. Must be an integer from 1 to "
+"65535."
+msgstr ""
+"<strong>Port:</strong>\n"
+"  Le port sur lequel le front end écoute. Doit être un entier de 1 à 65535."
+
+msgid ""
+"<strong>Port:</strong>\n"
+"  The port on which the member listens for traffic. Must be a number from 1 "
+"to 65535."
+msgstr ""
+"<strong>Port:</strong>\n"
+"Le port sur lequel le membre écoute le trafic. Doit être un nombre de 1 à "
+"65535."
+
+msgid ""
+"<strong>Retries:</strong>\n"
+"  The number of allowed connection failures before marking the member as "
+"inactive. Must be a\n"
+"  number from 1 to 10."
+msgstr ""
+"<strong>Tentatives:</strong>\n"
+"Le nombre de connexions en échecs avant de définir le membre comme inactif.  "
+"Doit être un \n"
+"nombre entre 1 et 10."
+
+msgid ""
+"<strong>Subnet:</strong>\n"
+"  The network on which to allocate the load balancer's IP address."
+msgstr ""
+"<strong>Sous-réseau:</strong>\n"
+"Le réseau dans lequel allouer l'adresse IP du répartiteur de charge."
+
+msgid ""
+"<strong>Subnet:</strong>\n"
+"  The network which contains the IP address of the member."
+msgstr ""
+"<strong>Sous-réseau:</strong>\n"
+"Le réseau contenant l'adresse IP du membre."
+
+msgid "A new health monitor is being created."
+msgstr "Un nouveau moniteur de santé est en cours de création."
+
+msgid "A new load balancer is being created."
+msgstr "Un nouveau répartiteur de charge est en cours de création."
+
+msgid "A new pool is being created."
+msgstr "Un nouveau pool est en cours de création."
+
+msgid ""
+"A pool represents a group of members over which the load balancing will be "
+"applied."
+msgstr ""
+"Un pool représente un groupe de membres sur lequel l'équilibrage de charge "
+"sera appliqué."
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Active"
+msgstr "Actif"
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "Add external member"
+msgstr "Ajouter un membre exterieur"
+
+msgid "Add members to the load balancer pool."
+msgstr "Ajouter des membres au pool du répartiteur de charge."
+
+msgid "Add/Remove Pool Members"
+msgstr "Ajouter/Retirer des membres du pool"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Admin State Up"
+msgstr "Etat Admin activé"
+
+msgid "Allocated Members"
+msgstr "Membres alloués"
+
+msgid "An error occurred. Please try again later."
+msgstr "Une erreur s'est produite. Veuillez réessayer ultérieurement."
+
+msgid "Associate"
+msgstr "Associer"
+
+msgid "Associate Floating IP"
+msgstr "Associer une adresse IP flottante"
+
+msgid "Associate Floating IP Address"
+msgstr "Associer une adresse IP flottante"
+
+msgid "Associating floating IP with load balancer."
+msgstr "Associer une adresse IP flottante au répartiteur de charge."
+
+msgid "Available Instances"
+msgstr "Instances disponibles"
+
+msgid "Back"
+msgstr "Retour"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Certificate Name"
+msgstr "Nom du certificat"
+
+msgid "Confirm Delete Health Monitor"
+msgstr "Confirmer la suppression du moniteur de santé"
+
+msgid "Confirm Delete Listeners"
+msgstr "Confirmer la suppression des Listeners"
+
+msgid "Confirm Delete Load Balancers"
+msgstr "Confirmer la suppression des répartiteurs de charge"
+
+msgid "Confirm Delete Pool"
+msgstr "Confirmer la suppression du pool"
+
+msgid "Confirm Disassociate Floating IP Address"
+msgstr "Confirmer la dé-association de l'adresse IP flottante"
+
+msgid "Connection Limit"
+msgstr "Limite de connexion"
+
+msgid "Create Health Monitor"
+msgstr "Créer un moniteur de santé"
+
+msgid "Create Load Balancer"
+msgstr "Créer un répartiteur de charge"
+
+msgid "Create Pool"
+msgstr "Créer un pool"
+
+msgid "Default Pool ID"
+msgstr "ID du pool par défaut"
+
+msgid "Degraded"
+msgstr "Dégradé"
+
+msgid "Delay"
+msgstr "Délai"
+
+msgid "Delete Health Monitor"
+msgstr "Supprimer un moniteur de santé"
+
+msgid "Delete Load Balancer"
+msgstr "Supprimer le répartiteur de charge"
+
+msgid "Delete Load Balancers"
+msgstr "Supprimer les répartiteurs de charge"
+
+msgid "Delete Pool"
+msgstr "Supprimer le pool"
+
+#, python-format
+msgid "Deleted health monitor: %s."
+msgstr "Moniteur  de santé %s supprimé."
+
+#, python-format
+msgid "Deleted load balancers: %s."
+msgstr "Répartiteurs de charge supprimé: %s."
+
+#, python-format
+msgid "Deleted pool: %s."
+msgstr "Pool %s supprimé"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Disassociate"
+msgstr "Dissocier"
+
+msgid "Disassociate Floating IP"
+msgstr "Dissocier l'adresse IP flottante"
+
+msgid "Edit"
+msgstr "Editer"
+
+msgid "Edit Pool"
+msgstr "Editer le pool"
+
+msgid "Error"
+msgstr "Erreur"
+
+msgid "Expected Codes"
+msgstr "Codes attendus"
+
+msgid "Expected status codes"
+msgstr "Codes de statut attendus"
+
+msgid "Expiration Date"
+msgstr "Date d'expiration"
+
+msgid "Floating IP Address"
+msgstr "Adresse IP flottante"
+
+msgid "Floating IP addresses"
+msgstr "Adresses IP flottantes"
+
+msgid "Floating IP pools"
+msgstr "Pools d'IP flottantes"
+
+msgid "HTTP Method"
+msgstr "Méthode HTTP"
+
+msgid "HTTP method"
+msgstr "Méthode HTTP"
+
+msgid "Health Monitor ID"
+msgstr "ID du moniteur de santé"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "IP Address"
+msgstr "Adresse IP"
+
+msgid ""
+"IP Address\n"
+"              <span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl."
+"tableData.displayedAllocated.length > 0\">\n"
+"            </span>\n"
+"            \n"
+"              Subnet\n"
+"              <span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl."
+"tableData.displayedAllocated.length > 0\">\n"
+"            </span>\n"
+"            <th class=\"rsp-p1\">\n"
+"              Port\n"
+"              <span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl."
+"tableData.displayedAllocated.length > 0\">\n"
+"            </span>\n"
+"            Weight</th>\n"
+"            <th class=\"actions_column\"></th>"
+msgstr ""
+"Adresse IP\n"
+"              <span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl."
+"tableData.displayedAllocated.length > 0\">\n"
+"            </span>\n"
+"            \n"
+"              Sous-réseau\n"
+"              <span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl."
+"tableData.displayedAllocated.length > 0\">\n"
+"            </span>\n"
+"            <th class=\"rsp-p1\">\n"
+"              Port\n"
+"              <span class=\"hz-icon-required fa fa-asterisk\" ng-show=\"ctrl."
+"tableData.displayedAllocated.length > 0\">\n"
+"            </span>\n"
+"            Poids</th>\n"
+"            <th class=\"actions_column\"></th>"
+
+#, python-format
+msgid "IP Addresses (%(count)s)"
+msgstr "Adresses IP (%(count)s)"
+
+msgid "IP address"
+msgstr "Adresse IP"
+
+msgid "Inactive"
+msgstr "Inactif"
+
+msgid ""
+"Interval (sec)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Intervalle (sec)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Least Connections"
+msgstr "Connexions minimales"
+
+msgid "Listeners"
+msgstr "Listeners"
+
+#, python-format
+msgid "Load Balancer %(index)s"
+msgstr "Répartiteur de charge %(index)s"
+
+msgid "Load Balancer Algorithm"
+msgstr "Algorithme du répartiteur de charge"
+
+msgid "Load Balancer Details"
+msgstr "Détails du répartiteur de charge"
+
+msgid "Load Balancer ID"
+msgstr "ID de l'équilibreur de charge"
+
+msgid "Load Balancers"
+msgstr "Répartiteurs de charge"
+
+msgid "Loading"
+msgstr "Chargement..."
+
+msgid "Max Retries"
+msgstr "Tentatives maxi."
+
+msgid "Member ID"
+msgstr "ID du membre"
+
+msgid "Members"
+msgstr "Membres"
+
+msgid ""
+"Method\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Méthode\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Monitor Details"
+msgstr "Détails du moniteur"
+
+msgid "Monitor ID"
+msgstr "ID du moniteur"
+
+msgid ""
+"Monitor type\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Type de moniteur\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "No available certificates"
+msgstr "Aucun certificat disponible"
+
+msgid "No available instances"
+msgstr "Aucune instance disponible"
+
+msgid "No items to display."
+msgstr "Aucun élément à afficher."
+
+msgid "No members have been allocated"
+msgstr "Aucun membre n'a été alloué"
+
+msgid "None"
+msgstr "Aucun"
+
+msgid "Offline"
+msgstr "Hors ligne"
+
+msgid "Online"
+msgstr "En ligne"
+
+msgid "Operating Status"
+msgstr "Statut opérationnel"
+
+msgid "Overview"
+msgstr "Vue d'ensemble"
+
+msgid "Pending Create"
+msgstr "Création en attente"
+
+msgid "Pending Delete"
+msgstr "Suppression en attente"
+
+msgid "Pending Update"
+msgstr "Mise à jour en attente"
+
+msgid "Pool 1"
+msgstr "Pool 1"
+
+msgid "Pool Details"
+msgstr "Détails du pool"
+
+msgid "Pool ID"
+msgstr "ID du pool"
+
+msgid "Pool Members"
+msgstr "Membres du pool"
+
+msgid "Port"
+msgstr "Port"
+
+msgid ""
+"Port\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Port\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Port ID"
+msgstr "ID port"
+
+msgid "Protocol"
+msgstr "Protocole"
+
+msgid ""
+"Protocol\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Protocole\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Protocol Port"
+msgstr "Port de protocole"
+
+msgid "Provide the details for the health monitor."
+msgstr "Spécifier les détails pour le moniteur d'état."
+
+msgid "Provide the details for the pool."
+msgstr "Spécifier les détails pour le pool."
+
+msgid "Provider"
+msgstr "Fournisseur"
+
+msgid "Provisioning Status"
+msgstr "Statut de Déploiement"
+
+msgid "Remove"
+msgstr "Retirer"
+
+msgid ""
+"Retries\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Tentatives\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Round Robin"
+msgstr "Round Robin"
+
+msgid "SSL Certificates"
+msgstr "Certificats SSL"
+
+msgid "Select certificates from the available certificates below"
+msgstr "Sélectionner les certificats depuis la liste disponible ci dessous"
+
+msgid "Session Persistence"
+msgstr "Persistance de session"
+
+msgid "Source IP"
+msgstr "IP source"
+
+msgid ""
+"Subnet\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Sous-réseau\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Subnet ID"
+msgstr "ID sous-réseau"
+
+msgid "Tenant ID"
+msgstr "ID du tenant"
+
+msgid "The IP address is not valid."
+msgstr "L'adresse IP n'est pas valide."
+
+msgid "The URL path is not valid."
+msgstr "Le chemin d'URL n'est pas valide."
+
+msgid "The expected status code is not valid."
+msgstr "Le code de statut attendu n'est pas valide."
+
+#, python-format
+msgid "The following health monitor could not be deleted: %s."
+msgstr "Le moniteur de santé suivant ne peut être supprimé: %s"
+
+#, python-format
+msgid "The following pool could not be deleted: %s."
+msgstr "Le pool suivant ne peut être supprimé: %s"
+
+msgid "The health check interval must be greater than or equal to the timeout."
+msgstr ""
+"Le diagnostic d'intégrité doit être supérieur ou égal au délai d'attente."
+
+msgid "The health monitor has been updated."
+msgstr "Le moniteur de santé a été mis à jour."
+
+msgid "The load balancer has been updated."
+msgstr "Le répartiteur de charge a été mis à jour."
+
+msgid "The max retry count must be a number between 1 and 10."
+msgstr "Le compteur max de tentatives doit être un nombre entre 1 et 10."
+
+msgid "The pool has been updated."
+msgstr "Le pool a été mis à jour."
+
+msgid "The pool members have been updated."
+msgstr "Les membres du pool ont été mis à jour."
+
+msgid "The port must be a number between 1 and 65535."
+msgstr "Le numéro de port doit être un nombre compris entre 1 et 65535."
+
+msgid "The timeout must be a number greater than or equal to 0."
+msgstr "Le délai d'attente dois être un nombre supérieur ou égal à 0."
+
+msgid "The weight must be a number between 1 and 256."
+msgstr "Le poids doit être un nombre compris entre 1 et 256"
+
+msgid "Timeout"
+msgstr "Délai d'attente"
+
+msgid ""
+"Timeout (sec)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Délai d'attente (sec)\n"
+"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "URL Path"
+msgstr "Chemin d'URL"
+
+msgid "URL path"
+msgstr "Chemin d'URL"
+
+msgid "Unable to create health monitor."
+msgstr "Impossible de créer le moniteur de santé."
+
+msgid "Unable to create listener."
+msgstr "Impossible de créer le listener."
+
+msgid "Unable to create load balancer."
+msgstr "Impossible de créer le load balancer."
+
+msgid "Unable to create pool."
+msgstr "Impossible de créer le pool."
+
+msgid "Unable to delete health monitor."
+msgstr "Impossible de supprimer le moniteur de santé."
+
+msgid "Unable to delete listener."
+msgstr "Impossible de supprimer le listener."
+
+msgid "Unable to delete load balancer."
+msgstr "Impossible de supprimer le load balancer."
+
+msgid "Unable to delete pool."
+msgstr "Impossible de supprimer le pool."
+
+#, python-format
+msgid "Unable to disassociate floating IP address from load balancer: %s."
+msgstr ""
+"Impossible de dissocier les adresses IP flottantes du répartiteur de charge: "
+"%s."
+
+msgid "Unable to retrieve SSL certificates."
+msgstr "Impossible de récupérer les certificats SSL."
+
+msgid "Unable to retrieve health monitor."
+msgstr "Impossible de récupérer le moniteur de santé."
+
+msgid "Unable to retrieve listener."
+msgstr "impossible de récupérer le listener."
+
+msgid "Unable to retrieve listeners."
+msgstr "Impossible de récupérer les listeners."
+
+msgid "Unable to retrieve load balancer."
+msgstr "Impossible de récupérer le load balancer."
+
+msgid "Unable to retrieve load balancers."
+msgstr "Impossible de récupérer les load balancers."
+
+msgid "Unable to retrieve member."
+msgstr "Impossible de récupérer le membre."
+
+msgid "Unable to retrieve members."
+msgstr "Impossible de récupérer les membres."
+
+msgid "Unable to retrieve pool."
+msgstr "Impossible de récupérer le pool."
+
+msgid "Unable to retrieve secrets."
+msgstr "Impossible de récupérer les secrets."
+
+msgid "Unable to update health monitor."
+msgstr "Impossible de mettre à jour le moniteur de santé."
+
+msgid "Unable to update listener."
+msgstr "Impossible de mettre à jour le listener."
+
+msgid "Unable to update load balancer."
+msgstr "Impossible de mettre à jour le load balancer."
+
+msgid "Unable to update member list."
+msgstr "Impossible de mettre à jour la liste des membres."
+
+msgid "Unable to update member."
+msgstr "Impossible de mettre à jour le membre."
+
+msgid "Unable to update pool."
+msgstr "Impossible de mettre à jour le pool."
+
+msgid "Update"
+msgstr "Mettre à jour"
+
+msgid "Update Health Monitor"
+msgstr "Mettre à jour le moniteur de santé"
+
+msgid "Update Listener"
+msgstr "Mettre à jour le Listener"
+
+msgid "Update Load Balancer"
+msgstr "Mettre à jour le répartiteur de charge"
+
+msgid "Update Member Weight"
+msgstr "Mettre à jour le poids du membre"
+
+msgid "Update Pool"
+msgstr "Mettre à jour le pool"
+
+msgid "Update Weight"
+msgstr "Mettre à jour les poids"
+
+msgid "Weight"
+msgstr "Poids"
+
+msgid ""
+"Weight\n"
+"            <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+msgstr ""
+"Poids\n"
+"            <span class=\"hz-icon-required fa fa-asterisk\"></span>"
+
+#, python-format
+msgid ""
+"You are about to disassociate the floating IP address from load balancer \"%s"
+"\". Please confirm."
+msgstr ""
+"Vous êtes sur le point de dissocier l'adresse IP flottante de l'équilibreur "
+"de charge \"%s\". Veuillez confirmer."
+
+#, python-format
+msgid ""
+"You have selected \"%s\". Please confirm your selection. Deleted health "
+"monitors are not recoverable."
+msgstr ""
+"Vous avez sélectionné \"%s\". Veuillez confirmer votre sélection. Les "
+"moniteurs de santé supprimés ne seront pas récupérable."
+
+#, python-format
+msgid ""
+"You have selected \"%s\". Please confirm your selection. Deleted load "
+"balancers are not recoverable."
+msgstr ""
+"Vous avez sélectionné \"%s\". Veuillez confirmer votre sélection. Les "
+"répartiteurs de charge supprimés ne seront pas récupérable."
+
+#, python-format
+msgid ""
+"You have selected \"%s\". Please confirm your selection. Deleted pools are "
+"not recoverable."
+msgstr ""
+"Vous avez sélectionné \"%s\". Veuillez confirmer votre sélection. Les pools "
+"supprimés ne sont pas récupérables."
