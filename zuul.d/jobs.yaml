@@ -1,0 +1,17 @@
+- job:
+    name: neutron-lbaas-dashboard-nodejs4-npm-run-lint
+    parent: legacy-base
+    run: playbooks/legacy/neutron-lbaas-dashboard-nodejs4-npm-run-lint/run.yaml
+    post-run: playbooks/legacy/neutron-lbaas-dashboard-nodejs4-npm-run-lint/post.yaml
+    timeout: 2400
+    required-projects:
+      - openstack/horizon
+
+- job:
+    name: neutron-lbaas-dashboard-nodejs4-npm-run-test
+    parent: legacy-base
+    run: playbooks/legacy/neutron-lbaas-dashboard-nodejs4-npm-run-test/run.yaml
+    post-run: playbooks/legacy/neutron-lbaas-dashboard-nodejs4-npm-run-test/post.yaml
+    timeout: 2400
+    required-projects:
+      - openstack/horizon
