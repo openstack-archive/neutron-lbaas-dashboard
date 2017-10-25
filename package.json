@@ -1,5 +1,5 @@
 {
-  "version": "0.0.0",
+  "version": "4.0.0b1",
   "private": true,
   "name": "neutron-lbaas-dashboard",
   "description": "Neutron LBaaS v2 Dashboard",
