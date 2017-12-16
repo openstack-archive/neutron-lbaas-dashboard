@@ -1,17 +1,18 @@
-# Eunseop Shin <kairos9603@gmail.com>, 2016. #zanata
+# Eunseop Shin <kairos9603@khu.ac.kr>, 2016. #zanata
+# ByungYeol Woo <wby1089@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: neutron-lbaas-dashboard 1.0.1.dev32\n"
+"Project-Id-Version: neutron-lbaas-dashboard 3.0.2.dev1\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2016-10-13 22:46+0000\n"
+"POT-Creation-Date: 2017-09-14 19:30+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-10-20 11:51+0000\n"
-"Last-Translator: Eunseop Shin <kairos9603@gmail.com>\n"
+"PO-Revision-Date: 2017-12-13 01:09+0000\n"
+"Last-Translator: \n"
 "Language-Team: Korean (South Korea)\n"
 "Language: ko-KR\n"
-"X-Generator: Zanata 3.7.3\n"
+"X-Generator: Zanata 3.9.6\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #, python-format
@@ -19,7 +20,7 @@ msgid "%s loadbalancers"
 msgstr "%s 로드밸런서"
 
 msgid "Admin Status"
-msgstr "관리자 상태"
+msgstr "관리 상태"
 
 msgid "All Instances"
 msgstr "모든 인스턴스"
@@ -34,7 +35,7 @@ msgid "Certificate Name"
 msgstr "인증서 이름"
 
 msgid "Could not create full loadbalancer."
-msgstr "full 로드벨런서를 생성 할 수 없습니다."
+msgstr "전체 로드벨런서를 생성할 수 없습니다."
 
 msgid "Could not get load balancer list."
 msgstr "로드 밸런서 리스트를 가져올 수 없습니다."
@@ -70,7 +71,7 @@ msgid "Instance Port"
 msgstr "인스턴스 포트"
 
 msgid "Instance Port on which service is running."
-msgstr "서비스가 실행중인 인스턴스 포트"
+msgstr "서비스가 실행 중인 인스턴스 포트"
 
 msgid "Instances"
 msgstr "인스턴스"
@@ -82,10 +83,10 @@ msgid "LB Details"
 msgstr "LB 상세정보"
 
 msgid "LB Port"
-msgstr "Lb 포트"
+msgstr "LB 포트"
 
 msgid "LB Port on which LB is listening."
-msgstr "LB가 listening하는 LB 포트."
+msgstr "LB에서 수신하는 LB 포트."
 
 msgid "LB Protocol"
 msgstr "LB 프로토콜"
@@ -141,7 +142,7 @@ msgstr "사용할 수 없음"
 
 msgid ""
 "Number of times health check should be attempted before marking down a member"
-msgstr "멤버를 기록하기 전에 상태 확인 횟수를 확인해야 합니다."
+msgstr "멤버 다운 상태가 되기 전에 상태 확인 횟수를 확인해야 합니다."
 
 msgid "Operating Status"
 msgstr "운영 상태"
@@ -150,7 +151,7 @@ msgid "Overview"
 msgstr "개요"
 
 msgid "PING"
-msgstr "PING"
+msgstr "핑"
 
 msgid "Please provide all certificate parameters."
 msgstr "모든 인증서 파라미터를 입력해 주십시오."
@@ -164,7 +165,7 @@ msgid ""
 "load balancer."
 msgstr ""
 "이 대상 로드 밸런싱 장치의 트래픽을 처리해야 하는 인스턴스 목록을 선택하십시"
-"오. 모든 인스턴스는 대상 하중 밸런서와 동일한 프로젝트에 있어야 합니다."
+"오. 모든 인스턴스는 대상 로드 밸런서와 동일한 프로젝트에 있어야 합니다."
 
 msgid "Please select an option for the load balancing method."
 msgstr "로드 벨런싱 방식을 위한 옵션을 선택 해주세요."
@@ -189,13 +190,13 @@ msgstr "문자열 받기"
 
 #, python-format
 msgid "Requested IP and port combination already exists %s "
-msgstr "요청된 IP와 포트 결합은 이미 존재합니다 %s"
+msgstr "요청된 IP와 포트의 결합은 이미 존재합니다 %s"
 
 msgid "Retry count before markdown"
-msgstr "markdown 이전 재시도 횟수"
+msgstr "다운 상태가 되기 전의 재시도 횟수"
 
 msgid "Round Robin"
-msgstr "Round Robin"
+msgstr "라운드 로빈"
 
 msgid "SSL"
 msgstr "SSL"
@@ -207,7 +208,7 @@ msgid "Scheduled termination of"
 msgstr "예약 종료"
 
 msgid "Select from existing VIP IPs"
-msgstr "기존 VIP IP들 중 에서 선택하세요."
+msgstr "기존 VIP IP 중 에서 선택하세요."
 
 msgid "Selected Instances"
 msgstr "선택된 인스턴스"
@@ -223,22 +224,22 @@ msgstr "종료"
 
 #, python-format
 msgid "Unable to get VIP for pool %(pool)s."
-msgstr "%(pool)s pool에서 VIP를 가져오지 못했습니다."
+msgstr "%(pool)s 풀에서 VIP를 가져올 수 없습니다."
 
 #, python-format
 msgid "Unable to get health monitors for pool %(pool)s."
-msgstr "%(pool)s pool에서 상태 모니터를 가져올 수 없습니다."
+msgstr "%(pool)s 풀에서 상태 모니터를 가져올 수 없습니다."
 
 #, python-format
 msgid "Unable to get members for pool %(pool)s."
-msgstr "%(pool)s pool에서 멤버를 가져오지 못했습니다."
+msgstr "%(pool)s 풀에서 멤버를 가져올 수 없습니다."
 
 msgid "Unable to get pool detail."
-msgstr "Pool 세부 정보를 가져오지 못했습니다."
+msgstr "풀 세부 정보를 가져올 수 없습니다."
 
 #, python-format
 msgid "Unable to get subnet for pool %(pool)s."
-msgstr "%(pool)s pool에서 서브넷을 가져오지 못했습니다."
+msgstr "%(pool)s 풀에서 서브넷을 가져올 수 없습니다."
 
 #, python-format
 msgid "Unable to launch %(count)s named \"%(name)s\"."
@@ -250,20 +251,20 @@ msgstr "로드 밸런서 \"%s\"를 수정할 수 없습니다."
 
 #, python-format
 msgid "Unable to retrieve details for loadbalancer \"%s\"."
-msgstr "로드 밸런서 \"%s\"의 세부 정보를 찾지 못 했습니다."
+msgstr "로드 밸런서 \"%s\"의 세부 정보를 가져올 수 없습니다."
 
 #, python-format
 msgid "Unable to retrieve load balancer details. %s"
-msgstr "로드 밸런서 세부 정보를 찾지 못 했습니다. %s"
+msgstr "로드 밸런서 세부 정보를 가져올 수 없습니다. %s"
 
 msgid "Unable to retrieve members list. Please try again later."
 msgstr "멤버 리스트를 찾을 수 없습니다. 잠시 후 다시 시도하세요."
 
 msgid "Unable to retrieve pools list."
-msgstr "풀 목록을 찾지 못 했습니다."
+msgstr "풀 목록을 가져올 수 없습니다."
 
 msgid "Unable to retrieve vips."
-msgstr "vip를 찾을 수 없습니다."
+msgstr "vip를 가져올 수 없습니다."
 
 msgid "Update"
 msgstr "업데이트"
