@@ -33,6 +33,7 @@ test-shim.js
 
 # Translations
 *.mo
+.zanata-cache/
 
 # Mr Developer
 .mr.developer.cfg
@@ -54,3 +55,4 @@ ChangeLog
 *~
 .*.swp
 .*sw?
+.ropeproject/
