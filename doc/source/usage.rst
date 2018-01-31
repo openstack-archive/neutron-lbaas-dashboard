@@ -2,6 +2,9 @@
 User Guide
 ==========
 
+.. warning::
+   Neutron-lbaas-dashboard is now deprecated. Please see the FAQ: https://wiki.openstack.org/wiki/Neutron/LBaaS/Deprecation
+
 Load-Balancer-as-a-Service (LBaaS) enables networking to distribute incoming
 requests evenly among designated instances. This distribution ensures that
 the workload is shared predictably among instances and enables more effective

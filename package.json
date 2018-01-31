@@ -2,7 +2,7 @@
   "version": "4.0.0b1",
   "private": true,
   "name": "neutron-lbaas-dashboard",
-  "description": "Neutron LBaaS v2 Dashboard",
+  "description": "Neutron LBaaS v2 Dashboard (deprecated)",
   "repository": "none",
   "license": "Apache 2.0",
   "devDependencies": {

@@ -1,0 +1,11 @@
+---
+prelude: >
+    As of the Queens release, neutron-lbaas-dashboard is now deprecated and
+    being replaced by the octavia-dashboard project. Please see the FAQ
+    for more information:
+    https://wiki.openstack.org/wiki/Neutron/LBaaS/Deprecation
+deprecations:
+  - |
+    The neutron-lbaas-dashboard project is now deprecated. Please see the FAQ
+    for more information:
+    https://wiki.openstack.org/wiki/Neutron/LBaaS/Deprecation

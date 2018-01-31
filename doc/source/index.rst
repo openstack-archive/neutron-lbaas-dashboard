@@ -6,6 +6,9 @@
 Welcome to neutron-lbaas-dashboard's documentation!
 ========================================================
 
+.. warning::
+   Neutron-lbaas-dashboard is now deprecated. Please see the FAQ: https://wiki.openstack.org/wiki/Neutron/LBaaS/Deprecation
+
 Contents:
 
 .. toctree::

@@ -28,6 +28,11 @@ class NGLoadBalancers(horizon.Panel):
     slug = 'ngloadbalancersv2'
     permissions = ('openstack.services.network',)
 
+    def __init__(self):
+        LOG.warning('neutron-lbaas-dashboard is now deprecated. See: '
+                    'https://wiki.openstack.org/wiki/Neutron/LBaaS/'
+                    'Deprecation')
+
     def allowed(self, context):
         request = context['request']
         try:

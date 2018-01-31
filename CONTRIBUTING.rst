@@ -1,3 +1,7 @@
+
+.. warning::
+   Neutron-lbaas-dashboard is now deprecated. Please see the FAQ: https://wiki.openstack.org/wiki/Neutron/LBaaS/Deprecation
+
 If you would like to contribute to the development of OpenStack, you must
 follow the steps in this page:
 
@@ -14,4 +18,4 @@ Pull requests submitted through GitHub will be ignored.
 
 Bugs should be filed on Launchpad, not GitHub:
 
-   https://bugs.launchpad.net/neutron-lbaas-dashboard
+   https://storyboard.openstack.org/#!/project/907

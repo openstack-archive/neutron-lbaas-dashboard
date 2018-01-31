@@ -2,6 +2,10 @@
 Installation
 ============
 
+.. warning::
+   Neutron-lbaas-dashboard is now deprecated. Please see the FAQ: https://wiki.openstack.org/wiki/Neutron/LBaaS/Deprecation
+
+
 At the command line::
 
     $ sudo pip install neutron-lbaas-dashboard

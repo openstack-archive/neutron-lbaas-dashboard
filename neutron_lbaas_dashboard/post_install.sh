@@ -9,5 +9,8 @@ then
   wget -nv -t 3 https://raw.githubusercontent.com/openstack/horizon/master/test-shim.js
 fi
 
+echo "Note: neutron-lbaas-dashboard is now deprecated."
+echo "Please see the FAQ: https://wiki.openstack.org/wiki/Neutron/LBaaS/Deprecation"
+
 echo "Creating a tox env which will contain xStatic libraries, horizon, and openstack_dashboard"
 tox -epy27 --notest;
