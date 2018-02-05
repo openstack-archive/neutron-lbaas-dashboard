@@ -101,5 +101,7 @@ install_cmd="pip install -c$localfile"
 
 install_project horizon
 
-$install_cmd -U $*
+if [ -n "$*" ]; then
+    $install_cmd -U $*
+fi
 exit $?
