@@ -1,13 +1,12 @@
-# Alex Eng <loones1595@gmail.com>, 2016. #zanata
 # Yukinori Yagisawa <yukky37@gmail.com>, 2016. #zanata
 # Yusuke Higashino <yusuke_higashino@adoc.co.jp>, 2016. #zanata
 # 小羽根 陸 <riku_kobane@adoc.co.jp>, 2016. #zanata
 # Kyohei Moriyama <flogofrein@gmail.com>, 2017. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: neutron-lbaas-dashboard 3.0.0.0b4.dev3\n"
+"Project-Id-Version: neutron-lbaas-dashboard VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2017-08-11 03:11+0000\n"
+"POT-Creation-Date: 2018-03-29 00:48+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,44 +14,12 @@ msgstr ""
 "Last-Translator: Kyohei Moriyama <flogofrein@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"X-Generator: Zanata 3.9.6\n"
+"X-Generator: Zanata 4.3.3\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #, python-format
 msgid "%(ip)s..."
 msgstr "%(ip)s..."
-
-msgid ""
-"<strong>HTTP method:</strong>\n"
-"  The HTTP method used to perform the health check."
-msgstr ""
-"<strong>HTTP method:</strong>\n"
-"   ヘルスチェックの実行に使用されたHTTPメソッドです。"
-
-msgid ""
-"<strong>Interval:</strong>\n"
-"  The interval between health checks. Must be greater than or equal to the "
-"timeout."
-msgstr ""
-"<strong>Interval:</strong>\n"
-"ヘルスチェックの間隔はタイムアウト値以上でなければいけません。"
-
-msgid ""
-"<strong>Retries:</strong>\n"
-"  The number of allowed connection failures before marking the member as "
-"inactive. Must be a\n"
-"  number from 1 to 10."
-msgstr ""
-"<strong> 取得 :</strong>\n"
-"  接続可能数が失敗するにはメンバーを無効しなければいけません。数は1～10までで"
-"す。"
-
-msgid ""
-"<strong>Subnet:</strong>\n"
-"  The network which contains the IP address of the member."
-msgstr ""
-"<strong>Subnet:</strong>\n"
-"メンバーのIPアドレスを含むネットワーク。"
 
 msgid "A new health monitor is being created."
 msgstr "新しいヘルスモニターが作成されました。"
@@ -232,13 +199,6 @@ msgstr "期限切れ日"
 msgid "Floating IP Address"
 msgstr "Floating IP アドレス"
 
-msgid ""
-"Floating IP address or pool\n"
-"            <span class=\"hz-icon-required fa fa-asterisk\"></span>"
-msgstr ""
-"Floating IP アドレスもしくは、プール <span class=\"hz-icon-required fa fa-"
-"asterisk\"></span>"
-
 msgid "Floating IP addresses"
 msgstr "Floating IP アドレス"
 
@@ -269,13 +229,6 @@ msgstr "IP アドレス"
 
 msgid "Inactive"
 msgstr "非稼働"
-
-msgid ""
-"Interval (sec)\n"
-"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
-msgstr ""
-"インターバル（秒）\n"
-"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
 
 msgid "Least Connections"
 msgstr "最小接続数"
@@ -324,23 +277,11 @@ msgstr "メンバー ID"
 msgid "Members"
 msgstr "メンバー"
 
-msgid ""
-"Method\n"
-"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
-msgstr "メソッド<span class=\"hz-icon-required fa fa-asterisk\"></span>"
-
 msgid "Monitor Details"
 msgstr "モニターの詳細"
 
 msgid "Monitor ID"
 msgstr "モニター ID"
-
-msgid ""
-"Monitor type\n"
-"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
-msgstr ""
-"モニタータイプ\n"
-"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
 
 msgid "Name"
 msgstr "名前"
@@ -423,13 +364,6 @@ msgstr "プロビジョニング状態"
 msgid "Remove"
 msgstr "削除"
 
-msgid ""
-"Retries\n"
-"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
-msgstr ""
-"取得\n"
-"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
-
 msgid "Round Robin"
 msgstr "ラウンドロビン"
 
@@ -455,11 +389,6 @@ msgstr "セッション永続性"
 
 msgid "Source IP"
 msgstr "送信元 IP"
-
-msgid ""
-"Subnet\n"
-"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
-msgstr "サブネット<span class=\"hz-icon-required fa fa-asterisk\"></span>"
 
 msgid "Subnet ID"
 msgstr "サブネット ID"
@@ -532,13 +461,6 @@ msgstr "ウェイトは1～256までとなっています。"
 
 msgid "Timeout"
 msgstr "タイムアウト"
-
-msgid ""
-"Timeout (sec)\n"
-"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
-msgstr ""
-"タイムアウト（秒）\n"
-"          <span class=\"hz-icon-required fa fa-asterisk\"></span>"
 
 msgid "Type"
 msgstr "種別"
@@ -652,11 +574,6 @@ msgstr "ウェイトの更新"
 
 msgid "Weight"
 msgstr "ウェイト"
-
-msgid ""
-"Weight\n"
-"            <span class=\"hz-icon-required fa fa-asterisk\"></span>"
-msgstr "ウェイト<span class=\"hz-icon-required fa fa-asterisk\"></span>"
 
 #, python-format
 msgid ""
