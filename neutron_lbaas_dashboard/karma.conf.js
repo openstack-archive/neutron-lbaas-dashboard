@@ -140,7 +140,16 @@ module.exports = function (config) {
 
     coverageReporter: {
       type: 'html',
-      dir: '../coverage-karma/'
+      dir: '../cover/',
+      subdir: '.',
+      check: {
+        global: {
+          statements: 100,
+          branches: 100,
+          functions: 100,
+          lines: 100
+        }
+      }
     },
 
     // Coverage threshold values.
