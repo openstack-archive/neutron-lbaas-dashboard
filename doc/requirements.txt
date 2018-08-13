@@ -3,3 +3,5 @@
 # process, which may cause wedges in the gate later.
 openstackdocstheme>=1.18.1 # Apache-2.0
 sphinx!=1.6.6,>=1.6.2 # BSD
+Django>=1.8,<2.0  # BSD
+http://tarballs.openstack.org/horizon/horizon-stable-queens.tar.gz#egg=horizon
