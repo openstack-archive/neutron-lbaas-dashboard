@@ -2,7 +2,7 @@
     templates:
       - check-requirements
       - openstack-python-jobs-horizon
-      - publish-openstack-sphinx-docs
+      - publish-openstack-docs-pti
     check:
       jobs:
         - openstack-tox-lower-constraints
