@@ -1,0 +1,30 @@
+- project:
+    templates:
+      - check-requirements
+      - openstack-python-jobs-horizon
+      - publish-openstack-sphinx-docs
+    check:
+      jobs:
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+    gate:
+      jobs:
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+
