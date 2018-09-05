@@ -99,7 +99,6 @@ def create_listener(request, **kwargs):
         listenerSpec['description'] = data['listener']['description']
     if data.get('certificates'):
         listenerSpec['default_tls_container_ref'] = data['certificates'][0]
-        listenerSpec['sni_container_refs'] = data['certificates']
 
     listener = neutronclient(request).create_listener(
         {'listener': listenerSpec}).get('listener')
@@ -268,6 +267,8 @@ def update_listener(request, **kwargs):
         listener_spec['name'] = data['listener']['name']
     if data['listener'].get('description'):
         listener_spec['description'] = data['listener']['description']
+    if data.get('certificates'):
+        listener_spec['default_tls_container_ref'] = data['certificates'][0]
 
     listener = neutronclient(request).update_listener(
         listener_id, {'listener': listener_spec}).get('listener')
