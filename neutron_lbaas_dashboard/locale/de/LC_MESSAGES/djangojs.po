@@ -1,14 +1,15 @@
 # Frank Kloeker <eumel@arcor.de>, 2017. #zanata
+# Frank Kloeker <eumel@arcor.de>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: neutron-lbaas-dashboard VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2018-03-29 00:48+0000\n"
+"POT-Creation-Date: 2018-08-25 00:47+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-09-16 08:06+0000\n"
-"Last-Translator: Robert Simai <robert.simai@suse.com>\n"
+"PO-Revision-Date: 2018-08-11 08:32+0000\n"
+"Last-Translator: Frank Kloeker <eumel@arcor.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
 "X-Generator: Zanata 4.3.3\n"
@@ -205,6 +206,9 @@ msgstr "Erwartete Codes"
 msgid "Expected status codes"
 msgstr "Erwartete Statuscodes"
 
+msgid "Expected status codes:"
+msgstr "Erwarteter Status-Code:"
+
 msgid "Expiration Date"
 msgstr "Ablaufdatum"
 
@@ -223,6 +227,9 @@ msgstr "HTTP-Methode"
 msgid "HTTP method"
 msgstr "HTTP-Methode"
 
+msgid "HTTP method:"
+msgstr "HTTP Methode:"
+
 msgid "Health Monitor ID"
 msgstr "Gesundheitsmonitor-ID"
 
@@ -239,6 +246,22 @@ msgstr "IP-Adressen (%(count)s)"
 msgid "IP address"
 msgstr "IP-Adresse"
 
+msgid "IP address:"
+msgstr "IP-Adresse:"
+
+msgid ""
+"If an IP address is provided it must be a well-formed IPv4 or IPv6 address. "
+"The system will\n"
+"  attempt to assign the provided IP address to the load balancer. If an IP "
+"address is not provided\n"
+"  then one will be allocated for you."
+msgstr ""
+"Wenn eine IP-Adresse zur Verfügung gestellt wird, muss diese im IPv4 oder "
+"IPv6 Format sein. Das System wird\n"
+"  versuchen, die zur Verfügung gestellte IP-Adresse zum Loadbalancer "
+"hinzuzufügen. Wenn keine IP-Adresse zur Verfügung gestellt wird, \n"
+"  wird eine für Sie allokiert."
+
 msgid ""
 "If the listener uses the TERMINATED_HTTPS protocol, then one or more SSL "
 "certificates must\n"
@@ -250,6 +273,26 @@ msgstr ""
 
 msgid "Inactive"
 msgstr "Inaktiv"
+
+msgid "Interval (sec)"
+msgstr "Intervall (sek)"
+
+msgid "Interval:"
+msgstr "Intervall:"
+
+msgid "Key Manager API Guide: Creating a Certificate Container"
+msgstr "Key-Manager-API-Guide: Erstellen eines Zertifikat-Containers"
+
+msgid "Key Manager Service Command-Line Client"
+msgstr "Key-Manager-Service Kommandozeilen-Tool"
+
+msgid ""
+"LEAST_CONNECTIONS: Allocates requests to the instance with the least number "
+"of active\n"
+"      connections."
+msgstr ""
+"LEAST_CONNECTIONS: Allokiert Anfragen zur Instanz mit den wenigsten aktiven\n"
+"  Verbindungen."
 
 msgid "Least Connections"
 msgstr "Letzte Verbindungen"
@@ -307,11 +350,20 @@ msgstr ""
 "empfangen. Jedes Mitglied\n"
 "  muss eine einmalige Kombination aus IP-Adresse und Port haben."
 
+msgid "Method"
+msgstr "Methode"
+
+msgid "Method:"
+msgstr "Methode:"
+
 msgid "Monitor Details"
 msgstr "Monitordetails"
 
 msgid "Monitor ID"
 msgstr "Monitor-ID"
+
+msgid "Monitor type"
+msgstr "Monitor-Typ"
 
 msgid "Name"
 msgstr "Name"
@@ -373,11 +425,17 @@ msgstr "Port"
 msgid "Port ID"
 msgstr "Port-ID"
 
+msgid "Port:"
+msgstr "Port:"
+
 msgid "Protocol"
 msgstr "Protokoll"
 
 msgid "Protocol Port"
 msgstr "Protokollport"
+
+msgid "Protocol:"
+msgstr "Protokoll:"
 
 msgid "Provide the details for the health monitor."
 msgstr "Geben Sie die Details zum Gesundheitsmonitor an."
@@ -397,11 +455,28 @@ msgstr "Anbieter"
 msgid "Provisioning Status"
 msgstr "Provisionierungsstatus"
 
+msgid "ROUND_ROBIN: Rotates requests evenly between multiple instances."
+msgstr ""
+"ROUND_ROBIN: Rotiert Anfragen zufällig zwischen verschiedenen Instanzen."
+
 msgid "Remove"
 msgstr "Entfernen"
 
+msgid "Retries"
+msgstr "Wiederholungen"
+
+msgid "Retries:"
+msgstr "Wiederholungen:"
+
 msgid "Round Robin"
 msgstr "Rundlauf-Verfahren"
+
+msgid ""
+"SOURCE_IP: Requests from a unique source IP address are consistently "
+"directed to the same instance."
+msgstr ""
+"SOURCE_IP: Anforderungen von einer eindeutigen Quell-IP-Adresse werden "
+"konsistent an die gleiche Instanz gerichtet."
 
 msgid "SSL Certificates"
 msgstr "SSL-Zertifikate"
@@ -427,8 +502,14 @@ msgstr "Sitzungspersistenz"
 msgid "Source IP"
 msgstr "Quell-IP"
 
+msgid "Subnet"
+msgstr "Teilnetz"
+
 msgid "Subnet ID"
 msgstr "Subnetz-ID"
+
+msgid "Subnet:"
+msgstr "Teilnetz:"
 
 msgid "Tenant ID"
 msgstr "Mandanten-ID"
@@ -446,11 +527,35 @@ msgstr ""
 "hinzuzufügen, dass sich nicht in der Tabelle \n"
 "befindet."
 
+msgid "The HTTP method used to perform the health check."
+msgstr ""
+"Die HTTP-Methode die zur Durchführung des Gesundheitchecks angewendet wird."
+
 msgid "The IP address is not valid."
 msgstr "Die IP-Adresse ist ungültig."
 
+msgid ""
+"The IP address of the member to receive traffic from the load balancer. Must "
+"be a well-formed\n"
+"  IPv4 or IPv6 address."
+msgstr ""
+"Die IP-Addresse des Mitglieds, der den Verkehr vom Loadbalancer erhält. Muss "
+"im bekannten Format sein als\n"
+"  IPv4 oder IPv6 Addresse."
+
 msgid "The URL path is not valid."
 msgstr "Der URL-Pfad ist ungültig."
+
+msgid ""
+"The expected HTTP status codes to get from a successful health check. Must "
+"be a single number,\n"
+"  a comma separated list of numbers, or a range (two numbers separated by a "
+"hyphen)."
+msgstr ""
+"Der erwartete HTTP Status-Code welcher vom erfolgreichen Gesundheitscheck "
+"zurückgeliefert wird. Muss eine einfache Zahl sein,\n"
+"  eine kommaseparierte Liste von Zahlen oder ein Bereich (2 Zahlen separiert "
+"von einem Bindestrich)."
 
 msgid "The expected status code is not valid."
 msgstr "Der erwartete Statuscode ist ungültig."
@@ -514,8 +619,21 @@ msgstr ""
 "ob das Mitglied neue Verbindungen empfängt. Jeder Pool kann seinen eigenen "
 "Gesundheitsmonitor haben."
 
+msgid ""
+"The interval between health checks. Must be greater than or equal to the "
+"timeout."
+msgstr ""
+"Das Intervall zwischen den Integritätsprüfungen Muss größer oder gleich dem "
+"Timeout sein."
+
 msgid "The listener has been updated."
 msgstr "Der Listener wurde aktualisiert."
+
+msgid ""
+"The load balancer algorithm that distributes traffic to the pool members."
+msgstr ""
+"Der L oadbalancer-Algorithmus zum Verteilen der Anfragen auf die Pool-"
+"Mitglieder."
 
 msgid "The load balancer has been updated."
 msgstr "Der Loadbalancer wurde aktualisiert."
@@ -529,6 +647,21 @@ msgstr ""
 
 msgid "The max retry count must be a number between 1 and 10."
 msgstr "Die maximale Wiederholungszahl muss eine Zahl zwischen 1 und 10 sein."
+
+msgid "The network on which to allocate the load balancer's IP address."
+msgstr "Das Netzwerk von dem die IP-Adresse des Loadbalancers allokiert wird."
+
+msgid "The network which contains the IP address of the member."
+msgstr "Das Netzwerk, das die IP-Adresse des Mitglieds enthält."
+
+msgid ""
+"The number of allowed connection failures before marking the member as "
+"inactive. Must be a\n"
+"  number from 1 to 10."
+msgstr ""
+"Die Anzahl der erlaubten Verbindungsfehlern bevor das Mitglied als inaktiv "
+"markiert wird. Muss eine\n"
+"  Nummer von 1 bis 10 sein."
 
 msgid "The pool has been updated."
 msgstr "Der Pool wurde aktualisiert."
@@ -545,11 +678,65 @@ msgstr ""
 "Der Port muss über alle Listener, die diesem Loadbalancer zugewiesen sind, "
 "einmalig sein. "
 
+msgid ""
+"The port on which the front end listens. Must be an integer from 1 to 65535."
+msgstr ""
+"Der Port auf dem das Frontdend hört. Muss eine Zahl zwischen 1 und 65535 "
+"sein."
+
+msgid ""
+"The port on which the member listens for traffic. Must be a number from 1 to "
+"65535."
+msgstr ""
+"Der Port, an dem das Mitglied den Datenverkehr überwacht. Muss eine Zahl "
+"zwischen 1 und 65535 sein."
+
+msgid ""
+"The protocol for which the front end listens. The TERMINATED_HTTPS protocol "
+"is only available if\n"
+"  the key-manager service is enabled and you have authority to list "
+"certificate containers and\n"
+"  secrets."
+msgstr ""
+"Das Protokoll auf das das Frontend hört. Das TERMINATED_HTTPS Protokoll ist "
+"nur verfügbar, wenn\n"
+"  der Key-Manager-Dienst aktiviert ist und Sie die Berechtigung haben, "
+"Certifikat-Container und deren Geheimnisse aufzulisten."
+
+msgid ""
+"The target of the health check HTTP request to the member. Must be a valid "
+"URL path."
+msgstr ""
+"Das Ziel des HTTP-Requests des Gesundheitschecks. Muss ein gültiger URL-Pfad "
+"sein."
+
+msgid ""
+"The time after which a health check times out. Must be a number greater than "
+"or equal to 0\n"
+"  and less than or equal to the interval."
+msgstr ""
+"Die Zeit nachdem ein Gesundheitscheck eine Auszeit nimmt. Muss eine Nummer "
+"groesser oder gleich 0 sein\n"
+"   und kleiner oder gleich zum Intervall."
+
 msgid "The timeout must be a number greater than or equal to 0."
 msgstr "Das Zeitlimit muss eine Zahl größer oder gleich 0 sein."
 
 msgid "The weight must be a number between 1 and 256."
 msgstr "Das Gewicht muss eine Zahl zwischen 1 und 256 sein."
+
+msgid ""
+"The weight of a member determines the portion of requests or connections it "
+"services compared\n"
+"  to the other members of the pool. A higher weight means it will receive "
+"more traffic. Must be\n"
+"  a number from 1 to 256."
+msgstr ""
+"Die Gewichtung eines Mitglieds bestimmt den Teil der Anforderungen oder "
+"Verbindungen, die es vergleicht\n"
+"   zu den anderen Mitgliedern des Pools. Ein höhere Gewichtung bedeutet mehr "
+"Verkehr. Muss sein\n"
+"   eine Zahl von 1 bis 256."
 
 msgid ""
 "The weight of a member determines the portion of requests or connections it "
@@ -562,6 +749,12 @@ msgstr ""
 msgid "Timeout"
 msgstr "Zeitlimit"
 
+msgid "Timeout (sec)"
+msgstr "Timeout (sek)"
+
+msgid "Timeout:"
+msgstr "Timeout:"
+
 msgid "Type"
 msgstr "Typ"
 
@@ -570,6 +763,9 @@ msgstr "URL Pfad"
 
 msgid "URL path"
 msgstr "URL-Pfad"
+
+msgid "URL path:"
+msgstr "URL-Pfad:"
 
 msgid "Unable to create health monitor."
 msgstr "Gesundheitsmonitor kann nicht erzeugt werden."
@@ -672,8 +868,22 @@ msgstr "Pool aktualisieren"
 msgid "Update Weight"
 msgstr "Gewicht aktualisieren"
 
+msgid ""
+"Use the key-manager service to create any certificate containers before "
+"creating the listener.\n"
+"  The following documentation provides information on how to create a "
+"certificate container:"
+msgstr ""
+"Benutzen Sie den Key-Manager-Dienst zum Erstellen aller Zertifikat-"
+"Container, bevor Sie den Listener erstellen.\n"
+"  Die folgende Dokumentation stellt Informationen zur Verfügung, wie "
+"Zertifikat-Container zu erstellen sind:"
+
 msgid "Weight"
 msgstr "Gewicht"
+
+msgid "Weight:"
+msgstr "Gewichtung:"
 
 #, python-format
 msgid ""

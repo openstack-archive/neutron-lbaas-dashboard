@@ -3,15 +3,16 @@
 # Hyeunjee Kim <beyond.torvalds@gmail.com>, 2017. #zanata
 # Sungjin Kang <gang.sungjin@gmail.com>, 2017. #zanata
 # youngwoo Kim <koain@naver.com>, 2017. #zanata
+# ByungYeol Woo <wby1089@gmail.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: neutron-lbaas-dashboard VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2018-03-29 00:48+0000\n"
+"POT-Creation-Date: 2018-08-25 00:47+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-12-15 09:11+0000\n"
+"PO-Revision-Date: 2018-08-31 10:41+0000\n"
 "Last-Translator: ByungYeol Woo <wby1089@gmail.com>\n"
 "Language-Team: Korean (South Korea)\n"
 "Language: ko_KR\n"
@@ -207,6 +208,9 @@ msgstr "예상 코드"
 msgid "Expected status codes"
 msgstr "예상 상태 코드"
 
+msgid "Expected status codes:"
+msgstr "예상된 상태 코드:"
+
 msgid "Expiration Date"
 msgstr "만료 날짜"
 
@@ -225,6 +229,9 @@ msgstr "HTTP 메서드"
 msgid "HTTP method"
 msgstr "HTTP 메서드"
 
+msgid "HTTP method:"
+msgstr "HTTP 메소드:"
+
 msgid "Health Monitor ID"
 msgstr "상태 모니터 ID"
 
@@ -241,6 +248,22 @@ msgstr "IP 주소 (%(count)s)"
 msgid "IP address"
 msgstr "IP 주소"
 
+msgid "IP address:"
+msgstr "IP 주소:"
+
+msgid ""
+"If an IP address is provided it must be a well-formed IPv4 or IPv6 address. "
+"The system will\n"
+"  attempt to assign the provided IP address to the load balancer. If an IP "
+"address is not provided\n"
+"  then one will be allocated for you."
+msgstr ""
+" IP 주소가 제공된 경우 올바른 형식의 IPv4 또는 IPv6 주소여야합니다. 시스템"
+"은\n"
+"   제공된 IP 주소를 로드 밸런서에 할당하려고 시도합니다. IP 주소가 제공되지 "
+"않은 경우\n"
+"   하나가 할당될 것입니다."
+
 msgid ""
 "If the listener uses the TERMINATED_HTTPS protocol, then one or more SSL "
 "certificates must\n"
@@ -251,6 +274,26 @@ msgstr ""
 
 msgid "Inactive"
 msgstr "비활성"
+
+msgid "Interval (sec)"
+msgstr "간격 (초)"
+
+msgid "Interval:"
+msgstr "간격:"
+
+msgid "Key Manager API Guide: Creating a Certificate Container"
+msgstr "키 관리자 API 가이드: 인증서 컨테이너 생성하기"
+
+msgid "Key Manager Service Command-Line Client"
+msgstr "키 관리자 서비스 커맨드라인 클라이언트"
+
+msgid ""
+"LEAST_CONNECTIONS: Allocates requests to the instance with the least number "
+"of active\n"
+"      connections."
+msgstr ""
+"LEAST_CONNECTIONS: 활성화된 연결이 가장 적은 인스턴스로\n"
+"      요청을 할당합니다."
 
 msgid "Least Connections"
 msgstr "최소 연결"
@@ -307,11 +350,20 @@ msgstr ""
 "멤버는 로드 밸런서에서 트래픽을 받게 되는 실제 IP 주소입니다.\n"
 "  각 멤버는 유일한 IP 주소와 포트의 조합을 가지고 있어야 합니다."
 
+msgid "Method"
+msgstr "방법"
+
+msgid "Method:"
+msgstr "메소드:"
+
 msgid "Monitor Details"
 msgstr "모니터 세부정보"
 
 msgid "Monitor ID"
 msgstr "모니터 ID"
+
+msgid "Monitor type"
+msgstr "모니터 타입"
 
 msgid "Name"
 msgstr "이름"
@@ -373,11 +425,17 @@ msgstr "포트"
 msgid "Port ID"
 msgstr "포트 ID"
 
+msgid "Port:"
+msgstr "포트:"
+
 msgid "Protocol"
 msgstr "프로토콜"
 
 msgid "Protocol Port"
 msgstr "프로토콜 포트"
+
+msgid "Protocol:"
+msgstr "프로토콜:"
 
 msgid "Provide the details for the health monitor."
 msgstr "상태 모니터의 세부 사항을 제공하십시오."
@@ -397,11 +455,27 @@ msgstr "프로바이더"
 msgid "Provisioning Status"
 msgstr "프로비저닝 상태"
 
+msgid "ROUND_ROBIN: Rotates requests evenly between multiple instances."
+msgstr "ROUND_ROBIN: 여러 인스턴스들 사이에서 짝수로 요청을 순환합니다."
+
 msgid "Remove"
 msgstr "제거"
 
+msgid "Retries"
+msgstr "재시도"
+
+msgid "Retries:"
+msgstr "재시도:"
+
 msgid "Round Robin"
 msgstr "라운드 로빈"
+
+msgid ""
+"SOURCE_IP: Requests from a unique source IP address are consistently "
+"directed to the same instance."
+msgstr ""
+"SOURCE_IP: 하나의 고유한 소스 IP 주소로부터의 요청들은 지속적으로 같은 인스턴"
+"스로 이동합니다."
 
 msgid "SSL Certificates"
 msgstr "SSL 인증서"
@@ -425,8 +499,14 @@ msgstr "세션 지속성"
 msgid "Source IP"
 msgstr "소스 IP"
 
+msgid "Subnet"
+msgstr "서브넷"
+
 msgid "Subnet ID"
 msgstr "서브넷 ID"
+
+msgid "Subnet:"
+msgstr "서브넷:"
 
 msgid "Tenant ID"
 msgstr "테넌트 ID"
@@ -442,11 +522,33 @@ msgstr ""
 " 컴퓨트 인스턴스가 포함되어 있습니다. \"외부 멤버 추가\" 버튼을 사용하여 \n"
 " 사용 가능한 인스턴스 테이블에 없는 멤버를 추가하십시오."
 
+msgid "The HTTP method used to perform the health check."
+msgstr "상태 체크를 수행하기 위한 HTTP 메소드."
+
 msgid "The IP address is not valid."
 msgstr "올바른 IP 주소가 아닙니다."
 
+msgid ""
+"The IP address of the member to receive traffic from the load balancer. Must "
+"be a well-formed\n"
+"  IPv4 or IPv6 address."
+msgstr ""
+"로드 밸런서에서 트래픽을 받는 멤버의 IP 주소입니다. 양식에 맞는 \n"
+"  IPv4나 IPv6 주소이어야 합니다."
+
 msgid "The URL path is not valid."
 msgstr "URL 경로가 올바르지 않습니다."
+
+msgid ""
+"The expected HTTP status codes to get from a successful health check. Must "
+"be a single number,\n"
+"  a comma separated list of numbers, or a range (two numbers separated by a "
+"hyphen)."
+msgstr ""
+"상태 체크가 성공했을 때 수신하게 되는 HTTP 상태 코드입니다.  단일 숫자이어야 "
+"하고,\n"
+"  쉼표로 구분된 숫자 리스트이거나 두 개의 숫자가 하이픈으로 구별된 범주이어"
+"야 합니다."
 
 msgid "The expected status code is not valid."
 msgstr "status code가 올바르지 않습니다."
@@ -501,8 +603,17 @@ msgstr ""
 "만 \n"
 "  가질 수 있습니다."
 
+msgid ""
+"The interval between health checks. Must be greater than or equal to the "
+"timeout."
+msgstr "상태 체크 사이의 간격. 타임아웃 설정값 이상이어야 합니다."
+
 msgid "The listener has been updated."
 msgstr "리스너가 업데이트 되었습니다."
+
+msgid ""
+"The load balancer algorithm that distributes traffic to the pool members."
+msgstr "풀 멤버에게 트래픽을 분배시키는 로드 밸런서 알고리즘."
 
 msgid "The load balancer has been updated."
 msgstr "로드 밸런서가 업데이트 되었습니다."
@@ -516,6 +627,20 @@ msgstr ""
 
 msgid "The max retry count must be a number between 1 and 10."
 msgstr "최대 재시도 횟수는 1 ~ 10회입니다."
+
+msgid "The network on which to allocate the load balancer's IP address."
+msgstr "로드 밸런서의 IP 주소를 할당하기 위한 네트워크"
+
+msgid "The network which contains the IP address of the member."
+msgstr "멤버의 IP 주소를 포함하고 있는  네트워크입니다."
+
+msgid ""
+"The number of allowed connection failures before marking the member as "
+"inactive. Must be a\n"
+"  number from 1 to 10."
+msgstr ""
+"재시도 횟수를 초과하여 연결이 실패하면 멤버는 비활성화 되고, 재시도 횟수는\n"
+"   1에서 10까지의 숫자이어야 합니다."
 
 msgid "The pool has been updated."
 msgstr "풀이 업데이트 되었습니다."
@@ -531,11 +656,59 @@ msgid ""
 msgstr ""
 "이 로드 밸런서에 연결될 포트는 모든 리스너 중 유일한 포트이어야 합니다."
 
+msgid ""
+"The port on which the front end listens. Must be an integer from 1 to 65535."
+msgstr "프런트 엔드에서 listen하는 포트. 1에서 65535 사이의 정수여야 합니다."
+
+msgid ""
+"The port on which the member listens for traffic. Must be a number from 1 to "
+"65535."
+msgstr ""
+"트래픽을 수신하는 멤버의 포트 번호입니다. 포트 번호는 1 ~ 65535 사이 숫자이어"
+"야 합니다."
+
+msgid ""
+"The protocol for which the front end listens. The TERMINATED_HTTPS protocol "
+"is only available if\n"
+"  the key-manager service is enabled and you have authority to list "
+"certificate containers and\n"
+"  secrets."
+msgstr ""
+"프런트 엔드에서 수신하는 프로토콜. TERMINATED_HTTPS 프로토콜은\n"
+"  key-manager 서비스가 활성화되고  인증서 컨테이너와 비밀값을 리스트할 수 있"
+"는 \n"
+"  권한이 있어야 이용이 가능합니다."
+
+msgid ""
+"The target of the health check HTTP request to the member. Must be a valid "
+"URL path."
+msgstr ""
+"상태 체크하기 위해 멤버에게 HTTP 요청하는 대상. 유효한 URL 경로이어야 합니다."
+
+msgid ""
+"The time after which a health check times out. Must be a number greater than "
+"or equal to 0\n"
+"  and less than or equal to the interval."
+msgstr ""
+"상태 체크 시간이 종료되는 시간. 0 이상의 숫자이어야 하고\n"
+"  타임아웃 값은 상태 체크 간격 값 이하이어야 합니다."
+
 msgid "The timeout must be a number greater than or equal to 0."
 msgstr "타임아웃 시간은 0 이거나 보다 커야됩니다."
 
 msgid "The weight must be a number between 1 and 256."
 msgstr "가중치는 반드시 숫자 1과 256사이여야 합니다."
+
+msgid ""
+"The weight of a member determines the portion of requests or connections it "
+"services compared\n"
+"  to the other members of the pool. A higher weight means it will receive "
+"more traffic. Must be\n"
+"  a number from 1 to 256."
+msgstr ""
+"멤버의 가중치는 풀의 다른 멤버와 비교하여 요청이나 연결의\n"
+"  양을 결정합니다. 가중치가 높을수록 더 많은 트래픽을 받게 됩니다.\n"
+"  가중치는 숫자 1과 256사이여야 합니다."
 
 msgid ""
 "The weight of a member determines the portion of requests or connections it "
@@ -547,6 +720,12 @@ msgstr ""
 msgid "Timeout"
 msgstr "제한시간"
 
+msgid "Timeout (sec)"
+msgstr "타임아웃 (초)"
+
+msgid "Timeout:"
+msgstr "타임아웃:"
+
 msgid "Type"
 msgstr "타입"
 
@@ -555,6 +734,9 @@ msgstr "URL 경로"
 
 msgid "URL path"
 msgstr "URL 경로"
+
+msgid "URL path:"
+msgstr "URL 경로:"
 
 msgid "Unable to create health monitor."
 msgstr "상태 모니터를 생성할 수 없습니다."
@@ -656,8 +838,21 @@ msgstr "풀 업데이트"
 msgid "Update Weight"
 msgstr "가중치 업데이트"
 
+msgid ""
+"Use the key-manager service to create any certificate containers before "
+"creating the listener.\n"
+"  The following documentation provides information on how to create a "
+"certificate container:"
+msgstr ""
+"리스너를 만들기 전에 인증서 컨테이너를 만들기 위해 키 관리자 서비스를 사용하"
+"세요.\n"
+"  다음 문서는 인증서 컨테이너를 어떻게 만드는지에 대한 정보를 제공합니다:"
+
 msgid "Weight"
 msgstr "가충치"
+
+msgid "Weight:"
+msgstr "가중치:"
 
 #, python-format
 msgid ""

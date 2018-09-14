@@ -1,17 +1,17 @@
 # Yukinori Yagisawa <yukky37@gmail.com>, 2016. #zanata
 # Yusuke Higashino <yusuke_higashino@adoc.co.jp>, 2016. #zanata
-# 小羽根 陸 <riku_kobane@adoc.co.jp>, 2016. #zanata
 # Kyohei Moriyama <flogofrein@gmail.com>, 2017. #zanata
+# Yuko Katabami <yukokatabami@gmail.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: neutron-lbaas-dashboard VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2018-03-29 00:48+0000\n"
+"POT-Creation-Date: 2018-08-25 00:47+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-09-14 05:42+0000\n"
-"Last-Translator: Kyohei Moriyama <flogofrein@gmail.com>\n"
+"PO-Revision-Date: 2018-09-13 08:10+0000\n"
+"Last-Translator: Yukinori Yagisawa <yukky37@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
 "X-Generator: Zanata 4.3.3\n"
@@ -22,10 +22,10 @@ msgid "%(ip)s..."
 msgstr "%(ip)s..."
 
 msgid "A new health monitor is being created."
-msgstr "新しいヘルスモニターが作成されました。"
+msgstr "新しいヘルスモニターは作成中です。"
 
 msgid "A new listener is being created."
-msgstr "新しいリスナーが作成されました。"
+msgstr "新しいリスナーは作成中です。"
 
 msgid "A new load balancer is being created."
 msgstr "新しいロードバランサーが作成されました。"
@@ -90,13 +90,13 @@ msgid "Cancel"
 msgstr "取り消し"
 
 msgid "Certificate Name"
-msgstr "認証名"
+msgstr "証明書名"
 
 msgid "Confirm Delete Health Monitor"
-msgstr "ヘルスモニターの削除確認"
+msgstr "ヘルスモニターの削除の確認"
 
 msgid "Confirm Delete Listeners"
-msgstr "リスナーの削除確認"
+msgstr "リスナーの削除の確認"
 
 msgid "Confirm Delete Load Balancers"
 msgstr "ロードバランサーの削除確認"
@@ -111,7 +111,7 @@ msgid "Connection Limit"
 msgstr "最大接続数"
 
 msgid "Create Health Monitor"
-msgstr "ヘルスモニター作成"
+msgstr "ヘルスモニターの作成"
 
 msgid "Create Listener"
 msgstr "リスナーの作成"
@@ -151,11 +151,11 @@ msgstr "プールの削除"
 
 #, python-format
 msgid "Deleted health monitor: %s."
-msgstr "ヘルスモニターは削除されました:%s。"
+msgstr "ヘルスモニター %s を削除しました。"
 
 #, python-format
 msgid "Deleted listeners: %s."
-msgstr "リスナーを削除しました:%s。"
+msgstr "リスナーを削除しました: %s。"
 
 #, python-format
 msgid "Deleted load balancers: %s."
@@ -178,6 +178,18 @@ msgstr "Floating IP の割り当て解除"
 msgid "Disassociated floating IP address from load balancer: %s."
 msgstr "ロードバランサー:%sからFloating IP アドレスの割り当てを解除しました。"
 
+msgid ""
+"Each port that listens for traffic on a particular load balancer is "
+"configured separately and\n"
+"  tied to the load balancer. Multiple listeners can be associated with the "
+"same load balancer but\n"
+"  each must use a unique port."
+msgstr ""
+"あるロードバランサーでトラフィックをリッスンするポート番号は、個別に設定し"
+"て、ロードバランサーに関連付けできます。\n"
+"  同じロードバランサーに複数のリスナーを関連付けできますが、\n"
+"  それぞれが一意のポートを使用しなければいけません。"
+
 msgid "Edit"
 msgstr "編集"
 
@@ -193,8 +205,11 @@ msgstr "コードの期待値"
 msgid "Expected status codes"
 msgstr "ステータスコードの期待値"
 
+msgid "Expected status codes:"
+msgstr "ステータスコードの期待値:"
+
 msgid "Expiration Date"
-msgstr "期限切れ日"
+msgstr "有効期限 (日付)"
 
 msgid "Floating IP Address"
 msgstr "Floating IP アドレス"
@@ -210,6 +225,9 @@ msgstr "HTTP メソッド"
 
 msgid "HTTP method"
 msgstr "HTTP メソッド"
+
+msgid "HTTP method:"
+msgstr "HTTP メソッド:"
 
 msgid "Health Monitor ID"
 msgstr "ヘルスモニター ID"
@@ -227,18 +245,63 @@ msgstr "IP アドレス(%(count)s)"
 msgid "IP address"
 msgstr "IP アドレス"
 
+msgid "IP address:"
+msgstr "IP アドレス:"
+
+msgid ""
+"If an IP address is provided it must be a well-formed IPv4 or IPv6 address. "
+"The system will\n"
+"  attempt to assign the provided IP address to the load balancer. If an IP "
+"address is not provided\n"
+"  then one will be allocated for you."
+msgstr ""
+"IP アドレスを指定する場合には、正しい形式の IPv4 または IPv6 アドレスを使用す"
+"る必要があります。\n"
+"  システムは、指定された IP アドレスをロードバランサーに割り当てるように試み"
+"ます。IP アドレスが指定されていない場合には、\n"
+"  システムによって確保されます。"
+
+msgid ""
+"If the listener uses the TERMINATED_HTTPS protocol, then one or more SSL "
+"certificates must\n"
+"  be selected. The first certificate will be the default."
+msgstr ""
+"リスナーが TERMINATED_HTTPS プロトコルを使用する場合には、SSL 証明書を1 つま"
+"たは複数選択する必要があります。\n"
+" 最初の証明書がデフォルトとなります。"
+
 msgid "Inactive"
 msgstr "非稼働"
+
+msgid "Interval (sec)"
+msgstr "間隔 (秒)"
+
+msgid "Interval:"
+msgstr "間隔:"
+
+msgid "Key Manager API Guide: Creating a Certificate Container"
+msgstr "Key Manager API Guide: Creating a Certificate Container"
+
+msgid "Key Manager Service Command-Line Client"
+msgstr "Key Manager サービスのコマンドラインクライアント"
+
+msgid ""
+"LEAST_CONNECTIONS: Allocates requests to the instance with the least number "
+"of active\n"
+"      connections."
+msgstr ""
+"最小接続数: アクティブな接続数が最も少ないメンバーにリクエストを割り当てま"
+"す。"
 
 msgid "Least Connections"
 msgstr "最小接続数"
 
 #, python-format
 msgid "Listener %(index)s"
-msgstr "リスナー%(index)s"
+msgstr "リスナー %(index)s"
 
 msgid "Listener 1"
-msgstr "リスナー1"
+msgstr "リスナー 1"
 
 msgid "Listener Details"
 msgstr "リスナーの詳細"
@@ -251,7 +314,7 @@ msgstr "リスナー"
 
 #, python-format
 msgid "Load Balancer %(index)s"
-msgstr "ロードバランサー%(index)s"
+msgstr "ロードバランサー %(index)s"
 
 msgid "Load Balancer Algorithm"
 msgstr "ロードバランサーアルゴリズム"
@@ -277,17 +340,35 @@ msgstr "メンバー ID"
 msgid "Members"
 msgstr "メンバー"
 
+msgid ""
+"Members are the actual IP addresses that will receive traffic from the load "
+"balancer. Each\n"
+"  member must have a unique combination of IP address and port."
+msgstr ""
+"メンバーは、ロードバランサーからのトラフィックを受信する実際の IP アドレスで"
+"す。\n"
+"メンバーには、IP アドレスとポートの一意の組み合わせが必要です。"
+
+msgid "Method"
+msgstr "メソッド"
+
+msgid "Method:"
+msgstr "メソッド:"
+
 msgid "Monitor Details"
 msgstr "モニターの詳細"
 
 msgid "Monitor ID"
 msgstr "モニター ID"
 
+msgid "Monitor type"
+msgstr "モニタータイプ"
+
 msgid "Name"
 msgstr "名前"
 
 msgid "No available certificates"
-msgstr "有効な認証がありません"
+msgstr "利用可能な証明書がありません"
 
 msgid "No available instances"
 msgstr "有効なインスタンスがありません"
@@ -308,7 +389,7 @@ msgid "Online"
 msgstr "オンライン"
 
 msgid "Operating Status"
-msgstr "作動状態"
+msgstr "動作状態"
 
 msgid "Overview"
 msgstr "概要"
@@ -323,7 +404,7 @@ msgid "Pending Update"
 msgstr "更新待ち"
 
 msgid "Pool 1"
-msgstr "プール1"
+msgstr "プール 1"
 
 msgid "Pool Details"
 msgstr "プールの詳細"
@@ -343,14 +424,26 @@ msgstr "ポート"
 msgid "Port ID"
 msgstr "ポート ID"
 
+msgid "Port:"
+msgstr "ポート:"
+
 msgid "Protocol"
 msgstr "プロトコル"
 
 msgid "Protocol Port"
 msgstr "ポート番号"
 
+msgid "Protocol:"
+msgstr "プロトコル:"
+
 msgid "Provide the details for the health monitor."
 msgstr "ヘルスモニターの詳細を設定してください。"
+
+msgid "Provide the details for the listener."
+msgstr "リスナーの詳細を設定してください。"
+
+msgid "Provide the details for the load balancer."
+msgstr "ロードバランサーの詳細を設定してください。"
 
 msgid "Provide the details for the pool."
 msgstr "プールの詳細を設定してください"
@@ -361,14 +454,30 @@ msgstr "プロバイダー"
 msgid "Provisioning Status"
 msgstr "プロビジョニング状態"
 
+msgid "ROUND_ROBIN: Rotates requests evenly between multiple instances."
+msgstr "ラウンドロビン: リクエストを複数のメンバーで順番に均等に割り当てます。"
+
 msgid "Remove"
 msgstr "削除"
+
+msgid "Retries"
+msgstr "最大試行回数"
+
+msgid "Retries:"
+msgstr "再試行回数:"
 
 msgid "Round Robin"
 msgstr "ラウンドロビン"
 
+msgid ""
+"SOURCE_IP: Requests from a unique source IP address are consistently "
+"directed to the same instance."
+msgstr ""
+"送信元 IP: 同じ送信元 IP アドレスからのリクエストは同じメンバーに転送されま"
+"す。"
+
 msgid "SSL Certificates"
-msgstr "SSL認証"
+msgstr "SSL 証明書"
 
 msgid ""
 "Select a floating IP address to associate with the load balancer or a "
@@ -379,10 +488,10 @@ msgstr ""
 "ください"
 
 msgid "Select certificates from the available certificates below"
-msgstr "以下の利用可能な認証から、認証を選択してください。"
+msgstr "以下の一覧から証明書を選択してください"
 
 msgid "Select one or more SSL certificates for the listener."
-msgstr "SSL認証を 1 つ以上選択してください"
+msgstr "SSL 証明書を 1 つ以上選択してください"
 
 msgid "Session Persistence"
 msgstr "セッション永続性"
@@ -390,28 +499,73 @@ msgstr "セッション永続性"
 msgid "Source IP"
 msgstr "送信元 IP"
 
+msgid "Subnet"
+msgstr "サブネット"
+
 msgid "Subnet ID"
 msgstr "サブネット ID"
+
+msgid "Subnet:"
+msgstr "サブネット:"
 
 msgid "Tenant ID"
 msgstr "テナント ID"
 
+msgid ""
+"The Available Instances table contains existing compute instances that can "
+"be added as members\n"
+"  of the pool. Use the \"Add external member\" button to add a member not "
+"found in the Available\n"
+"  Instances table."
+msgstr ""
+"利用可能なインスタンスの表には、プールのメンバーとして追加可能な既存のコン"
+"ピュートインスタンスが含まれます。\n"
+"  利用可能なインスタンスの表にないメンバーを追加するには、\n"
+"  「メンバーの追加」ボタンを使用します。"
+
+msgid "The HTTP method used to perform the health check."
+msgstr "ヘルスチェックの実行に使用される HTTP メソッドです。"
+
+msgid "The IP address is not valid."
+msgstr "IP アドレスが無効です。"
+
+msgid ""
+"The IP address of the member to receive traffic from the load balancer. Must "
+"be a well-formed\n"
+"  IPv4 or IPv6 address."
+msgstr ""
+"ロードバランサーからトラフィックを受信するメンバーの IP アドレス。\n"
+"  正しい形式の IPv4 または IPv6 アドレスでなければいけません。"
+
 msgid "The URL path is not valid."
-msgstr "URLは有効ではありません。"
+msgstr "URL は有効ではありません。"
+
+msgid ""
+"The expected HTTP status codes to get from a successful health check. Must "
+"be a single number,\n"
+"  a comma separated list of numbers, or a range (two numbers separated by a "
+"hyphen)."
+msgstr ""
+"ヘルスチェックが成功した場合の HTTP ステータスコードの期待値。\n"
+"  単一の値、複数の値のコンマ区切りリスト、範囲 (ハイフンで区切られた 2 つの"
+"値) のいずれかにする必要があります。"
+
+msgid "The expected status code is not valid."
+msgstr "ステータスコードの期待値が有効ではありません。"
 
 #, python-format
 msgid "The following health monitor could not be deleted: %s."
-msgstr "以下のヘルスモニターは削除することができません:%s。"
+msgstr "以下のヘルスモニターは削除できません: %s。"
 
 #, python-format
 msgid ""
 "The following listeners could not be deleted, possibly due to existing "
 "pools: %s."
-msgstr "以下のリスナーはプールがあるため削除することができません:%s。"
+msgstr "以下のリスナーはおそらくプールがあるため削除できませんでした: %s。"
 
 #, python-format
 msgid "The following listeners will not be deleted due to existing pools: %s."
-msgstr "以下のリスナーはプールがあるため削除することができません:%s。"
+msgstr "以下のリスナーはプールがあるため削除できません: %s。"
 
 #, python-format
 msgid "The following load balancers are pending and cannot be deleted: %s."
@@ -427,7 +581,7 @@ msgstr ""
 
 #, python-format
 msgid "The following pool could not be deleted: %s."
-msgstr "以下のプールは削除することができません:%s。"
+msgstr "以下のプールは削除できませんでした: %s。"
 
 msgid "The health check interval must be greater than or equal to the timeout."
 msgstr "ヘルスチェックの間隔はタイムアウト値以上でなければいけません。"
@@ -435,14 +589,59 @@ msgstr "ヘルスチェックの間隔はタイムアウト値以上でなけれ
 msgid "The health monitor has been updated."
 msgstr "ヘルスモニターが更新されました。"
 
+msgid ""
+"The health monitor is used to determine the health of your pool members. "
+"Health checks\n"
+"  routinely run against each member within the pool and the result of the "
+"health check is used\n"
+"  to determine if the member receives new connections. Each pool can only "
+"have one health\n"
+"  monitor."
+msgstr ""
+"ヘルスモニターは、プールメンバーの正常性の確認に使用されます。\n"
+"  ヘルスチェックは、プール内の各メンバーに対して定期的に実行され、ヘルス"
+"チェックの結果は、\n"
+"  そのメンバーが新規接続を受けるかどうかの決定に使用されます。\n"
+"  1 つのプールで使用できるヘルスモニターは 1 つのみです。"
+
+msgid ""
+"The interval between health checks. Must be greater than or equal to the "
+"timeout."
+msgstr "ヘルスチェックの間隔はタイムアウト値以上でなければいけません。"
+
 msgid "The listener has been updated."
 msgstr "リスナーが更新されました。"
+
+msgid ""
+"The load balancer algorithm that distributes traffic to the pool members."
+msgstr "トラフィックをプールメンバーに分配するロードバランサーのアルゴリズム。"
 
 msgid "The load balancer has been updated."
 msgstr "ロードバランサーが更新されました。"
 
+msgid ""
+"The load balancer occupies a neutron network port and has an IP address "
+"assigned from a subnet."
+msgstr ""
+"ロードバランサーは neutron のネットワークポートを所有し、サブネットから割り当"
+"てられた IP アドレスを持ちます。"
+
 msgid "The max retry count must be a number between 1 and 10."
-msgstr "最大試行回数は1～10までとなっています。"
+msgstr "最大試行回数は 1 ～ 10 の数字でなければいけません。"
+
+msgid "The network on which to allocate the load balancer's IP address."
+msgstr "ロードバランサーの IP アドレスを割り当てるネットワーク"
+
+msgid "The network which contains the IP address of the member."
+msgstr "メンバーの IP アドレスを含むネットワーク。"
+
+msgid ""
+"The number of allowed connection failures before marking the member as "
+"inactive. Must be a\n"
+"  number from 1 to 10."
+msgstr ""
+"メンバーが無効になるまで許容可能な接続エラー回数。\n"
+"  1 から 10 までの数字でなければいけません。"
 
 msgid "The pool has been updated."
 msgstr "プールが更新されました。"
@@ -451,16 +650,80 @@ msgid "The pool members have been updated."
 msgstr "プールメンバーが更新されました。"
 
 msgid "The port must be a number between 1 and 65535."
-msgstr "ポートは1～65535までとなっています。"
+msgstr "ポートは 1 ～ 65535 の数字でなければいけません。"
+
+msgid ""
+"The port must be unique among all listeners attached to this load balancer."
+msgstr ""
+"ポートは、このロードバランサーにアタッチされた全リスナーの間で、一意でなけれ"
+"ばいけません。"
+
+msgid ""
+"The port on which the front end listens. Must be an integer from 1 to 65535."
+msgstr ""
+"フロントエンドがリッスンするポート。1 から 65535 までの整数でなければいけませ"
+"ん。"
+
+msgid ""
+"The port on which the member listens for traffic. Must be a number from 1 to "
+"65535."
+msgstr ""
+"メンバーがトラフィックをリッスンするポート。1 から 65535 までの数字でなければ"
+"いけません。"
+
+msgid ""
+"The protocol for which the front end listens. The TERMINATED_HTTPS protocol "
+"is only available if\n"
+"  the key-manager service is enabled and you have authority to list "
+"certificate containers and\n"
+"  secrets."
+msgstr ""
+"フロントエンドがリッスンするプロトコル。TERMINATED_HTTPS プロトコルは、key-"
+"manager サービスが有効化されており、\n"
+"  証明書のコンテナーとシークレットを一覧表示する権限がある場合にのみ\n"
+"  利用可能です。"
+
+msgid ""
+"The target of the health check HTTP request to the member. Must be a valid "
+"URL path."
+msgstr ""
+"メンバーに対するヘルスチェックの HTTP リクエストのターゲット。有効な URL パス"
+"でなければいけません。"
+
+msgid ""
+"The time after which a health check times out. Must be a number greater than "
+"or equal to 0\n"
+"  and less than or equal to the interval."
+msgstr ""
+"ヘルスチェックがタイムアウトになる時間。\n"
+"  0 以上の数字でなければいけません。"
 
 msgid "The timeout must be a number greater than or equal to 0."
-msgstr "タイムアウトの値 は 0 以上でなければなりません。"
+msgstr "タイムアウトの値 は 0 以上でなければいけません。"
 
 msgid "The weight must be a number between 1 and 256."
 msgstr "ウェイトは1～256までとなっています。"
 
+msgid ""
+"The weight of a member determines the portion of requests or connections it "
+"services compared\n"
+"  to the other members of the pool. A higher weight means it will receive "
+"more traffic. Must be\n"
+"  a number from 1 to 256."
+msgstr ""
+"メンバーの重みによって、そのメンバーが処理するリクエストまたは接続の割合 "
+"(プールの他のメンバーに対する割合) が決定されます。\n"
+"  重みが高いと、より多くのトラフィックを受信することになります。\n"
+"  1 から 256 までの数字でなければいけません。"
+
 msgid "Timeout"
 msgstr "タイムアウト"
+
+msgid "Timeout (sec)"
+msgstr "タイムアウト (秒)"
+
+msgid "Timeout:"
+msgstr "タイムアウト:"
 
 msgid "Type"
 msgstr "種別"
@@ -471,8 +734,11 @@ msgstr "URL パス"
 msgid "URL path"
 msgstr "URL パス"
 
+msgid "URL path:"
+msgstr "URL パス:"
+
 msgid "Unable to create health monitor."
-msgstr "ヘルスモニターの作成ができません。"
+msgstr "ヘルスモニターを作成できません。"
 
 msgid "Unable to create listener."
 msgstr "リスナーの作成ができません。"
@@ -484,7 +750,7 @@ msgid "Unable to create pool."
 msgstr "プールの作成ができません。"
 
 msgid "Unable to delete health monitor."
-msgstr "ヘルスモニターの削除ができません。"
+msgstr "ヘルスモニターを削除できません。"
 
 msgid "Unable to delete listener."
 msgstr "リスナーの削除ができません。"
@@ -504,7 +770,7 @@ msgid "Unable to retrieve SSL certificates."
 msgstr "SSL認証の取得ができません。"
 
 msgid "Unable to retrieve health monitor."
-msgstr "ヘルスモニターの取得ができません。"
+msgstr "ヘルスモニターを取得できません。"
 
 msgid "Unable to retrieve listener."
 msgstr "リスナーの取得ができません。"
@@ -534,7 +800,7 @@ msgid "Unable to retrieve secrets."
 msgstr "事前共通鍵の取得ができません。"
 
 msgid "Unable to update health monitor."
-msgstr "ヘルスモニターの更新ができません。"
+msgstr "ヘルスモニターを更新できません。"
 
 msgid "Unable to update listener."
 msgstr "リスナーの更新ができません。"
@@ -543,10 +809,10 @@ msgid "Unable to update load balancer."
 msgstr "ロードバランサーの更新ができません。"
 
 msgid "Unable to update member list."
-msgstr "メンバー一覧の更新ができません。"
+msgstr "メンバーの一覧を更新できません。"
 
 msgid "Unable to update member."
-msgstr "メンバーの更新ができません。"
+msgstr "メンバーを更新できません。"
 
 msgid "Unable to update pool."
 msgstr "プールの更新ができません。"
@@ -572,8 +838,22 @@ msgstr "プールの更新"
 msgid "Update Weight"
 msgstr "ウェイトの更新"
 
+msgid ""
+"Use the key-manager service to create any certificate containers before "
+"creating the listener.\n"
+"  The following documentation provides information on how to create a "
+"certificate container:"
+msgstr ""
+"リスナーを作成する前に key-manager サービスを使用して証明書のコンテナーを作成"
+"します。\n"
+"  以下のドキュメントには、証明書のコンテナーの作成に関する情報が記載されてい"
+"ます。"
+
 msgid "Weight"
 msgstr "ウェイト"
+
+msgid "Weight:"
+msgstr "重み:"
 
 #, python-format
 msgid ""
