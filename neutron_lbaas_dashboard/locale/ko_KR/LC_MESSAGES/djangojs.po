@@ -4,16 +4,17 @@
 # Sungjin Kang <gang.sungjin@gmail.com>, 2017. #zanata
 # youngwoo Kim <koain@naver.com>, 2017. #zanata
 # ByungYeol Woo <wby1089@gmail.com>, 2018. #zanata
+# Soonyeul Park <ardentpark@gmail.com>, 2018. #zanata
 msgid ""
 msgstr ""
 "Project-Id-Version: neutron-lbaas-dashboard VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/openstack-i18n/\n"
-"POT-Creation-Date: 2018-08-25 00:47+0000\n"
+"POT-Creation-Date: 2018-09-21 03:22+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-08-31 10:41+0000\n"
-"Last-Translator: ByungYeol Woo <wby1089@gmail.com>\n"
+"PO-Revision-Date: 2018-09-22 08:01+0000\n"
+"Last-Translator: Soonyeul Park <ardentpark@gmail.com>\n"
 "Language-Team: Korean (South Korea)\n"
 "Language: ko_KR\n"
 "X-Generator: Zanata 4.3.3\n"
@@ -216,6 +217,9 @@ msgstr "만료 날짜"
 
 msgid "Floating IP Address"
 msgstr "유동 IP 주소"
+
+msgid "Floating IP address or pool"
+msgstr "플로팅 IP 주소나 풀"
 
 msgid "Floating IP addresses"
 msgstr "유동 IP 주소"
