@@ -50,10 +50,10 @@
                ng-model="model.spec.listener.port" ng-pattern="/^\d+$/" min="1" max="65535"
                ng-required="true" ng-disabled="model.context.id"
                validate-unique="model.listenerPorts">
-        <span class="help-block" ng-show="(listenerDetailsForm.port.$error.number || listenerDetailsForm.port.$error.required) && listenerDetailsForm.port.$dirty">
+        <span class="help-block" ng-show="(listenerDetailsForm.port.$error.number || listenerDetailsForm.port.$error.required || listenerDetailsForm.port.$error.pattern) && listenerDetailsForm.port.$dirty">
           {$ ::ctrl.portNumberError $}
         </span>
-        <span class="help-block" ng-show="!(listenerDetailsForm.port.$error.number || listenerDetailsForm.port.$error.required) && listenerDetailsForm.port.$error.unique && listenerDetailsForm.port.$dirty">
+        <span class="help-block" ng-show="!(listenerDetailsForm.port.$error.number || listenerDetailsForm.port.$error.required || listenerDetailsForm.port.$error.pattern) && listenerDetailsForm.port.$error.unique && listenerDetailsForm.port.$dirty">
           {$ ::ctrl.portUniqueError $}
         </span>
       </div>
