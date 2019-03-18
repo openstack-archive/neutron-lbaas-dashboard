@@ -26,8 +26,8 @@ ADD_PANEL = (
 
 ADD_INSTALLED_APPS = ['neutron_lbaas_dashboard']
 
-ADD_ANGULAR_MODULES = ['horizon.dashboard.project.lbaasv2']
+ADD_ANGULAR_MODULES = ['horizon.dashboard.project.nlbaasv2']
 
-ADD_SCSS_FILES = ['dashboard/project/lbaasv2/lbaasv2.scss']
+ADD_SCSS_FILES = ['dashboard/project/nlbaasv2/nlbaasv2.scss']
 
 AUTO_DISCOVER_STATIC_FILES = True
