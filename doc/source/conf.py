@@ -15,7 +15,6 @@
 import logging
 import os
 import sys
-from sphinx import apidoc
 
 import django
 
@@ -39,6 +38,7 @@ extensions = [
     # 'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
+    'sphinxcontrib.apidoc'
 ]
 
 # autodoc generation is a bit aggressive and a nuisance when doing heavy
@@ -103,29 +103,13 @@ latex_documents = [
 # A list of ignored prefixes for module index sorting.
 modindex_common_prefix = ['neutron-lbaas-dashboard.']
 
-
-# TODO(mordred) We should extract this into a sphinx plugin
-def run_apidoc(_):
-    cur_dir = os.path.abspath(os.path.dirname(__file__))
-    out_dir = os.path.join(cur_dir, 'contributor', 'modules')
-    module = os.path.join(cur_dir, '..', '..', 'neutron_lbaas_dashboard')
-    # Keep the order of arguments same as the sphinx-apidoc help, otherwise it
-    # would cause unexpected errors:
-    # sphinx-apidoc [options] -o <output_path> <module_path>
-    # [exclude_pattern, ...]
-    apidoc.main([
-        '--force',
-        '-o',
-        out_dir,
-        module,
-        'neutron_lbaas_dashboard/tests',
-        'neutron_lbaas_dashboard/enabled',
-        'neutron_lbaas_dashboard/locale',
-        'neutron_lbaas_dashboard/static',
-        'neutron_lbaas_dashboard/post_install.sh',
-        'neutron_lbaas_dashboard/karma.conf.js'
-    ])
-
-
-def setup(app):
-    app.connect('builder-inited', run_apidoc)
+apidoc_output_dir = 'contributor/modules'
+apidoc_module_dir = '../../neutron_lbaas_dashboard'
+apidoc_excluded_paths = [
+    'tests',
+    'enabled',
+    'locale',
+    'static',
+    'post_install.sh'
+    'karma.conf.js'
+]
