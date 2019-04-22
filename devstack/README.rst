@@ -15,7 +15,7 @@ where
 
 For example:
 
-    enable_plugin neutron-lbaas-dashboard https://git.openstack.org/openstack/neutron-lbaas-dashboard
+    enable_plugin neutron-lbaas-dashboard https://opendev.org/openstack/neutron-lbaas-dashboard
 
 Once you enable the plugin in your local.conf, ensure ``horizon`` and
 ``q-lbaasv2`` services are enabled. If both of them are enabled,
