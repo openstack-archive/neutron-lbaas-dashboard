@@ -1,7 +1,0 @@
-[run]
-branch = True
-source = neutron_lbaas_dashboard
-omit = neutron_lbaas_dashboard/openstack/*
-
-[report]
-ignore_errors = True
